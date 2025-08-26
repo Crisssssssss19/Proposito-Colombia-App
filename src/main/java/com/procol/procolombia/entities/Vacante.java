@@ -29,7 +29,7 @@ public class Vacante {
     private Date fechaFinVacante;
 
     @Column(name = "estado_vacante", nullable = false)
-    private Short estadoVacante;
+    private Short estadoVacante = 1;
 
     @ManyToOne
     @JoinColumn(name = "id_ubicacion", nullable = false)

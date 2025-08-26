@@ -27,7 +27,7 @@ public class Usuario {
     private String apellidosUsuario;
 
     @Column(name = "estado_usuario", nullable = false)
-    private Short estadoUsuario;
+    private Short estadoUsuario = 1;
 
     @ManyToOne
     @JoinColumn(name = "id_ubicacion", nullable = false)

@@ -20,7 +20,7 @@ public class RelUsuarioEmpresa {
     private Empresa empresa;
 
     @Column(name = "permiso_rel_usuario_empresa", nullable = false)
-    private Short permisoRelUsuarioEmpresa;
+    private Short permisoRelUsuarioEmpresa = 2;
 
     public RelUsuarioEmpresa(){}
 

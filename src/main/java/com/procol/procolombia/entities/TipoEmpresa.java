@@ -17,7 +17,7 @@ public class TipoEmpresa {
     private String nombreTipoEmpresa;
 
     @Column(name = "estado_tipo_empresa", nullable = false)
-    private Short estadoTipoEmpresa;
+    private Short estadoTipoEmpresa = 1;
 
     @OneToMany(mappedBy = "tipoEmpresa")
     private List<Empresa> empresas;

@@ -11,7 +11,7 @@ public class Acceso {
     @Column(name = "id_usuario", nullable = false)
     private Integer idUsuario;
 
-    @Column(name = "telefono_acceso", nullable = false, length = 150,unique = true)
+    @Column(name = "telefono_acceso", nullable = false, length = 150, unique = true)
     private String telefonoAcceso;
 
     @Column(name = "correo_acceso", nullable = false, length = 150, unique = true)

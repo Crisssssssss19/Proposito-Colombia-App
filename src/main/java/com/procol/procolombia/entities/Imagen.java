@@ -24,7 +24,7 @@ public class Imagen {
     private String tamanioImagen;
 
     @Column(name = "favorita_imagen", nullable = false)
-    private Short favoritaImagen;
+    private Short favoritaImagen = 1;
 
     @ManyToOne
     @JoinColumn(name = "id_usuario", nullable = false)

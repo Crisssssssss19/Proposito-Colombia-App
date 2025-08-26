@@ -17,7 +17,7 @@ public class Rol {
     private String nombreRol;
 
     @Column(name = "estado_rol", nullable = false)
-    private Short estadoRol;
+    private Short estadoRol = 1;
 
     @ManyToMany(mappedBy = "roles")
     private List<Usuario> usuarios;

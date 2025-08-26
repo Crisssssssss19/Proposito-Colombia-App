@@ -17,7 +17,7 @@ public class Ingreso {
     private Date fechaIngreso;
 
     @ManyToOne
-    @JoinColumn(name = "id_usuario", nullable = false)
+    @JoinColumn(name = "id_usuario", nullable = false, referencedColumnName = "id_usuario")
     private Acceso acceso;
 
     public Ingreso(){}

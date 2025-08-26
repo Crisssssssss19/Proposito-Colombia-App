@@ -21,7 +21,7 @@ public class Mensaje {
     private Date fechaMensaje;
 
     @Column(name = "estado_mensaje", nullable = false)
-    private Short estadoMensaje;
+    private Short estadoMensaje = 1;
 
     @ManyToOne
     @JoinColumn(name = "id_postulacion", nullable = false)

@@ -19,7 +19,7 @@ public class Postulacion {
     private Date fechaPostulacion;
 
     @Column(name = "correspondencia_postulacion", nullable = false)
-    private Short correspondenciaPostulacion;
+    private Short correspondenciaPostulacion= 4;
 
     @Column(name = "estado_postulacion", nullable = false)
     private Short estadoPostulacion;
