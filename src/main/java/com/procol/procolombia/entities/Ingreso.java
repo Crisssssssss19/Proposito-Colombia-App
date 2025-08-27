@@ -1,48 +1,48 @@
 package com.procol.procolombia.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
-import java.util.Date;
+import java.time.Instant;
+
 @Entity
 @Table(name = "ingresos")
 public class Ingreso {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_ingreso")
-    private Integer idIngreso;
+    @Column(name = "id_ingreso", nullable = false)
+    private Integer id;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_usuario", nullable = false)
+    private Acceso idUsuario;
+
+    @NotNull
     @Column(name = "fecha_ingreso", nullable = false)
-    private Date fechaIngreso;
+    private Instant fechaIngreso;
 
-    @ManyToOne
-    @JoinColumn(name = "id_usuario", nullable = false, referencedColumnName = "id_usuario")
-    private Acceso acceso;
-
-    public Ingreso(){}
-
-    public Integer getIdIngreso() {
-        return idIngreso;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdIngreso(Integer idIngreso) {
-        this.idIngreso = idIngreso;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public Date getFechaIngreso() {
+    public Acceso getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Acceso idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public Instant getFechaIngreso() {
         return fechaIngreso;
     }
 
-    public void setFechaIngreso(Date fechaIngreso) {
+    public void setFechaIngreso(Instant fechaIngreso) {
         this.fechaIngreso = fechaIngreso;
     }
 
-    public Acceso getAcceso() {
-        return acceso;
-    }
-
-    public void setAcceso(Acceso acceso) {
-        this.acceso = acceso;
-    }
 }

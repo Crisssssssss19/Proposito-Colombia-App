@@ -1,5 +1,8 @@
 package com.procol.procolombia.entities.dto;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -7,26 +10,39 @@ import java.util.Objects;
  * DTO for {@link com.procol.procolombia.entities.Archivo}
  */
 public class ArchivoDto implements Serializable {
-    private final Integer idArchivo;
+    private final Integer id;
+    private final Integer idUsuario;
+    @NotNull
+    @Size(max = 200)
     private final String nombrePublicoArchivo;
+    @NotNull
+    @Size(max = 200)
     private final String nombreArchivoArchivo;
+    @NotNull
+    @Size(max = 50)
     private final String tipoArchivo;
+    @NotNull
+    @Size(max = 50)
     private final String tamanioArchivo;
+    @NotNull
     private final Short grupoArchivo;
-    private final Integer usuarioIdUsuario;
 
-    public ArchivoDto(Integer idArchivo, String nombrePublicoArchivo, String nombreArchivoArchivo, String tipoArchivo, String tamanioArchivo, Short grupoArchivo, Integer usuarioIdUsuario) {
-        this.idArchivo = idArchivo;
+    public ArchivoDto(Integer id, Integer idUsuarioId, String nombrePublicoArchivo, String nombreArchivoArchivo, String tipoArchivo, String tamanioArchivo, Short grupoArchivo) {
+        this.id = id;
+        this.idUsuario = idUsuarioId;
         this.nombrePublicoArchivo = nombrePublicoArchivo;
         this.nombreArchivoArchivo = nombreArchivoArchivo;
         this.tipoArchivo = tipoArchivo;
         this.tamanioArchivo = tamanioArchivo;
         this.grupoArchivo = grupoArchivo;
-        this.usuarioIdUsuario = usuarioIdUsuario;
     }
 
-    public Integer getIdArchivo() {
-        return idArchivo;
+    public Integer getId() {
+        return id;
+    }
+
+    public Integer getIdUsuario() {
+        return idUsuario;
     }
 
     public String getNombrePublicoArchivo() {
@@ -49,26 +65,22 @@ public class ArchivoDto implements Serializable {
         return grupoArchivo;
     }
 
-    public Integer getUsuarioIdUsuario() {
-        return usuarioIdUsuario;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ArchivoDto entity = (ArchivoDto) o;
-        return Objects.equals(this.idArchivo, entity.idArchivo) &&
+        return Objects.equals(this.id, entity.id) &&
+                Objects.equals(this.idUsuario, entity.idUsuario) &&
                 Objects.equals(this.nombrePublicoArchivo, entity.nombrePublicoArchivo) &&
                 Objects.equals(this.nombreArchivoArchivo, entity.nombreArchivoArchivo) &&
                 Objects.equals(this.tipoArchivo, entity.tipoArchivo) &&
                 Objects.equals(this.tamanioArchivo, entity.tamanioArchivo) &&
-                Objects.equals(this.grupoArchivo, entity.grupoArchivo) &&
-                Objects.equals(this.usuarioIdUsuario, entity.usuarioIdUsuario);
+                Objects.equals(this.grupoArchivo, entity.grupoArchivo);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idArchivo, nombrePublicoArchivo, nombreArchivoArchivo, tipoArchivo, tamanioArchivo, grupoArchivo, usuarioIdUsuario);
+        return Objects.hash(id, idUsuario, nombrePublicoArchivo, nombreArchivoArchivo, tipoArchivo, tamanioArchivo, grupoArchivo);
     }
 }

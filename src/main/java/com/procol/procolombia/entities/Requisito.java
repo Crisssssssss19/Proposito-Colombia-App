@@ -1,37 +1,53 @@
 package com.procol.procolombia.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "requisitos")
 public class Requisito {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_requisito")
-    private Integer idRequisito;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "requisitos_id_gen")
+    @SequenceGenerator(name = "requisitos_id_gen", sequenceName = "requisitos_id_requisito_seq", allocationSize = 1)
+    @Column(name = "id_requisito", nullable = false)
+    private Integer id;
 
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "id_vacante", nullable = false)
+    private Vacante idVacante;
+
+    @Size(max = 200)
+    @NotNull
     @Column(name = "titulo_requisito", nullable = false, length = 200)
     private String tituloRequisito;
 
-    @Column(name = "detalle_requisito", nullable = false, columnDefinition = "TEXT")
+    @NotNull
+    @Column(name = "detalle_requisito", nullable = false, length = Integer.MAX_VALUE)
     private String detalleRequisito;
 
+    @NotNull
     @Column(name = "orden_requisito", nullable = false)
     private Short ordenRequisito;
 
-    @ManyToOne
-    @JoinColumn(name = "id_vacante", nullable = false)
-    private Vacante vacante;
-
-    public Requisito(){}
-
-    public Integer getIdRequisito() {
-        return idRequisito;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdRequisito(Integer idRequisito) {
-        this.idRequisito = idRequisito;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Vacante getIdVacante() {
+        return idVacante;
+    }
+
+    public void setIdVacante(Vacante idVacante) {
+        this.idVacante = idVacante;
     }
 
     public String getTituloRequisito() {
@@ -58,11 +74,4 @@ public class Requisito {
         this.ordenRequisito = ordenRequisito;
     }
 
-    public Vacante getVacante() {
-        return vacante;
-    }
-
-    public void setVacante(Vacante vacante) {
-        this.vacante = vacante;
-    }
 }

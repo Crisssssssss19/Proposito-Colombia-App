@@ -1,46 +1,52 @@
 package com.procol.procolombia.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
-import java.util.Date;
+import java.time.Instant;
 
 @Entity
 @Table(name = "auditorias")
 public class Auditoria {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_auditoria")
-    private Integer idAuditoria;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "auditorias_id_gen")
+    @SequenceGenerator(name = "auditorias_id_gen", sequenceName = "auditorias_id_auditoria_seq", allocationSize = 1)
+    @Column(name = "id_auditoria", nullable = false)
+    private Integer id;
 
+    @Size(max = 100)
+    @NotNull
     @Column(name = "nombre_entidad_auditoria", nullable = false, length = 100)
     private String nombreEntidadAuditoria;
 
+    @NotNull
     @Column(name = "id_referencia_auditoria", nullable = false)
     private Integer idReferenciaAuditoria;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "fecha_auditoria", nullable = false)
-    private Date fechaAuditoria;
+    @NotNull
+    @Column(name = "id_usuario_auditoria", nullable = false)
+    private Integer idUsuarioAuditoria;
 
+    @NotNull
+    @Column(name = "fecha_auditoria", nullable = false)
+    private Instant fechaAuditoria;
+
+    @Size(max = 200)
+    @NotNull
     @Column(name = "tipo_cambio_auditoria", nullable = false, length = 200)
     private String tipoCambioAuditoria;
 
-    @Column(name = "comentario_auditoria", nullable = false, columnDefinition = "TEXT")
+    @NotNull
+    @Column(name = "comentario_auditoria", nullable = false, length = Integer.MAX_VALUE)
     private String comentarioAuditoria;
 
-    @ManyToOne
-    @JoinColumn(name = "id_usuario_auditoria", nullable = false)
-    private Usuario usuario;
-
-    public Auditoria(){}
-
-    public Integer getIdAuditoria() {
-        return idAuditoria;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdAuditoria(Integer idAuditoria) {
-        this.idAuditoria = idAuditoria;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNombreEntidadAuditoria() {
@@ -59,11 +65,19 @@ public class Auditoria {
         this.idReferenciaAuditoria = idReferenciaAuditoria;
     }
 
-    public Date getFechaAuditoria() {
+    public Integer getIdUsuarioAuditoria() {
+        return idUsuarioAuditoria;
+    }
+
+    public void setIdUsuarioAuditoria(Integer idUsuarioAuditoria) {
+        this.idUsuarioAuditoria = idUsuarioAuditoria;
+    }
+
+    public Instant getFechaAuditoria() {
         return fechaAuditoria;
     }
 
-    public void setFechaAuditoria(Date fechaAuditoria) {
+    public void setFechaAuditoria(Instant fechaAuditoria) {
         this.fechaAuditoria = fechaAuditoria;
     }
 
@@ -83,11 +97,4 @@ public class Auditoria {
         this.comentarioAuditoria = comentarioAuditoria;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
 }

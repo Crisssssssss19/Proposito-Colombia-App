@@ -1,86 +1,90 @@
 package com.procol.procolombia.entities;
 
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_usuario")
-    private Integer idUsuario;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuarios_id_gen")
+    @SequenceGenerator(name = "usuarios_id_gen", sequenceName = "usuarios_id_usuario_seq", allocationSize = 1)
+    @Column(name = "id_usuario", nullable = false)
+    private Integer id;
 
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_ubicacion", nullable = false)
+    private Ubicacione idUbicacion;
+
+    @NotNull
     @Column(name = "tipo_documento_usuario", nullable = false)
     private Short tipoDocumentoUsuario;
 
-    @Column(name = "documento_usuario", nullable = false, unique = true, length = 150)
+    @Size(max = 150)
+    @NotNull
+    @Column(name = "documento_usuario", nullable = false, length = 150)
     private String documentoUsuario;
 
+    @Size(max = 50)
+    @NotNull
     @Column(name = "nombres_usuario", nullable = false, length = 50)
     private String nombresUsuario;
 
+    @Size(max = 50)
+    @NotNull
     @Column(name = "apellidos_usuario", nullable = false, length = 50)
     private String apellidosUsuario;
 
+    @NotNull
     @Column(name = "estado_usuario", nullable = false)
-    private Short estadoUsuario = 1;
+    private Short estadoUsuario;
 
-    @ManyToOne
-    @JoinColumn(name = "id_ubicacion", nullable = false)
-    private Ubicacion ubicacion;
-
-    @OneToOne(mappedBy = "usuario")
+    @OneToOne(mappedBy = "idUsuario")
     private Acceso acceso;
 
-    @OneToMany(mappedBy = "usuario")
-    private List<Archivo> archivos;
+    @OneToMany(mappedBy = "idUsuario")
+    private Set<Archivo> archivos = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "usuario")
-    private List<Imagen> imagenes;
+    @OneToMany(mappedBy = "idUsuario")
+    private Set<Imagene> imagenes = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "usuario")
-    private List<Auditoria> auditorias;
+    @OneToMany(mappedBy = "idUsuario")
+    private Set<Interese> intereses = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "usuario")
-    private List<Postulacion> postulaciones;
+    @OneToMany(mappedBy = "idUsuarioResponde")
+    private Set<Mensaje> mensajes = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "usuarioResponde")
-    private List<Mensaje> mensajes;
+    @OneToMany(mappedBy = "idUsuario")
+    private Set<Postulacione> postulaciones = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "usuario")
-    private List<Interes> intereses;
+    @ManyToMany(mappedBy = "usuarios")
+    private Set<PalabrasClave> palabrasClaves = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "usuario")
-    private List<RelUsuarioEmpresa> relacionesEmpresas;
+    @OneToMany(mappedBy = "idUsuario")
+    private Set<RelUsuariosEmpresa> relUsuariosEmpresas = new LinkedHashSet<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "usuarios_roles",
-            joinColumns = @JoinColumn(name = "id_usuario"),
-            inverseJoinColumns = @JoinColumn(name = "id_rol")
-    )
-    private List<Rol> roles;
+    @ManyToMany(mappedBy = "usuarios")
+    private Set<Role> roles = new LinkedHashSet<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "rel_usuario_palabraclave",
-            joinColumns = @JoinColumn(name = "id_usuario"),
-            inverseJoinColumns = @JoinColumn(name = "id_palabra_clave")
-    )
-    private List<PalabraClave> palabrasClave;
-
-    public Usuario(){}
-
-    public Integer getIdUsuario() {
-        return idUsuario;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdUsuario(Integer idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Ubicacione getIdUbicacion() {
+        return idUbicacion;
+    }
+
+    public void setIdUbicacion(Ubicacione idUbicacion) {
+        this.idUbicacion = idUbicacion;
     }
 
     public Short getTipoDocumentoUsuario() {
@@ -123,14 +127,6 @@ public class Usuario {
         this.estadoUsuario = estadoUsuario;
     }
 
-    public Ubicacion getUbicacion() {
-        return ubicacion;
-    }
-
-    public void setUbicacion(Ubicacion ubicacion) {
-        this.ubicacion = ubicacion;
-    }
-
     public Acceso getAcceso() {
         return acceso;
     }
@@ -139,75 +135,68 @@ public class Usuario {
         this.acceso = acceso;
     }
 
-    public List<Archivo> getArchivos() {
+    public Set<Archivo> getArchivos() {
         return archivos;
     }
 
-    public void setArchivos(List<Archivo> archivos) {
+    public void setArchivos(Set<Archivo> archivos) {
         this.archivos = archivos;
     }
 
-    public List<Imagen> getImagenes() {
+    public Set<Imagene> getImagenes() {
         return imagenes;
     }
 
-    public void setImagenes(List<Imagen> imagenes) {
+    public void setImagenes(Set<Imagene> imagenes) {
         this.imagenes = imagenes;
     }
 
-    public List<Auditoria> getAuditorias() {
-        return auditorias;
-    }
-
-    public void setAuditorias(List<Auditoria> auditorias) {
-        this.auditorias = auditorias;
-    }
-
-    public List<Postulacion> getPostulaciones() {
-        return postulaciones;
-    }
-
-    public void setPostulaciones(List<Postulacion> postulaciones) {
-        this.postulaciones = postulaciones;
-    }
-
-    public List<Mensaje> getMensajes() {
-        return mensajes;
-    }
-
-    public void setMensajes(List<Mensaje> mensajes) {
-        this.mensajes = mensajes;
-    }
-
-    public List<Interes> getIntereses() {
+    public Set<Interese> getIntereses() {
         return intereses;
     }
 
-    public void setIntereses(List<Interes> intereses) {
+    public void setIntereses(Set<Interese> intereses) {
         this.intereses = intereses;
     }
 
-    public List<RelUsuarioEmpresa> getRelacionesEmpresas() {
-        return relacionesEmpresas;
+    public Set<Mensaje> getMensajes() {
+        return mensajes;
     }
 
-    public void setRelacionesEmpresas(List<RelUsuarioEmpresa> relacionesEmpresas) {
-        this.relacionesEmpresas = relacionesEmpresas;
+    public void setMensajes(Set<Mensaje> mensajes) {
+        this.mensajes = mensajes;
     }
 
-    public List<Rol> getRoles() {
+    public Set<Postulacione> getPostulaciones() {
+        return postulaciones;
+    }
+
+    public void setPostulaciones(Set<Postulacione> postulaciones) {
+        this.postulaciones = postulaciones;
+    }
+
+    public Set<PalabrasClave> getPalabrasClaves() {
+        return palabrasClaves;
+    }
+
+    public void setPalabrasClaves(Set<PalabrasClave> palabrasClaves) {
+        this.palabrasClaves = palabrasClaves;
+    }
+
+    public Set<RelUsuariosEmpresa> getRelUsuariosEmpresas() {
+        return relUsuariosEmpresas;
+    }
+
+    public void setRelUsuariosEmpresas(Set<RelUsuariosEmpresa> relUsuariosEmpresas) {
+        this.relUsuariosEmpresas = relUsuariosEmpresas;
+    }
+
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Rol> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
-    public List<PalabraClave> getPalabrasClave() {
-        return palabrasClave;
-    }
-
-    public void setPalabrasClave(List<PalabraClave> palabrasClave) {
-        this.palabrasClave = palabrasClave;
-    }
 }

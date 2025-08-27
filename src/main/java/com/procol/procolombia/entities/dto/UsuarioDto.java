@@ -1,53 +1,68 @@
 package com.procol.procolombia.entities.dto;
 
+import com.procol.procolombia.entities.IntereseId;
+import com.procol.procolombia.entities.RelUsuariosEmpresaId;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * DTO for {@link com.procol.procolombia.entities.Usuario}
  */
 public class UsuarioDto implements Serializable {
-    private final Integer idUsuario;
+    private final Integer id;
+    private final Integer idUbicacion;
+    @NotNull
     private final Short tipoDocumentoUsuario;
+    @NotNull
+    @Size(max = 150)
     private final String documentoUsuario;
+    @NotNull
+    @Size(max = 50)
     private final String nombresUsuario;
+    @NotNull
+    @Size(max = 50)
     private final String apellidosUsuario;
+    @NotNull
     private final Short estadoUsuario;
-    private final Integer ubicacionIdUbicacion;
-    private final Integer accesoIdUsuario;
-    private final List<Integer> idArchivos;
-    private final List<Integer> idImagenes;
-    private final List<Integer> idAuditorias;
-    private final List<Integer> idPostulaciones;
-    private final List<Integer> mensajeIdMensajes;
-    private final List<Integer> idIntereses;
-    private final List<Integer> idRelacionesEmpresas;
-    private final List<Integer> idRoles;
-    private final List<Integer> idPalabraClaves;
+    private final Integer accesoId;
+    private final Set<Integer> archivoIds;
+    private final Set<Integer> imageneIds;
+    private final Set<IntereseId> intereseIds;
+    private final Set<Integer> mensajeIds;
+    private final Set<Integer> postulacioneIds;
+    private final Set<Integer> palabrasClaveIds;
+    private final Set<RelUsuariosEmpresaId> relUsuariosEmpresaIds;
+    private final Set<Integer> roleIds;
 
-    public UsuarioDto(Integer idUsuario, Short tipoDocumentoUsuario, String documentoUsuario, String nombresUsuario, String apellidosUsuario, Short estadoUsuario, Integer ubicacionIdUbicacion, Integer accesoIdUsuario, List<Integer> archivoIdArchivos, List<Integer> imageneIdImagens, List<Integer> auditoriaIdAuditorias, List<Integer> postulacioneIdPostulacions, List<Integer> mensajeIdMensajes, List<Integer> intereses, List<Integer> relacionesEmpresas, List<Integer> roleIdRols, List<Integer> palabrasClaveIdPalabraClaves) {
-        this.idUsuario = idUsuario;
+    public UsuarioDto(Integer id, Integer idUbicacionId, Short tipoDocumentoUsuario, String documentoUsuario, String nombresUsuario, String apellidosUsuario, Short estadoUsuario, Integer accesoId, Set<Integer> archivoIds, Set<Integer> imageneIds, Set<IntereseId> intereseIds, Set<Integer> mensajeIds, Set<Integer> postulacioneIds, Set<Integer> palabrasClaveIds, Set<RelUsuariosEmpresaId> relUsuariosEmpresaIds, Set<Integer> roleIds) {
+        this.id = id;
+        this.idUbicacion = idUbicacionId;
         this.tipoDocumentoUsuario = tipoDocumentoUsuario;
         this.documentoUsuario = documentoUsuario;
         this.nombresUsuario = nombresUsuario;
         this.apellidosUsuario = apellidosUsuario;
         this.estadoUsuario = estadoUsuario;
-        this.ubicacionIdUbicacion = ubicacionIdUbicacion;
-        this.accesoIdUsuario = accesoIdUsuario;
-        this.idArchivos = archivoIdArchivos;
-        this.idImagenes = imageneIdImagens;
-        this.idAuditorias = auditoriaIdAuditorias;
-        this.idPostulaciones = postulacioneIdPostulacions;
-        this.mensajeIdMensajes = mensajeIdMensajes;
-        this.idIntereses = intereses;
-        this.idRelacionesEmpresas = relacionesEmpresas;
-        this.idRoles = roleIdRols;
-        this.idPalabraClaves = palabrasClaveIdPalabraClaves;
+        this.accesoId = accesoId;
+        this.archivoIds = archivoIds;
+        this.imageneIds = imageneIds;
+        this.intereseIds = intereseIds;
+        this.mensajeIds = mensajeIds;
+        this.postulacioneIds = postulacioneIds;
+        this.palabrasClaveIds = palabrasClaveIds;
+        this.relUsuariosEmpresaIds = relUsuariosEmpresaIds;
+        this.roleIds = roleIds;
     }
 
-    public Integer getIdUsuario() {
-        return idUsuario;
+    public Integer getId() {
+        return id;
+    }
+
+    public Integer getIdUbicacion() {
+        return idUbicacion;
     }
 
     public Short getTipoDocumentoUsuario() {
@@ -70,48 +85,40 @@ public class UsuarioDto implements Serializable {
         return estadoUsuario;
     }
 
-    public Integer getUbicacionIdUbicacion() {
-        return ubicacionIdUbicacion;
+    public Integer getAccesoId() {
+        return accesoId;
     }
 
-    public Integer getAccesoIdUsuario() {
-        return accesoIdUsuario;
+    public Set<Integer> getArchivoIds() {
+        return archivoIds;
     }
 
-    public List<Integer> getIdArchivos() {
-        return idArchivos;
+    public Set<Integer> getImageneIds() {
+        return imageneIds;
     }
 
-    public List<Integer> getIdImagenes() {
-        return idImagenes;
+    public Set<IntereseId> getIntereseIds() {
+        return intereseIds;
     }
 
-    public List<Integer> getIdAuditorias() {
-        return idAuditorias;
+    public Set<Integer> getMensajeIds() {
+        return mensajeIds;
     }
 
-    public List<Integer> getIdPostulaciones() {
-        return idPostulaciones;
+    public Set<Integer> getPostulacioneIds() {
+        return postulacioneIds;
     }
 
-    public List<Integer> getMensajeIdMensajes() {
-        return mensajeIdMensajes;
+    public Set<Integer> getPalabrasClaveIds() {
+        return palabrasClaveIds;
     }
 
-    public List<Integer> getIdIntereses() {
-        return idIntereses;
+    public Set<RelUsuariosEmpresaId> getRelUsuariosEmpresaIds() {
+        return relUsuariosEmpresaIds;
     }
 
-    public List<Integer> getIdRelacionesEmpresas() {
-        return idRelacionesEmpresas;
-    }
-
-    public List<Integer> getIdRoles() {
-        return idRoles;
-    }
-
-    public List<Integer> getIdPalabraClaves() {
-        return idPalabraClaves;
+    public Set<Integer> getRoleIds() {
+        return roleIds;
     }
 
     @Override
@@ -119,28 +126,26 @@ public class UsuarioDto implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UsuarioDto entity = (UsuarioDto) o;
-        return Objects.equals(this.idUsuario, entity.idUsuario) &&
+        return Objects.equals(this.id, entity.id) &&
+                Objects.equals(this.idUbicacion, entity.idUbicacion) &&
                 Objects.equals(this.tipoDocumentoUsuario, entity.tipoDocumentoUsuario) &&
                 Objects.equals(this.documentoUsuario, entity.documentoUsuario) &&
                 Objects.equals(this.nombresUsuario, entity.nombresUsuario) &&
                 Objects.equals(this.apellidosUsuario, entity.apellidosUsuario) &&
                 Objects.equals(this.estadoUsuario, entity.estadoUsuario) &&
-                Objects.equals(this.ubicacionIdUbicacion, entity.ubicacionIdUbicacion) &&
-                Objects.equals(this.accesoIdUsuario, entity.accesoIdUsuario) &&
-                Objects.equals(this.idArchivos, entity.idArchivos) &&
-                Objects.equals(this.idImagenes, entity.idImagenes) &&
-                Objects.equals(this.idAuditorias, entity.idAuditorias) &&
-                Objects.equals(this.idPostulaciones, entity.idPostulaciones) &&
-                Objects.equals(this.mensajeIdMensajes, entity.mensajeIdMensajes) &&
-                Objects.equals(this.idIntereses, entity.idIntereses) &&
-                Objects.equals(this.idRelacionesEmpresas, entity.idRelacionesEmpresas) &&
-                Objects.equals(this.idRoles, entity.idRoles) &&
-                Objects.equals(this.idPalabraClaves, entity.idPalabraClaves);
+                Objects.equals(this.accesoId, entity.accesoId) &&
+                Objects.equals(this.archivoIds, entity.archivoIds) &&
+                Objects.equals(this.imageneIds, entity.imageneIds) &&
+                Objects.equals(this.intereseIds, entity.intereseIds) &&
+                Objects.equals(this.mensajeIds, entity.mensajeIds) &&
+                Objects.equals(this.postulacioneIds, entity.postulacioneIds) &&
+                Objects.equals(this.palabrasClaveIds, entity.palabrasClaveIds) &&
+                Objects.equals(this.relUsuariosEmpresaIds, entity.relUsuariosEmpresaIds) &&
+                Objects.equals(this.roleIds, entity.roleIds);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idUsuario, tipoDocumentoUsuario, documentoUsuario, nombresUsuario, apellidosUsuario, estadoUsuario, ubicacionIdUbicacion, accesoIdUsuario, idArchivos, idImagenes, idAuditorias, idPostulaciones, mensajeIdMensajes, idIntereses, idRelacionesEmpresas, idRoles, idPalabraClaves);
+        return Objects.hash(id, idUbicacion, tipoDocumentoUsuario, documentoUsuario, nombresUsuario, apellidosUsuario, estadoUsuario, accesoId, archivoIds, imageneIds, intereseIds, mensajeIds, postulacioneIds, palabrasClaveIds, relUsuariosEmpresaIds, roleIds);
     }
-
 }

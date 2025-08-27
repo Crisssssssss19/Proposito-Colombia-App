@@ -1,41 +1,59 @@
 package com.procol.procolombia.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "anuncios")
 public class Anuncio {
-
     @Id
-    @Column(name = "id_vacante")
-    private Integer idVacante;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_vacante", nullable = false)
+    private Integer id;
 
+    @MapsId
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "id_vacante", nullable = false)
+    private Vacante vacantes;
+
+    @Size(max = 200)
+    @NotNull
     @Column(name = "nombre_publico_anuncio", nullable = false, length = 200)
     private String nombrePublicoAnuncio;
 
+    @Size(max = 200)
+    @NotNull
     @Column(name = "nombre_privado_anuncio", nullable = false, length = 200)
     private String nombrePrivadoAnuncio;
 
+    @Size(max = 50)
+    @NotNull
     @Column(name = "tipo_anuncio", nullable = false, length = 50)
     private String tipoAnuncio;
 
+    @Size(max = 50)
+    @NotNull
     @Column(name = "tamanio_anuncio", nullable = false, length = 50)
     private String tamanioAnuncio;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "id_vacante")
-    private Vacante vacante;
-
-    public Anuncio() {
+    public Integer getId() {
+        return id;
     }
 
-    public Integer getIdVacante() {
-        return idVacante;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public void setIdVacante(Integer idVacante) {
-        this.idVacante = idVacante;
+    public Vacante getVacantes() {
+        return vacantes;
+    }
+
+    public void setVacantes(Vacante vacantes) {
+        this.vacantes = vacantes;
     }
 
     public String getNombrePublicoAnuncio() {
@@ -70,11 +88,4 @@ public class Anuncio {
         this.tamanioAnuncio = tamanioAnuncio;
     }
 
-    public Vacante getVacante() {
-        return vacante;
-    }
-
-    public void setVacante(Vacante vacante) {
-        this.vacante = vacante;
-    }
 }
