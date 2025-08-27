@@ -1,49 +1,57 @@
 package com.procol.procolombia.entities.dto;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.io.Serializable;
-import java.lang.Integer;
-import java.util.Date;
-import java.util.List;
+import java.time.Instant;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * DTO for {@link com.procol.procolombia.entities.Vacante}
  */
 public class VacanteDto implements Serializable {
-    private final Integer idVacante;
-    private final String tituloVacante;
-    private final String detalleVacante;
-    private final Date fechaInicioVacante;
-    private final Date fechaFinVacante;
-    private final Short estadoVacante;
+    private final Integer id;
     private final Integer idUbicacion;
-    private final Integer idEmpresa;
-    private final Integer idUsuario;
-    private final List<Integer> idRequisitos;
-    private final List<Integer> idPostulacions;
-    private final List<Integer> idHistorialEstadoVacantes;
-    private final Integer idAnuncioVacante;
-    private final List<Integer> IdPalabraClaves;
+    @NotNull
+    @Size(max = 300)
+    private final String tituloVacante;
+    @NotNull
+    private final String detalleVacante;
+    @NotNull
+    private final Instant fechaInicioVacante;
+    @NotNull
+    private final Instant fechaFinVacante;
+    @NotNull
+    private final Short estadoVacante;
+    private final Integer anuncioId;
+    private final Set<Integer> historialEstadosVacanteIds;
+    private final Set<Integer> postulacioneIds;
+    private final Set<Integer> palabrasClaveIds;
+    private final Set<Integer> requisitoIds;
 
-    public VacanteDto(Integer idVacante, String tituloVacante, String detalleVacante, Date fechaInicioVacante, Date fechaFinVacante, Short estadoVacante, Integer ubicacionIdUbicacion, Integer empresaIdEmpresa, Integer usuarioIdUsuario, List<Integer> requisitoIdRequisitos, List<Integer> postulacioneIdPostulacions, List<Integer> historialIdHistorialEstadoVacantes, Integer anuncioIdVacante, List<Integer> palabrasClaveIdPalabraClaves) {
-        this.idVacante = idVacante;
+    public VacanteDto(Integer id, Integer idUbicacionId, String tituloVacante, String detalleVacante, Instant fechaInicioVacante, Instant fechaFinVacante, Short estadoVacante, Integer anuncioId, Set<Integer> historialEstadosVacanteIds, Set<Integer> postulacioneIds, Set<Integer> palabrasClaveIds, Set<Integer> requisitoIds) {
+        this.id = id;
+        this.idUbicacion = idUbicacionId;
         this.tituloVacante = tituloVacante;
         this.detalleVacante = detalleVacante;
         this.fechaInicioVacante = fechaInicioVacante;
         this.fechaFinVacante = fechaFinVacante;
         this.estadoVacante = estadoVacante;
-        this.idUbicacion = ubicacionIdUbicacion;
-        this.idEmpresa = empresaIdEmpresa;
-        this.idUsuario = usuarioIdUsuario;
-        this.idRequisitos = requisitoIdRequisitos;
-        this.idPostulacions = postulacioneIdPostulacions;
-        this.idHistorialEstadoVacantes = historialIdHistorialEstadoVacantes;
-        this.idAnuncioVacante = anuncioIdVacante;
-        this.IdPalabraClaves = palabrasClaveIdPalabraClaves;
+        this.anuncioId = anuncioId;
+        this.historialEstadosVacanteIds = historialEstadosVacanteIds;
+        this.postulacioneIds = postulacioneIds;
+        this.palabrasClaveIds = palabrasClaveIds;
+        this.requisitoIds = requisitoIds;
     }
 
-    public Integer getIdVacante() {
-        return idVacante;
+    public Integer getId() {
+        return id;
+    }
+
+    public Integer getIdUbicacion() {
+        return idUbicacion;
     }
 
     public String getTituloVacante() {
@@ -54,11 +62,11 @@ public class VacanteDto implements Serializable {
         return detalleVacante;
     }
 
-    public Date getFechaInicioVacante() {
+    public Instant getFechaInicioVacante() {
         return fechaInicioVacante;
     }
 
-    public Date getFechaFinVacante() {
+    public Instant getFechaFinVacante() {
         return fechaFinVacante;
     }
 
@@ -66,36 +74,24 @@ public class VacanteDto implements Serializable {
         return estadoVacante;
     }
 
-    public Integer getIdUbicacion() {
-        return idUbicacion;
+    public Integer getAnuncioId() {
+        return anuncioId;
     }
 
-    public Integer getIdEmpresa() {
-        return idEmpresa;
+    public Set<Integer> getHistorialEstadosVacanteIds() {
+        return historialEstadosVacanteIds;
     }
 
-    public Integer getIdUsuario() {
-        return idUsuario;
+    public Set<Integer> getPostulacioneIds() {
+        return postulacioneIds;
     }
 
-    public List<Integer> getIdRequisitos() {
-        return idRequisitos;
+    public Set<Integer> getPalabrasClaveIds() {
+        return palabrasClaveIds;
     }
 
-    public List<Integer> getIdPostulacions() {
-        return idPostulacions;
-    }
-
-    public List<Integer> getIdHistorialEstadoVacantes() {
-        return idHistorialEstadoVacantes;
-    }
-
-    public Integer getIdAnuncioVacante() {
-        return idAnuncioVacante;
-    }
-
-    public List<Integer> getIdPalabraClaves() {
-        return IdPalabraClaves;
+    public Set<Integer> getRequisitoIds() {
+        return requisitoIds;
     }
 
     @Override
@@ -103,24 +99,22 @@ public class VacanteDto implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         VacanteDto entity = (VacanteDto) o;
-        return Objects.equals(this.idVacante, entity.idVacante) &&
+        return Objects.equals(this.id, entity.id) &&
+                Objects.equals(this.idUbicacion, entity.idUbicacion) &&
                 Objects.equals(this.tituloVacante, entity.tituloVacante) &&
                 Objects.equals(this.detalleVacante, entity.detalleVacante) &&
                 Objects.equals(this.fechaInicioVacante, entity.fechaInicioVacante) &&
                 Objects.equals(this.fechaFinVacante, entity.fechaFinVacante) &&
                 Objects.equals(this.estadoVacante, entity.estadoVacante) &&
-                Objects.equals(this.idUbicacion, entity.idUbicacion) &&
-                Objects.equals(this.idEmpresa, entity.idEmpresa) &&
-                Objects.equals(this.idUsuario, entity.idUsuario) &&
-                Objects.equals(this.idRequisitos, entity.idRequisitos) &&
-                Objects.equals(this.idPostulacions, entity.idPostulacions) &&
-                Objects.equals(this.idHistorialEstadoVacantes, entity.idHistorialEstadoVacantes) &&
-                Objects.equals(this.idAnuncioVacante, entity.idAnuncioVacante) &&
-                Objects.equals(this.IdPalabraClaves, entity.IdPalabraClaves);
+                Objects.equals(this.anuncioId, entity.anuncioId) &&
+                Objects.equals(this.historialEstadosVacanteIds, entity.historialEstadosVacanteIds) &&
+                Objects.equals(this.postulacioneIds, entity.postulacioneIds) &&
+                Objects.equals(this.palabrasClaveIds, entity.palabrasClaveIds) &&
+                Objects.equals(this.requisitoIds, entity.requisitoIds);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idVacante, tituloVacante, detalleVacante, fechaInicioVacante, fechaFinVacante, estadoVacante, idUbicacion, idEmpresa, idUsuario, idRequisitos, idPostulacions, idHistorialEstadoVacantes, idAnuncioVacante, IdPalabraClaves);
+        return Objects.hash(id, idUbicacion, tituloVacante, detalleVacante, fechaInicioVacante, fechaFinVacante, estadoVacante, anuncioId, historialEstadosVacanteIds, postulacioneIds, palabrasClaveIds, requisitoIds);
     }
 }

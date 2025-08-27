@@ -1,32 +1,48 @@
 package com.procol.procolombia.entities.dto;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * DTO for {@link com.procol.procolombia.entities.Imagen}
+ * DTO for {@link com.procol.procolombia.entities.Imagene}
  */
-public class ImagenDto implements Serializable {
-    private final Integer idImagen;
-    private final String nombrePublicoImagen;
-    private final String nombrePrivadoImagen;
-    private final String tipoImagen;
-    private final String tamanioImagen;
-    private final Short favoritaImagen;
+public class ImageneDto implements Serializable {
+    private final Integer id;
     private final Integer idUsuario;
+    @NotNull
+    @Size(max = 200)
+    private final String nombrePublicoImagen;
+    @NotNull
+    @Size(max = 200)
+    private final String nombrePrivadoImagen;
+    @NotNull
+    @Size(max = 50)
+    private final String tipoImagen;
+    @NotNull
+    @Size(max = 50)
+    private final String tamanioImagen;
+    @NotNull
+    private final Short favoritaImagen;
 
-    public ImagenDto(Integer idImagen, String nombrePublicoImagen, String nombrePrivadoImagen, String tipoImagen, String tamanioImagen, Short favoritaImagen, Integer usuarioIdUsuario) {
-        this.idImagen = idImagen;
+    public ImageneDto(Integer id, Integer idUsuarioId, String nombrePublicoImagen, String nombrePrivadoImagen, String tipoImagen, String tamanioImagen, Short favoritaImagen) {
+        this.id = id;
+        this.idUsuario = idUsuarioId;
         this.nombrePublicoImagen = nombrePublicoImagen;
         this.nombrePrivadoImagen = nombrePrivadoImagen;
         this.tipoImagen = tipoImagen;
         this.tamanioImagen = tamanioImagen;
         this.favoritaImagen = favoritaImagen;
-        this.idUsuario = usuarioIdUsuario;
     }
 
-    public Integer getIdImagen() {
-        return idImagen;
+    public Integer getId() {
+        return id;
+    }
+
+    public Integer getIdUsuario() {
+        return idUsuario;
     }
 
     public String getNombrePublicoImagen() {
@@ -49,26 +65,22 @@ public class ImagenDto implements Serializable {
         return favoritaImagen;
     }
 
-    public Integer getIdUsuario() {
-        return idUsuario;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ImagenDto entity = (ImagenDto) o;
-        return Objects.equals(this.idImagen, entity.idImagen) &&
+        ImageneDto entity = (ImageneDto) o;
+        return Objects.equals(this.id, entity.id) &&
+                Objects.equals(this.idUsuario, entity.idUsuario) &&
                 Objects.equals(this.nombrePublicoImagen, entity.nombrePublicoImagen) &&
                 Objects.equals(this.nombrePrivadoImagen, entity.nombrePrivadoImagen) &&
                 Objects.equals(this.tipoImagen, entity.tipoImagen) &&
                 Objects.equals(this.tamanioImagen, entity.tamanioImagen) &&
-                Objects.equals(this.favoritaImagen, entity.favoritaImagen) &&
-                Objects.equals(this.idUsuario, entity.idUsuario);
+                Objects.equals(this.favoritaImagen, entity.favoritaImagen);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idImagen, nombrePublicoImagen, nombrePrivadoImagen, tipoImagen, tamanioImagen, favoritaImagen, idUsuario);
+        return Objects.hash(id, idUsuario, nombrePublicoImagen, nombrePrivadoImagen, tipoImagen, tamanioImagen, favoritaImagen);
     }
 }

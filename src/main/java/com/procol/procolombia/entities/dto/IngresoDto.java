@@ -1,33 +1,36 @@
 package com.procol.procolombia.entities.dto;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.io.Serializable;
-import java.util.Date;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
  * DTO for {@link com.procol.procolombia.entities.Ingreso}
  */
 public class IngresoDto implements Serializable {
-    private final Integer idIngreso;
-    private final Date fechaIngreso;
-    private final Integer accesoIdUsuario;
+    private final Integer id;
+    private final Integer idUsuario;
+    @NotNull
+    private final Instant fechaIngreso;
 
-    public IngresoDto(Integer idIngreso, Date fechaIngreso, Integer accesoIdUsuario) {
-        this.idIngreso = idIngreso;
+    public IngresoDto(Integer id, Integer idUsuarioId, Instant fechaIngreso) {
+        this.id = id;
+        this.idUsuario = idUsuarioId;
         this.fechaIngreso = fechaIngreso;
-        this.accesoIdUsuario = accesoIdUsuario;
     }
 
-    public Integer getIdIngreso() {
-        return idIngreso;
+    public Integer getId() {
+        return id;
     }
 
-    public Date getFechaIngreso() {
+    public Integer getIdUsuario() {
+        return idUsuario;
+    }
+
+    public Instant getFechaIngreso() {
         return fechaIngreso;
-    }
-
-    public Integer getAccesoIdUsuario() {
-        return accesoIdUsuario;
     }
 
     @Override
@@ -35,13 +38,13 @@ public class IngresoDto implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         IngresoDto entity = (IngresoDto) o;
-        return Objects.equals(this.idIngreso, entity.idIngreso) &&
-                Objects.equals(this.fechaIngreso, entity.fechaIngreso) &&
-                Objects.equals(this.accesoIdUsuario, entity.accesoIdUsuario);
+        return Objects.equals(this.id, entity.id) &&
+                Objects.equals(this.idUsuario, entity.idUsuario) &&
+                Objects.equals(this.fechaIngreso, entity.fechaIngreso);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idIngreso, fechaIngreso, accesoIdUsuario);
+        return Objects.hash(id, idUsuario, fechaIngreso);
     }
 }
