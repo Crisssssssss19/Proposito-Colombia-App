@@ -1,48 +1,64 @@
 package com.procol.procolombia.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "empresas")
 public class Empresa {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_empresa")
-    private Integer idEmpresa;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "empresas_id_gen")
+    @SequenceGenerator(name = "empresas_id_gen", sequenceName = "empresas_id_empresa_seq", allocationSize = 1)
+    @Column(name = "id_empresa", nullable = false)
+    private Integer id;
 
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "id_tipo_empresa", nullable = false)
+    private TipoEmpresa idTipoEmpresa;
+
+    @Size(max = 200)
+    @NotNull
     @Column(name = "nombre_empresa", nullable = false, length = 200)
     private String nombreEmpresa;
 
+    @Size(max = 200)
+    @NotNull
     @Column(name = "direccion_empresa", nullable = false, length = 200)
     private String direccionEmpresa;
 
+    @Size(max = 200)
+    @NotNull
     @Column(name = "telefono_empresa", nullable = false, length = 200)
     private String telefonoEmpresa;
 
-    @ManyToOne
-    @JoinColumn(name = "id_tipo_empresa", nullable = false)
-    private TipoEmpresa tipoEmpresa;
+    @OneToMany(mappedBy = "idEmpresa")
+    private Set<Interese> intereses = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "empresa")
-    private List<Vacante> vacantes;
+    @OneToMany(mappedBy = "idEmpresa")
+    private Set<RelUsuariosEmpresa> relUsuariosEmpresas = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "empresa")
-    private List<Interes> intereses;
-
-    @OneToMany(mappedBy = "empresa")
-    private List<RelUsuarioEmpresa> relacionesUsuarios;
-
-    public Empresa(){}
-
-    public Integer getIdEmpresa() {
-        return idEmpresa;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdEmpresa(Integer idEmpresa) {
-        this.idEmpresa = idEmpresa;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public TipoEmpresa getIdTipoEmpresa() {
+        return idTipoEmpresa;
+    }
+
+    public void setIdTipoEmpresa(TipoEmpresa idTipoEmpresa) {
+        this.idTipoEmpresa = idTipoEmpresa;
     }
 
     public String getNombreEmpresa() {
@@ -69,35 +85,20 @@ public class Empresa {
         this.telefonoEmpresa = telefonoEmpresa;
     }
 
-    public TipoEmpresa getTipoEmpresa() {
-        return tipoEmpresa;
-    }
-
-    public void setTipoEmpresa(TipoEmpresa tipoEmpresa) {
-        this.tipoEmpresa = tipoEmpresa;
-    }
-
-    public List<Vacante> getVacantes() {
-        return vacantes;
-    }
-
-    public void setVacantes(List<Vacante> vacantes) {
-        this.vacantes = vacantes;
-    }
-
-    public List<Interes> getIntereses() {
+    public Set<Interese> getIntereses() {
         return intereses;
     }
 
-    public void setIntereses(List<Interes> intereses) {
+    public void setIntereses(Set<Interese> intereses) {
         this.intereses = intereses;
     }
 
-    public List<RelUsuarioEmpresa> getRelacionesUsuarios() {
-        return relacionesUsuarios;
+    public Set<RelUsuariosEmpresa> getRelUsuariosEmpresas() {
+        return relUsuariosEmpresas;
     }
 
-    public void setRelacionesUsuarios(List<RelUsuarioEmpresa> relacionesUsuarios) {
-        this.relacionesUsuarios = relacionesUsuarios;
+    public void setRelUsuariosEmpresas(Set<RelUsuariosEmpresa> relUsuariosEmpresas) {
+        this.relUsuariosEmpresas = relUsuariosEmpresas;
     }
+
 }

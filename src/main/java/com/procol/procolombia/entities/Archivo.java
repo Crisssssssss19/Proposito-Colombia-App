@@ -1,44 +1,64 @@
 package com.procol.procolombia.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "archivos")
 public class Archivo {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_archivo")
-    private Integer idArchivo;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "archivos_id_gen")
+    @SequenceGenerator(name = "archivos_id_gen", sequenceName = "archivos_id_archivo_seq", allocationSize = 1)
+    @Column(name = "id_archivo", nullable = false)
+    private Integer id;
 
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "id_usuario", nullable = false)
+    private Usuario idUsuario;
+
+    @Size(max = 200)
+    @NotNull
     @Column(name = "nombre_publico_archivo", nullable = false, length = 200)
     private String nombrePublicoArchivo;
 
+    @Size(max = 200)
+    @NotNull
     @Column(name = "nombre_archivo_archivo", nullable = false, length = 200)
     private String nombreArchivoArchivo;
 
+    @Size(max = 50)
+    @NotNull
     @Column(name = "tipo_archivo", nullable = false, length = 50)
     private String tipoArchivo;
 
+    @Size(max = 50)
+    @NotNull
     @Column(name = "tamanio_archivo", nullable = false, length = 50)
     private String tamanioArchivo;
 
+    @NotNull
     @Column(name = "grupo_archivo", nullable = false)
     private Short grupoArchivo;
 
-    @ManyToOne
-    @JoinColumn(name = "id_usuario", nullable = false)
-    private Usuario usuario;
-
-    public Archivo(){
+    public Integer getId() {
+        return id;
     }
 
-    public Integer getIdArchivo() {
-        return idArchivo;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public void setIdArchivo(Integer idArchivo) {
-        this.idArchivo = idArchivo;
+    public Usuario getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Usuario idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String getNombrePublicoArchivo() {
@@ -81,11 +101,4 @@ public class Archivo {
         this.grupoArchivo = grupoArchivo;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
 }

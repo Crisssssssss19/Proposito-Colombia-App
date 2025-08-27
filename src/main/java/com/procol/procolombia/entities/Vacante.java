@@ -1,78 +1,95 @@
 package com.procol.procolombia.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import java.util.Date;
-import java.util.List;
+import java.time.Instant;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "vacantes")
 public class Vacante {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_vacante")
-    private Integer idVacante;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vacantes_id_gen")
+    @SequenceGenerator(name = "vacantes_id_gen", sequenceName = "vacantes_id_vacante_seq", allocationSize = 1)
+    @Column(name = "id_vacante", nullable = false)
+    private Integer id;
 
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "id_ubicacion", nullable = false)
+    private Ubicacione idUbicacion;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    private RelUsuariosEmpresa relUsuariosEmpresas;
+
+    @Size(max = 300)
+    @NotNull
     @Column(name = "titulo_vacante", nullable = false, length = 300)
     private String tituloVacante;
 
-    @Column(name = "detalle_vacante", nullable = false, columnDefinition = "TEXT")
+    @NotNull
+    @Column(name = "detalle_vacante", nullable = false, length = Integer.MAX_VALUE)
     private String detalleVacante;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @NotNull
     @Column(name = "fecha_inicio_vacante", nullable = false)
-    private Date fechaInicioVacante;
+    private Instant fechaInicioVacante;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @NotNull
     @Column(name = "fecha_fin_vacante", nullable = false)
-    private Date fechaFinVacante;
+    private Instant fechaFinVacante;
 
+    @NotNull
+    @ColumnDefault("1")
     @Column(name = "estado_vacante", nullable = false)
-    private Short estadoVacante = 1;
+    private Short estadoVacante;
 
-    @ManyToOne
-    @JoinColumn(name = "id_ubicacion", nullable = false)
-    private Ubicacion ubicacion;
-
-    // ✅ Mapeo directo a Empresa
-    @ManyToOne
-    @JoinColumn(name = "id_empresa", nullable = false)
-    private Empresa empresa;
-
-    // ✅ Mapeo directo a Usuario (el creador de la vacante)
-    @ManyToOne
-    @JoinColumn(name = "id_usuario", nullable = false)
-    private Usuario usuario;
-
-    @OneToMany(mappedBy = "vacante")
-    private List<Requisito> requisitos;
-
-    @OneToMany(mappedBy = "vacante")
-    private List<Postulacion> postulaciones;
-
-    @OneToMany(mappedBy = "vacante")
-    private List<HistorialEstadoVacante> historial;
-
-    @OneToOne(mappedBy = "vacante")
+    @OneToOne(mappedBy = "idVacante")
     private Anuncio anuncio;
 
-    @ManyToMany
-    @JoinTable(
-            name = "rel_vacante_palabraclave",
-            joinColumns = @JoinColumn(name = "id_vacante"),
-            inverseJoinColumns = @JoinColumn(name = "id_palabra_clave")
-    )
-    private List<PalabraClave> palabrasClave;
+    @OneToMany(mappedBy = "idVacante")
+    private Set<HistorialEstadosVacante> historialEstadosVacantes = new LinkedHashSet<>();
 
-    public Vacante(){}
+    @OneToMany(mappedBy = "idVacante")
+    private Set<Postulacione> postulaciones = new LinkedHashSet<>();
 
-    public Integer getIdVacante() {
-        return idVacante;
+    @ManyToMany(mappedBy = "vacantes")
+    private Set<PalabrasClave> palabrasClaves = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "idVacante")
+    private Set<Requisito> requisitos = new LinkedHashSet<>();
+
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdVacante(Integer idVacante) {
-        this.idVacante = idVacante;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Ubicacione getIdUbicacion() {
+        return idUbicacion;
+    }
+
+    public void setIdUbicacion(Ubicacione idUbicacion) {
+        this.idUbicacion = idUbicacion;
+    }
+
+    public RelUsuariosEmpresa getRelUsuariosEmpresas() {
+        return relUsuariosEmpresas;
+    }
+
+    public void setRelUsuariosEmpresas(RelUsuariosEmpresa relUsuariosEmpresas) {
+        this.relUsuariosEmpresas = relUsuariosEmpresas;
     }
 
     public String getTituloVacante() {
@@ -91,19 +108,19 @@ public class Vacante {
         this.detalleVacante = detalleVacante;
     }
 
-    public Date getFechaInicioVacante() {
+    public Instant getFechaInicioVacante() {
         return fechaInicioVacante;
     }
 
-    public void setFechaInicioVacante(Date fechaInicioVacante) {
+    public void setFechaInicioVacante(Instant fechaInicioVacante) {
         this.fechaInicioVacante = fechaInicioVacante;
     }
 
-    public Date getFechaFinVacante() {
+    public Instant getFechaFinVacante() {
         return fechaFinVacante;
     }
 
-    public void setFechaFinVacante(Date fechaFinVacante) {
+    public void setFechaFinVacante(Instant fechaFinVacante) {
         this.fechaFinVacante = fechaFinVacante;
     }
 
@@ -115,54 +132,6 @@ public class Vacante {
         this.estadoVacante = estadoVacante;
     }
 
-    public Ubicacion getUbicacion() {
-        return ubicacion;
-    }
-
-    public void setUbicacion(Ubicacion ubicacion) {
-        this.ubicacion = ubicacion;
-    }
-
-    public Empresa getEmpresa() {
-        return empresa;
-    }
-
-    public void setEmpresa(Empresa empresa) {
-        this.empresa = empresa;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    public List<Requisito> getRequisitos() {
-        return requisitos;
-    }
-
-    public void setRequisitos(List<Requisito> requisitos) {
-        this.requisitos = requisitos;
-    }
-
-    public List<Postulacion> getPostulaciones() {
-        return postulaciones;
-    }
-
-    public void setPostulaciones(List<Postulacion> postulaciones) {
-        this.postulaciones = postulaciones;
-    }
-
-    public List<HistorialEstadoVacante> getHistorial() {
-        return historial;
-    }
-
-    public void setHistorial(List<HistorialEstadoVacante> historial) {
-        this.historial = historial;
-    }
-
     public Anuncio getAnuncio() {
         return anuncio;
     }
@@ -171,11 +140,36 @@ public class Vacante {
         this.anuncio = anuncio;
     }
 
-    public List<PalabraClave> getPalabrasClave() {
-        return palabrasClave;
+    public Set<HistorialEstadosVacante> getHistorialEstadosVacantes() {
+        return historialEstadosVacantes;
     }
 
-    public void setPalabrasClave(List<PalabraClave> palabrasClave) {
-        this.palabrasClave = palabrasClave;
+    public void setHistorialEstadosVacantes(Set<HistorialEstadosVacante> historialEstadosVacantes) {
+        this.historialEstadosVacantes = historialEstadosVacantes;
     }
+
+    public Set<Postulacione> getPostulaciones() {
+        return postulaciones;
+    }
+
+    public void setPostulaciones(Set<Postulacione> postulaciones) {
+        this.postulaciones = postulaciones;
+    }
+
+    public Set<PalabrasClave> getPalabrasClaves() {
+        return palabrasClaves;
+    }
+
+    public void setPalabrasClaves(Set<PalabrasClave> palabrasClaves) {
+        this.palabrasClaves = palabrasClaves;
+    }
+
+    public Set<Requisito> getRequisitos() {
+        return requisitos;
+    }
+
+    public void setRequisitos(Set<Requisito> requisitos) {
+        this.requisitos = requisitos;
+    }
+
 }
