@@ -1,4 +1,4 @@
-package com.procol.procolombia.entities;
+﻿package com.procol.procolombia.entities;
 
 import jakarta.persistence.*;
 
