@@ -10,15 +10,15 @@ import java.util.Set;
 @Entity
 @Table(name = "accesos")
 public class Acceso {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario", nullable = false)
     private Integer id;
 
     @MapsId
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_usuario", nullable = false)
-    private Usuario usuarios;
+    private Usuario usuario;
 
     @Size(max = 150)
     @NotNull
@@ -51,12 +51,12 @@ public class Acceso {
         this.id = id;
     }
 
-    public Usuario getUsuarios() {
-        return usuarios;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setUsuarios(Usuario usuarios) {
-        this.usuarios = usuarios;
+    public void setUsuario(Usuario usuarios) {
+        this.usuario = usuarios;
     }
 
     public String getTelefonoAcceso() {

@@ -44,7 +44,7 @@ public class Usuario {
     @Column(name = "estado_usuario", nullable = false)
     private Short estadoUsuario;
 
-    @OneToOne(mappedBy = "idUsuario")
+    @OneToOne(mappedBy = "usuario")
     private Acceso acceso;
 
     @OneToMany(mappedBy = "idUsuario")
