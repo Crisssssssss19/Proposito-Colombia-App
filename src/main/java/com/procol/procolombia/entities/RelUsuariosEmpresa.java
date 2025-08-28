@@ -33,7 +33,7 @@ public class RelUsuariosEmpresa {
     @Column(name = "permiso_rel_usuario_empresa", nullable = false)
     private Short permisoRelUsuarioEmpresa;
 
-    @OneToMany(mappedBy = "relUsuariosEmpresa")
+    @OneToMany(mappedBy = "relUsuariosEmpresas")
     private Set<Vacante> vacantes = new LinkedHashSet<>();
 
     public RelUsuariosEmpresaId getId() {

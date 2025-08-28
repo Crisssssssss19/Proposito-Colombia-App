@@ -18,7 +18,7 @@ public class Anuncio {
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "id_vacante", nullable = false)
-    private Vacante vacantes;
+    private Vacante idVacante;
 
     @Size(max = 200)
     @NotNull
@@ -48,12 +48,12 @@ public class Anuncio {
         this.id = id;
     }
 
-    public Vacante getVacantes() {
-        return vacantes;
+    public Vacante getIdVacante() {
+        return idVacante;
     }
 
-    public void setVacantes(Vacante vacantes) {
-        this.vacantes = vacantes;
+    public void setIdVacante(Vacante vacantes) {
+        this.idVacante = vacantes;
     }
 
     public String getNombrePublicoAnuncio() {
