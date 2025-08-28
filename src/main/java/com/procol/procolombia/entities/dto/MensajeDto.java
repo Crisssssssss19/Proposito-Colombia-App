@@ -1,39 +1,51 @@
 package com.procol.procolombia.entities.dto;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.io.Serializable;
-import java.lang.Integer;
-import java.util.Date;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
  * DTO for {@link com.procol.procolombia.entities.Mensaje}
  */
 public class MensajeDto implements Serializable {
-    private final Integer idMensaje;
-    private final String textoMensaje;
-    private final Date fechaMensaje;
-    private final Short estadoMensaje;
+    private final Integer id;
     private final Integer idPostulacion;
-    private final Integer idUsuario;
+    private final Integer idUsuarioResponde;
+    @NotNull
+    private final String textoMensaje;
+    @NotNull
+    private final Instant fechaMensaje;
+    @NotNull
+    private final Short estadoMensaje;
 
-    public MensajeDto(Integer idMensaje, String textoMensaje, Date fechaMensaje, Short estadoMensaje, Integer postulacionIdPostulacion, Integer usuarioRespondeIdUsuario) {
-        this.idMensaje = idMensaje;
+    public MensajeDto(Integer id, Integer idPostulacionId, Integer idUsuarioRespondeId, String textoMensaje, Instant fechaMensaje, Short estadoMensaje) {
+        this.id = id;
+        this.idPostulacion = idPostulacionId;
+        this.idUsuarioResponde = idUsuarioRespondeId;
         this.textoMensaje = textoMensaje;
         this.fechaMensaje = fechaMensaje;
         this.estadoMensaje = estadoMensaje;
-        this.idPostulacion = postulacionIdPostulacion;
-        this.idUsuario = usuarioRespondeIdUsuario;
     }
 
-    public Integer getIdMensaje() {
-        return idMensaje;
+    public Integer getId() {
+        return id;
+    }
+
+    public Integer getIdPostulacion() {
+        return idPostulacion;
+    }
+
+    public Integer getIdUsuarioResponde() {
+        return idUsuarioResponde;
     }
 
     public String getTextoMensaje() {
         return textoMensaje;
     }
 
-    public Date getFechaMensaje() {
+    public Instant getFechaMensaje() {
         return fechaMensaje;
     }
 
@@ -41,29 +53,21 @@ public class MensajeDto implements Serializable {
         return estadoMensaje;
     }
 
-    public Integer getIdPostulacion() {
-        return idPostulacion;
-    }
-
-    public Integer getIdUsuario() {
-        return idUsuario;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MensajeDto entity = (MensajeDto) o;
-        return Objects.equals(this.idMensaje, entity.idMensaje) &&
+        return Objects.equals(this.id, entity.id) &&
+                Objects.equals(this.idPostulacion, entity.idPostulacion) &&
+                Objects.equals(this.idUsuarioResponde, entity.idUsuarioResponde) &&
                 Objects.equals(this.textoMensaje, entity.textoMensaje) &&
                 Objects.equals(this.fechaMensaje, entity.fechaMensaje) &&
-                Objects.equals(this.estadoMensaje, entity.estadoMensaje) &&
-                Objects.equals(this.idPostulacion, entity.idPostulacion) &&
-                Objects.equals(this.idUsuario, entity.idUsuario);
+                Objects.equals(this.estadoMensaje, entity.estadoMensaje);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idMensaje, textoMensaje, fechaMensaje, estadoMensaje, idPostulacion, idUsuario);
+        return Objects.hash(id, idPostulacion, idUsuarioResponde, textoMensaje, fechaMensaje, estadoMensaje);
     }
 }

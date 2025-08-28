@@ -1,44 +1,69 @@
 package com.procol.procolombia.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import java.util.Date;
+import java.time.Instant;
 
 @Entity
 @Table(name = "mensajes")
 public class Mensaje {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_mensaje")
-    private Integer idMensaje;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mensajes_id_gen")
+    @SequenceGenerator(name = "mensajes_id_gen", sequenceName = "mensajes_id_mensaje_seq", allocationSize = 1)
+    @Column(name = "id_mensaje", nullable = false)
+    private Integer id;
 
-    @Column(name = "texto_mensaje", nullable = false, columnDefinition = "TEXT")
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "id_postulacion", nullable = false)
+    private Postulacione idPostulacion;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "id_usuario_responde", nullable = false)
+    private Usuario idUsuarioResponde;
+
+    @NotNull
+    @Column(name = "texto_mensaje", nullable = false, length = Integer.MAX_VALUE)
     private String textoMensaje;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @NotNull
     @Column(name = "fecha_mensaje", nullable = false)
-    private Date fechaMensaje;
+    private Instant fechaMensaje;
 
+    @NotNull
+    @ColumnDefault("1")
     @Column(name = "estado_mensaje", nullable = false)
-    private Short estadoMensaje = 1;
+    private Short estadoMensaje;
 
-    @ManyToOne
-    @JoinColumn(name = "id_postulacion", nullable = false)
-    private Postulacion postulacion;
-
-    @ManyToOne
-    @JoinColumn(name = "id_usuario_responde", nullable = false)
-    private Usuario usuarioResponde;
-
-    public Mensaje(){}
-
-    public Integer getIdMensaje() {
-        return idMensaje;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdMensaje(Integer idMensaje) {
-        this.idMensaje = idMensaje;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Postulacione getIdPostulacion() {
+        return idPostulacion;
+    }
+
+    public void setIdPostulacion(Postulacione idPostulacion) {
+        this.idPostulacion = idPostulacion;
+    }
+
+    public Usuario getIdUsuarioResponde() {
+        return idUsuarioResponde;
+    }
+
+    public void setIdUsuarioResponde(Usuario idUsuarioResponde) {
+        this.idUsuarioResponde = idUsuarioResponde;
     }
 
     public String getTextoMensaje() {
@@ -49,11 +74,11 @@ public class Mensaje {
         this.textoMensaje = textoMensaje;
     }
 
-    public Date getFechaMensaje() {
+    public Instant getFechaMensaje() {
         return fechaMensaje;
     }
 
-    public void setFechaMensaje(Date fechaMensaje) {
+    public void setFechaMensaje(Instant fechaMensaje) {
         this.fechaMensaje = fechaMensaje;
     }
 
@@ -65,19 +90,4 @@ public class Mensaje {
         this.estadoMensaje = estadoMensaje;
     }
 
-    public Postulacion getPostulacion() {
-        return postulacion;
-    }
-
-    public void setPostulacion(Postulacion postulacion) {
-        this.postulacion = postulacion;
-    }
-
-    public Usuario getUsuarioResponde() {
-        return usuarioResponde;
-    }
-
-    public void setUsuarioResponde(Usuario usuarioResponde) {
-        this.usuarioResponde = usuarioResponde;
-    }
 }

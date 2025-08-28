@@ -1,35 +1,41 @@
 package com.procol.procolombia.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.ColumnDefault;
 
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "tipo_empresas")
 public class TipoEmpresa {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_tipo_empresa")
-    private Integer idTipoEmpresa;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tipo_empresas_id_gen")
+    @SequenceGenerator(name = "tipo_empresas_id_gen", sequenceName = "tipo_empresas_id_tipo_empresa_seq", allocationSize = 1)
+    @Column(name = "id_tipo_empresa", nullable = false)
+    private Integer id;
 
-    @Column(name = "nombre_tipo_empresa", nullable = false, length = 150, unique = true)
+    @Size(max = 150)
+    @NotNull
+    @Column(name = "nombre_tipo_empresa", nullable = false, length = 150)
     private String nombreTipoEmpresa;
 
+    @NotNull
+    @ColumnDefault("1")
     @Column(name = "estado_tipo_empresa", nullable = false)
-    private Short estadoTipoEmpresa = 1;
+    private Short estadoTipoEmpresa;
 
-    @OneToMany(mappedBy = "tipoEmpresa")
-    private List<Empresa> empresas;
+    @OneToMany(mappedBy = "idTipoEmpresa")
+    private Set<Empresa> empresas = new LinkedHashSet<>();
 
-    public TipoEmpresa(){}
-
-    public Integer getIdTipoEmpresa() {
-        return idTipoEmpresa;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdTipoEmpresa(Integer idTipoEmpresa) {
-        this.idTipoEmpresa = idTipoEmpresa;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNombreTipoEmpresa() {
@@ -48,11 +54,12 @@ public class TipoEmpresa {
         this.estadoTipoEmpresa = estadoTipoEmpresa;
     }
 
-    public List<Empresa> getEmpresas() {
+    public Set<Empresa> getEmpresas() {
         return empresas;
     }
 
-    public void setEmpresas(List<Empresa> empresas) {
+    public void setEmpresas(Set<Empresa> empresas) {
         this.empresas = empresas;
     }
+
 }
