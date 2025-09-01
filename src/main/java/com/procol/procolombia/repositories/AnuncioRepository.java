@@ -1,18 +1,19 @@
 package com.procol.procolombia.repositories;
 
-import com.procol.procolombia.entities.Anuncio;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
+import com.procol.procolombia.entities.Anuncio;
 
 @Repository
 public interface AnuncioRepository extends JpaRepository<Anuncio, Integer> {
 
-  Optional<Anuncio> findByVacantes_Id(Integer idVacante);
+  Optional<Anuncio> findByIdVacante_Id(Integer id);
 
   List<Anuncio> findByTipoAnuncio(String tipoAnuncio);
 
@@ -26,6 +27,6 @@ public interface AnuncioRepository extends JpaRepository<Anuncio, Integer> {
   @Query("SELECT COUNT(a) FROM Anuncio a WHERE a.tipoAnuncio = :tipo")
   long countByTipo(@Param("tipo") String tipo);
 
-  boolean existsByVacantes_Id(Integer idVacante);
+  boolean existsByIdVacante_Id(Integer id);
 
 }
