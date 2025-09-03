@@ -10,22 +10,25 @@ import java.util.Objects;
  * DTO for {@link com.procol.procolombia.entities.Anuncio}
  */
 public class AnuncioDto implements Serializable {
-    private final Integer id;
-    private final Integer vacantesId;
+    private Integer id;
+    private Integer vacantesId;
     @NotNull
     @Size(max = 200)
-    private final String nombrePublicoAnuncio;
+    private String nombrePublicoAnuncio;
     @NotNull
     @Size(max = 200)
-    private final String nombrePrivadoAnuncio;
+    private String nombrePrivadoAnuncio;
     @NotNull
     @Size(max = 50)
-    private final String tipoAnuncio;
+    private String tipoAnuncio;
     @NotNull
     @Size(max = 50)
-    private final String tamanioAnuncio;
+    private String tamanioAnuncio;
 
-    public AnuncioDto(Integer id, Integer vacantesId, String nombrePublicoAnuncio, String nombrePrivadoAnuncio, String tipoAnuncio, String tamanioAnuncio) {
+    public AnuncioDto() {
+    }
+
+    public AnuncioDto(Integer id, Integer vacantesId, String nombrePublicoAnuncio, String nombrePrivadoAnuncio, String tipoAnuncio, String tamanioAnuncio){
         this.id = id;
         this.vacantesId = vacantesId;
         this.nombrePublicoAnuncio = nombrePublicoAnuncio;
@@ -33,7 +36,6 @@ public class AnuncioDto implements Serializable {
         this.tipoAnuncio = tipoAnuncio;
         this.tamanioAnuncio = tamanioAnuncio;
     }
-
     public Integer getId() {
         return id;
     }
@@ -56,6 +58,30 @@ public class AnuncioDto implements Serializable {
 
     public String getTamanioAnuncio() {
         return tamanioAnuncio;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setVacantesId(Integer vacantesId) {
+        this.vacantesId = vacantesId;
+    }
+
+    public void setNombrePublicoAnuncio(@NotNull @Size(max = 200) String nombrePublicoAnuncio) {
+        this.nombrePublicoAnuncio = nombrePublicoAnuncio;
+    }
+
+    public void setNombrePrivadoAnuncio(@NotNull @Size(max = 200) String nombrePrivadoAnuncio) {
+        this.nombrePrivadoAnuncio = nombrePrivadoAnuncio;
+    }
+
+    public void setTipoAnuncio(@NotNull @Size(max = 50) String tipoAnuncio) {
+        this.tipoAnuncio = tipoAnuncio;
+    }
+
+    public void setTamanioAnuncio(@NotNull @Size(max = 50) String tamanioAnuncio) {
+        this.tamanioAnuncio = tamanioAnuncio;
     }
 
     @Override
