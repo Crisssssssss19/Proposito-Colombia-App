@@ -1,6 +1,6 @@
-package com.procol.procolombia.mappers;
+package com.procol.procolombia.vacante.mappers;
 
-import com.procol.procolombia.entities.Archivo;
+import com.procol.procolombia.vacante.entities.Archivo;
 import com.procol.procolombia.entities.dto.ArchivoDto;
 
 import java.util.List;
