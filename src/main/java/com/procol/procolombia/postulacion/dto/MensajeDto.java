@@ -11,15 +11,15 @@ import java.util.Objects;
  * DTO for {@link Mensaje}
  */
 public class MensajeDto implements Serializable {
-    private final Integer id;
-    private final Integer idPostulacion;
-    private final Integer idUsuarioResponde;
+    private Integer id;
+    private Integer idPostulacion;
+    private Integer idUsuarioResponde;
     @NotNull
-    private final String textoMensaje;
+    private String textoMensaje;
     @NotNull
-    private final Instant fechaMensaje;
+    private Instant fechaMensaje;
     @NotNull
-    private final Short estadoMensaje;
+    private Short estadoMensaje;
 
     public MensajeDto(Integer id, Integer idPostulacionId, Integer idUsuarioRespondeId, String textoMensaje, Instant fechaMensaje, Short estadoMensaje) {
         this.id = id;
@@ -52,6 +52,30 @@ public class MensajeDto implements Serializable {
 
     public Short getEstadoMensaje() {
         return estadoMensaje;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setIdPostulacion(Integer idPostulacion) {
+        this.idPostulacion = idPostulacion;
+    }
+
+    public void setIdUsuarioResponde(Integer idUsuarioResponde) {
+        this.idUsuarioResponde = idUsuarioResponde;
+    }
+
+    public void setTextoMensaje(@NotNull String textoMensaje) {
+        this.textoMensaje = textoMensaje;
+    }
+
+    public void setFechaMensaje(@NotNull Instant fechaMensaje) {
+        this.fechaMensaje = fechaMensaje;
+    }
+
+    public void setEstadoMensaje(@NotNull Short estadoMensaje) {
+        this.estadoMensaje = estadoMensaje;
     }
 
     @Override

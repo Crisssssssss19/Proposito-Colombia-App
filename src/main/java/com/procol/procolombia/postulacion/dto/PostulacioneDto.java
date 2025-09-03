@@ -12,18 +12,18 @@ import java.util.Set;
  * DTO for {@link Postulacione}
  */
 public class PostulacioneDto implements Serializable {
-    private final Integer id;
-    private final Integer idVacante;
-    private final Integer idUsuario;
-    private final Short idUsuarioEstadoUsuario;
+    private Integer id;
+    private Integer idVacante;
+    private Integer idUsuario;
+    private Short idUsuarioEstadoUsuario;
     @NotNull
-    private final Instant fechaPostulacion;
+    private Instant fechaPostulacion;
     @NotNull
-    private final Short correspondenciaPostulacion;
+    private Short correspondenciaPostulacion;
     @NotNull
-    private final Short estadoPostulacion;
-    private final Set<Integer> historialEstadosPostulacioneIds;
-    private final Set<Integer> mensajeIds;
+    private Short estadoPostulacion;
+    private Set<Integer> historialEstadosPostulacioneIds;
+    private Set<Integer> mensajeIds;
 
     public PostulacioneDto(Integer id, Integer idVacanteId, Integer idUsuarioId, Short idUsuarioEstadoUsuario, Instant fechaPostulacion, Short correspondenciaPostulacion, Short estadoPostulacion, Set<Integer> historialEstadosPostulacioneIds, Set<Integer> mensajeIds) {
         this.id = id;
@@ -71,6 +71,42 @@ public class PostulacioneDto implements Serializable {
 
     public Set<Integer> getMensajeIds() {
         return mensajeIds;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setIdVacante(Integer idVacante) {
+        this.idVacante = idVacante;
+    }
+
+    public void setIdUsuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public void setIdUsuarioEstadoUsuario(Short idUsuarioEstadoUsuario) {
+        this.idUsuarioEstadoUsuario = idUsuarioEstadoUsuario;
+    }
+
+    public void setFechaPostulacion(@NotNull Instant fechaPostulacion) {
+        this.fechaPostulacion = fechaPostulacion;
+    }
+
+    public void setCorrespondenciaPostulacion(@NotNull Short correspondenciaPostulacion) {
+        this.correspondenciaPostulacion = correspondenciaPostulacion;
+    }
+
+    public void setEstadoPostulacion(@NotNull Short estadoPostulacion) {
+        this.estadoPostulacion = estadoPostulacion;
+    }
+
+    public void setHistorialEstadosPostulacioneIds(Set<Integer> historialEstadosPostulacioneIds) {
+        this.historialEstadosPostulacioneIds = historialEstadosPostulacioneIds;
+    }
+
+    public void setMensajeIds(Set<Integer> mensajeIds) {
+        this.mensajeIds = mensajeIds;
     }
 
     @Override

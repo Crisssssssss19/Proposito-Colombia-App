@@ -12,13 +12,13 @@ import java.util.Set;
  * DTO for {@link EstadosPostulacione}
  */
 public class EstadosPostulacioneDto implements Serializable {
-    private final Integer id;
+    private Integer id;
     @NotNull
     @Size(max = 150)
-    private final String nombreEstadoPostulacion;
+    private String nombreEstadoPostulacion;
     @NotNull
-    private final Short ordenEstadoPostulacion;
-    private final Set<Integer> historialEstadosPostulacioneIds;
+    private Short ordenEstadoPostulacion;
+    private Set<Integer> historialEstadosPostulacioneIds;
 
     public EstadosPostulacioneDto(Integer id, String nombreEstadoPostulacion, Short ordenEstadoPostulacion, Set<Integer> historialEstadosPostulacioneIds) {
         this.id = id;
@@ -41,6 +41,22 @@ public class EstadosPostulacioneDto implements Serializable {
 
     public Set<Integer> getHistorialEstadosPostulacioneIds() {
         return historialEstadosPostulacioneIds;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setNombreEstadoPostulacion(@NotNull @Size(max = 150) String nombreEstadoPostulacion) {
+        this.nombreEstadoPostulacion = nombreEstadoPostulacion;
+    }
+
+    public void setOrdenEstadoPostulacion(@NotNull Short ordenEstadoPostulacion) {
+        this.ordenEstadoPostulacion = ordenEstadoPostulacion;
+    }
+
+    public void setHistorialEstadosPostulacioneIds(Set<Integer> historialEstadosPostulacioneIds) {
+        this.historialEstadosPostulacioneIds = historialEstadosPostulacioneIds;
     }
 
     @Override

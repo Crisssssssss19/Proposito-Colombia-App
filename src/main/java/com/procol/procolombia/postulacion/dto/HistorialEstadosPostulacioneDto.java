@@ -11,13 +11,13 @@ import java.util.Objects;
  * DTO for {@link HistorialEstadosPostulacione}
  */
 public class HistorialEstadosPostulacioneDto implements Serializable {
-    private final Integer id;
-    private final Integer idPostulacionId;
-    private final Integer idEstadoPostulacion;
+    private Integer id;
+    private Integer idPostulacionId;
+    private Integer idEstadoPostulacion;
     @NotNull
-    private final Instant fechaHistorialPostulacion;
+    private Instant fechaHistorialPostulacion;
     @NotNull
-    private final String detalleHistorialPostulacion;
+    private String detalleHistorialPostulacion;
 
     public HistorialEstadosPostulacioneDto(Integer id, Integer idPostulacionId, Integer idEstadoPostulacionId, Instant fechaHistorialPostulacion, String detalleHistorialPostulacion) {
         this.id = id;
@@ -45,6 +45,26 @@ public class HistorialEstadosPostulacioneDto implements Serializable {
 
     public String getDetalleHistorialPostulacion() {
         return detalleHistorialPostulacion;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setIdPostulacionId(Integer idPostulacionId) {
+        this.idPostulacionId = idPostulacionId;
+    }
+
+    public void setIdEstadoPostulacion(Integer idEstadoPostulacion) {
+        this.idEstadoPostulacion = idEstadoPostulacion;
+    }
+
+    public void setFechaHistorialPostulacion(@NotNull Instant fechaHistorialPostulacion) {
+        this.fechaHistorialPostulacion = fechaHistorialPostulacion;
+    }
+
+    public void setDetalleHistorialPostulacion(@NotNull String detalleHistorialPostulacion) {
+        this.detalleHistorialPostulacion = detalleHistorialPostulacion;
     }
 
     @Override

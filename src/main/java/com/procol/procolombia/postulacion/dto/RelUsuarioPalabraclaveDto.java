@@ -10,9 +10,9 @@ import java.util.Objects;
  * DTO for {@link RelUsuarioPalabraclave}
  */
 public class RelUsuarioPalabraclaveDto implements Serializable {
-    private final RelUsuarioPalabraclaveId id;
-    private final Integer idUsuario;
-    private final Integer idPalabraClave;
+    private RelUsuarioPalabraclaveId id;
+    private Integer idUsuario;
+    private Integer idPalabraClave;
 
     public RelUsuarioPalabraclaveDto(RelUsuarioPalabraclaveId id, Integer idUsuarioId, Integer idPalabraClaveId) {
         this.id = id;
@@ -30,6 +30,18 @@ public class RelUsuarioPalabraclaveDto implements Serializable {
 
     public Integer getIdPalabraClave() {
         return idPalabraClave;
+    }
+
+    public void setId(RelUsuarioPalabraclaveId id) {
+        this.id = id;
+    }
+
+    public void setIdUsuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public void setIdPalabraClave(Integer idPalabraClave) {
+        this.idPalabraClave = idPalabraClave;
     }
 
     @Override
