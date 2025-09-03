@@ -10,22 +10,25 @@ import java.util.Objects;
  * DTO for {@link com.procol.procolombia.entities.Archivo}
  */
 public class ArchivoDto implements Serializable {
-    private final Integer id;
-    private final Integer idUsuario;
+    private Integer id;
+    private Integer idUsuario;
     @NotNull
     @Size(max = 200)
-    private final String nombrePublicoArchivo;
+    private String nombrePublicoArchivo;
     @NotNull
     @Size(max = 200)
-    private final String nombreArchivoArchivo;
+    private String nombreArchivoArchivo;
     @NotNull
     @Size(max = 50)
-    private final String tipoArchivo;
+    private String tipoArchivo;
     @NotNull
     @Size(max = 50)
-    private final String tamanioArchivo;
+    private String tamanioArchivo;
     @NotNull
-    private final Short grupoArchivo;
+    private Short grupoArchivo;
+
+    public ArchivoDto() {
+    }
 
     public ArchivoDto(Integer id, Integer idUsuarioId, String nombrePublicoArchivo, String nombreArchivoArchivo, String tipoArchivo, String tamanioArchivo, Short grupoArchivo) {
         this.id = id;
@@ -64,6 +67,21 @@ public class ArchivoDto implements Serializable {
     public Short getGrupoArchivo() {
         return grupoArchivo;
     }
+
+    public void setId(Integer id) { this.id = id; }
+
+    public void setIdUsuario(Integer idUsuario) { this.idUsuario = idUsuario; }
+
+    public void setNombrePublicoArchivo(String nombrePublicoArchivo) {
+        this.nombrePublicoArchivo = nombrePublicoArchivo;
+    }
+
+    public void setNombreArchivoArchivo(String nombreArchivoArchivo) {
+        this.nombreArchivoArchivo = nombreArchivoArchivo;
+    }
+    public void setTipoArchivo(String tipoArchivo) { this.tipoArchivo = tipoArchivo; }
+    public void setTamanioArchivo(String tamanioArchivo) { this.tamanioArchivo = tamanioArchivo; }
+    public void setGrupoArchivo(Short grupoArchivo) { this.grupoArchivo = grupoArchivo; }
 
     @Override
     public boolean equals(Object o) {
