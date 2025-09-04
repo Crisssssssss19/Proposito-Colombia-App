@@ -12,21 +12,21 @@ import java.util.Objects;
  * DTO for {@link Auditoria}
  */
 public class AuditoriaDto implements Serializable {
-    private final Integer id;
+    private Integer id;
     @NotNull
     @Size(max = 100)
-    private final String nombreEntidadAuditoria;
+    private String nombreEntidadAuditoria;
     @NotNull
-    private final Integer idReferenciaAuditoria;
+    private Integer idReferenciaAuditoria;
     @NotNull
-    private final Integer idUsuarioAuditoria;
+    private Integer idUsuarioAuditoria;
     @NotNull
-    private final Instant fechaAuditoria;
+    private Instant fechaAuditoria;
     @NotNull
     @Size(max = 200)
-    private final String tipoCambioAuditoria;
+    private String tipoCambioAuditoria;
     @NotNull
-    private final String comentarioAuditoria;
+    private String comentarioAuditoria;
 
     public AuditoriaDto(Integer id, String nombreEntidadAuditoria, Integer idReferenciaAuditoria, Integer idUsuarioAuditoria, Instant fechaAuditoria, String tipoCambioAuditoria, String comentarioAuditoria) {
         this.id = id;
@@ -36,6 +36,10 @@ public class AuditoriaDto implements Serializable {
         this.fechaAuditoria = fechaAuditoria;
         this.tipoCambioAuditoria = tipoCambioAuditoria;
         this.comentarioAuditoria = comentarioAuditoria;
+    }
+
+    public AuditoriaDto() {
+
     }
 
     public Integer getId() {
@@ -64,6 +68,34 @@ public class AuditoriaDto implements Serializable {
 
     public String getComentarioAuditoria() {
         return comentarioAuditoria;
+    }
+
+    public void setNombreEntidadAuditoria(String nombreEntidadAuditoria) {
+        this.nombreEntidadAuditoria = nombreEntidadAuditoria;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setIdReferenciaAuditoria(Integer idReferenciaAuditoria) {
+        this.idReferenciaAuditoria = idReferenciaAuditoria;
+    }
+
+    public void setIdUsuarioAuditoria(Integer idUsuarioAuditoria) {
+        this.idUsuarioAuditoria = idUsuarioAuditoria;
+    }
+
+    public void setFechaAuditoria(Instant fechaAuditoria) {
+        this.fechaAuditoria = fechaAuditoria;
+    }
+
+    public void setTipoCambioAuditoria(String tipoCambioAuditoria) {
+        this.tipoCambioAuditoria = tipoCambioAuditoria;
+    }
+
+    public void setComentarioAuditoria(String comentarioAuditoria) {
+        this.comentarioAuditoria = comentarioAuditoria;
     }
 
     @Override
