@@ -12,23 +12,23 @@ import java.util.Set;
  * DTO for {@link Ubicacione}
  */
 public class UbicacioneDto implements Serializable {
-    private final Integer id;
-    private final Integer idPadreUbicacion;
+    private Integer id;
+    private Integer idPadreUbicacion;
     @NotNull
     @Size(max = 150)
-    private final String nombreUbicacion;
+    private String nombreUbicacion;
     @NotNull
     @Size(max = 30)
-    private final String idDaneUbicacion;
+    private String idDaneUbicacion;
     @NotNull
     @Size(max = 30)
-    private final String longitudUbicacion;
+    private String longitudUbicacion;
     @NotNull
     @Size(max = 30)
-    private final String latitudUbicacion;
-    private final Set<Integer> ubicacioneIds;
-    private final Set<Integer> usuarioIds;
-    private final Set<Integer> vacanteIds;
+    private String latitudUbicacion;
+    private Set<Integer> ubicacioneIds;
+    private Set<Integer> usuarioIds;
+    private Set<Integer> vacanteIds;
 
     public UbicacioneDto(Integer id, Integer idPadreUbicacionId, String nombreUbicacion, String idDaneUbicacion, String longitudUbicacion, String latitudUbicacion, Set<Integer> ubicacioneIds, Set<Integer> usuarioIds, Set<Integer> vacanteIds) {
         this.id = id;

@@ -14,30 +14,30 @@ import java.util.Set;
  * DTO for {@link Usuario}
  */
 public class UsuarioDto implements Serializable {
-    private final Integer id;
-    private final Integer idUbicacion;
+    private Integer id;
+    private Integer idUbicacion;
     @NotNull
-    private final Short tipoDocumentoUsuario;
+    private Short tipoDocumentoUsuario;
     @NotNull
     @Size(max = 150)
-    private final String documentoUsuario;
+    private String documentoUsuario;
     @NotNull
     @Size(max = 50)
-    private final String nombresUsuario;
+    private String nombresUsuario;
     @NotNull
     @Size(max = 50)
-    private final String apellidosUsuario;
+    private String apellidosUsuario;
     @NotNull
-    private final Short estadoUsuario;
-    private final Integer accesoId;
-    private final Set<Integer> archivoIds;
-    private final Set<Integer> imageneIds;
-    private final Set<IntereseId> intereseIds;
-    private final Set<Integer> mensajeIds;
-    private final Set<Integer> postulacioneIds;
-    private final Set<Integer> palabrasClaveIds;
-    private final Set<RelUsuariosEmpresaId> relUsuariosEmpresaIds;
-    private final Set<Integer> roleIds;
+    private Short estadoUsuario;
+    private Integer accesoId;
+    private Set<Integer> archivoIds;
+    private Set<Integer> imageneIds;
+    private Set<IntereseId> intereseIds;
+    private Set<Integer> mensajeIds;
+    private Set<Integer> postulacioneIds;
+    private Set<Integer> palabrasClaveIds;
+    private Set<RelUsuariosEmpresaId> relUsuariosEmpresaIds;
+    private Set<Integer> roleIds;
 
     public UsuarioDto(Integer id, Integer idUbicacionId, Short tipoDocumentoUsuario, String documentoUsuario, String nombresUsuario, String apellidosUsuario, Short estadoUsuario, Integer accesoId, Set<Integer> archivoIds, Set<Integer> imageneIds, Set<IntereseId> intereseIds, Set<Integer> mensajeIds, Set<Integer> postulacioneIds, Set<Integer> palabrasClaveIds, Set<RelUsuariosEmpresaId> relUsuariosEmpresaIds, Set<Integer> roleIds) {
         this.id = id;

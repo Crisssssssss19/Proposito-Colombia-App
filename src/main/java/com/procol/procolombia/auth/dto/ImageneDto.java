@@ -11,22 +11,22 @@ import java.util.Objects;
  * DTO for {@link Imagene}
  */
 public class ImageneDto implements Serializable {
-    private final Integer id;
-    private final Integer idUsuario;
+    private Integer id;
+    private Integer idUsuario;
     @NotNull
     @Size(max = 200)
-    private final String nombrePublicoImagen;
+    private String nombrePublicoImagen;
     @NotNull
     @Size(max = 200)
-    private final String nombrePrivadoImagen;
+    private String nombrePrivadoImagen;
     @NotNull
     @Size(max = 50)
-    private final String tipoImagen;
+    private String tipoImagen;
     @NotNull
     @Size(max = 50)
-    private final String tamanioImagen;
+    private String tamanioImagen;
     @NotNull
-    private final Short favoritaImagen;
+    private Short favoritaImagen;
 
     public ImageneDto(Integer id, Integer idUsuarioId, String nombrePublicoImagen, String nombrePrivadoImagen, String tipoImagen, String tamanioImagen, Short favoritaImagen) {
         this.id = id;

@@ -10,9 +10,9 @@ import java.util.Objects;
  * DTO for {@link UsuariosRole}
  */
 public class UsuariosRoleDto implements Serializable {
-    private final UsuariosRoleId id;
-    private final Integer idRol;
-    private final Integer idUsuario;
+    private UsuariosRoleId id;
+    private Integer idRol;
+    private Integer idUsuario;
 
     public UsuariosRoleDto(UsuariosRoleId id, Integer idRolId, Integer idUsuarioId) {
         this.id = id;

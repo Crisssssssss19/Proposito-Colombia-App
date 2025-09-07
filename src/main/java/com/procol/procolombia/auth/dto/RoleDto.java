@@ -12,13 +12,13 @@ import java.util.Set;
  * DTO for {@link Role}
  */
 public class RoleDto implements Serializable {
-    private final Integer id;
+    private Integer id;
     @NotNull
     @Size(max = 150)
-    private final String nombreRol;
+    private String nombreRol;
     @NotNull
-    private final Short estadoRol;
-    private final Set<Integer> usuarioIds;
+    private Short estadoRol;
+    private Set<Integer> usuarioIds;
 
     public RoleDto(Integer id, String nombreRol, Short estadoRol, Set<Integer> usuarioIds) {
         this.id = id;

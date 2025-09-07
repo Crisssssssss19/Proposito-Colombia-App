@@ -11,10 +11,10 @@ import java.util.Objects;
  * DTO for {@link Ingreso}
  */
 public class IngresoDto implements Serializable {
-    private final Integer id;
-    private final Integer idUsuario;
+    private Integer id;
+    private Integer idUsuario;
     @NotNull
-    private final Instant fechaIngreso;
+    private Instant fechaIngreso;
 
     public IngresoDto(Integer id, Integer idUsuarioId, Instant fechaIngreso) {
         this.id = id;
