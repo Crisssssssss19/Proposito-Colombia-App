@@ -3,11 +3,12 @@ package com.procol.procolombia.postulacion.mappers;
 import com.procol.procolombia.postulacion.entities.EstadosPostulacione;
 import com.procol.procolombia.postulacion.entities.HistorialEstadosPostulacione;
 import com.procol.procolombia.postulacion.dto.EstadosPostulacioneDto;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
+@Component
 public class EstadosPostulacioneMapper {
 
     public static EstadosPostulacioneDto toDto(EstadosPostulacione estadosPostulacione) {
