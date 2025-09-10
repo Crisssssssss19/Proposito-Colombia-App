@@ -13,12 +13,12 @@ public class Acceso {
 
     @Id
     @Column(name = "id_usuario", nullable = false)
-    private Integer id;
+    private Integer idUsuario;
 
     @MapsId
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_usuario", nullable = false)
-    private Usuario usuario;
+    private Usuario idUsuarioRef;
 
     @Size(max = 150)
     @NotNull
@@ -44,19 +44,19 @@ public class Acceso {
     private Set<Ingreso> ingresos = new LinkedHashSet<>();
 
     public Integer getId() {
-        return id;
+        return idUsuario;
     }
 
     public void setId(Integer id) {
-        this.id = id;
+        this.idUsuario = id;
     }
 
     public Usuario getUsuario() {
-        return usuario;
+        return idUsuarioRef;
     }
 
     public void setUsuario(Usuario usuarios) {
-        this.usuario = usuarios;
+        this.idUsuarioRef = usuarios;
     }
 
     public String getTelefonoAcceso() {

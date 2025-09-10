@@ -20,7 +20,7 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuarios_id_gen")
     @SequenceGenerator(name = "usuarios_id_gen", sequenceName = "usuarios_id_usuario_seq", allocationSize = 1)
     @Column(name = "id_usuario", nullable = false)
-    private Integer id;
+    private Integer idUsuario;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -50,7 +50,7 @@ public class Usuario {
     @Column(name = "estado_usuario", nullable = false)
     private Short estadoUsuario;
 
-    @OneToOne(mappedBy = "usuario")
+    @OneToOne(mappedBy = "idUsuarioRef")
     private Acceso acceso;
 
     @OneToMany(mappedBy = "idUsuario")
@@ -78,11 +78,11 @@ public class Usuario {
     private Set<Role> roles = new LinkedHashSet<>();
 
     public Integer getId() {
-        return id;
+        return idUsuario;
     }
 
     public void setId(Integer id) {
-        this.id = id;
+        this.idUsuario = id;
     }
 
     public Ubicacione getIdUbicacion() {

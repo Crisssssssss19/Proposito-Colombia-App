@@ -10,7 +10,7 @@ import java.time.Instant;
 public class Ingreso {
     @Id
     @Column(name = "id_ingreso", nullable = false)
-    private Integer id;
+    private Integer idIngreso;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -22,11 +22,11 @@ public class Ingreso {
     private Instant fechaIngreso;
 
     public Integer getId() {
-        return id;
+        return idIngreso;
     }
 
     public void setId(Integer id) {
-        this.id = id;
+        this.idIngreso = id;
     }
 
     public Acceso getIdUsuario() {
