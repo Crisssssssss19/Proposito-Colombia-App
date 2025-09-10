@@ -10,28 +10,27 @@ import org.hibernate.annotations.OnDeleteAction;
 @Table(name = "requisitos")
 public class Requisito {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "requisitos_id_gen")
-    @SequenceGenerator(name = "requisitos_id_gen", sequenceName = "requisitos_id_requisito_seq", allocationSize = 1)
-    @Column(name = "id_requisito", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idRequisito", nullable = false)
     private Integer id;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "id_vacante", nullable = false)
+    @JoinColumn(name = "idVacante", nullable = false)
     private Vacante idVacante;
 
     @Size(max = 200)
     @NotNull
-    @Column(name = "titulo_requisito", nullable = false, length = 200)
+    @Column(name = "tituloRequisito", nullable = false, length = 200)
     private String tituloRequisito;
 
     @NotNull
-    @Column(name = "detalle_requisito", nullable = false, length = Integer.MAX_VALUE)
+    @Column(name = "detalleRequisito", nullable = false, length = Integer.MAX_VALUE)
     private String detalleRequisito;
 
     @NotNull
-    @Column(name = "orden_requisito", nullable = false)
+    @Column(name = "ordenRequisito", nullable = false)
     private Short ordenRequisito;
 
     public Integer getId() {
@@ -74,4 +73,14 @@ public class Requisito {
         this.ordenRequisito = ordenRequisito;
     }
 
+    public Requisito() {
+    }
+
+    public Requisito(Integer id, Vacante idVacante, String tituloRequisito, String detalleRequisito, Short ordenRequisito) {
+        this.id = id;
+        this.idVacante = idVacante;
+        this.tituloRequisito = tituloRequisito;
+        this.detalleRequisito = detalleRequisito;
+        this.ordenRequisito = ordenRequisito;
+    }
 }

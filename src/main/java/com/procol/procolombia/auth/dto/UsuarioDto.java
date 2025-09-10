@@ -1,8 +1,8 @@
 package com.procol.procolombia.auth.dto;
 
 import com.procol.procolombia.auth.entities.Usuario;
-import com.procol.procolombia.vacante.entities.IntereseId;
-import com.procol.procolombia.vacante.entities.RelUsuariosEmpresaId;
+import com.procol.procolombia.vacante.entities.InteresId;
+import com.procol.procolombia.vacante.entities.RelUsuarioEmpresaId;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -32,14 +32,14 @@ public class UsuarioDto implements Serializable {
     private final Integer accesoId;
     private final Set<Integer> archivoIds;
     private final Set<Integer> imageneIds;
-    private final Set<IntereseId> intereseIds;
+    private final Set<InteresId> interesIds;
     private final Set<Integer> mensajeIds;
     private final Set<Integer> postulacioneIds;
     private final Set<Integer> palabrasClaveIds;
-    private final Set<RelUsuariosEmpresaId> relUsuariosEmpresaIds;
+    private final Set<RelUsuarioEmpresaId> relUsuarioEmpresaIds;
     private final Set<Integer> roleIds;
 
-    public UsuarioDto(Integer id, Integer idUbicacionId, Short tipoDocumentoUsuario, String documentoUsuario, String nombresUsuario, String apellidosUsuario, Short estadoUsuario, Integer accesoId, Set<Integer> archivoIds, Set<Integer> imageneIds, Set<IntereseId> intereseIds, Set<Integer> mensajeIds, Set<Integer> postulacioneIds, Set<Integer> palabrasClaveIds, Set<RelUsuariosEmpresaId> relUsuariosEmpresaIds, Set<Integer> roleIds) {
+    public UsuarioDto(Integer id, Integer idUbicacionId, Short tipoDocumentoUsuario, String documentoUsuario, String nombresUsuario, String apellidosUsuario, Short estadoUsuario, Integer accesoId, Set<Integer> archivoIds, Set<Integer> imageneIds, Set<InteresId> interesIds, Set<Integer> mensajeIds, Set<Integer> postulacioneIds, Set<Integer> palabrasClaveIds, Set<RelUsuarioEmpresaId> relUsuarioEmpresaIds, Set<Integer> roleIds) {
         this.id = id;
         this.idUbicacion = idUbicacionId;
         this.tipoDocumentoUsuario = tipoDocumentoUsuario;
@@ -50,11 +50,11 @@ public class UsuarioDto implements Serializable {
         this.accesoId = accesoId;
         this.archivoIds = archivoIds;
         this.imageneIds = imageneIds;
-        this.intereseIds = intereseIds;
+        this.interesIds = interesIds;
         this.mensajeIds = mensajeIds;
         this.postulacioneIds = postulacioneIds;
         this.palabrasClaveIds = palabrasClaveIds;
-        this.relUsuariosEmpresaIds = relUsuariosEmpresaIds;
+        this.relUsuarioEmpresaIds = relUsuarioEmpresaIds;
         this.roleIds = roleIds;
     }
 
@@ -98,8 +98,8 @@ public class UsuarioDto implements Serializable {
         return imageneIds;
     }
 
-    public Set<IntereseId> getIntereseIds() {
-        return intereseIds;
+    public Set<InteresId> getIntereseIds() {
+        return interesIds;
     }
 
     public Set<Integer> getMensajeIds() {
@@ -114,8 +114,8 @@ public class UsuarioDto implements Serializable {
         return palabrasClaveIds;
     }
 
-    public Set<RelUsuariosEmpresaId> getRelUsuariosEmpresaIds() {
-        return relUsuariosEmpresaIds;
+    public Set<RelUsuarioEmpresaId> getRelUsuariosEmpresaIds() {
+        return relUsuarioEmpresaIds;
     }
 
     public Set<Integer> getRoleIds() {
@@ -137,16 +137,16 @@ public class UsuarioDto implements Serializable {
                 Objects.equals(this.accesoId, entity.accesoId) &&
                 Objects.equals(this.archivoIds, entity.archivoIds) &&
                 Objects.equals(this.imageneIds, entity.imageneIds) &&
-                Objects.equals(this.intereseIds, entity.intereseIds) &&
+                Objects.equals(this.interesIds, entity.interesIds) &&
                 Objects.equals(this.mensajeIds, entity.mensajeIds) &&
                 Objects.equals(this.postulacioneIds, entity.postulacioneIds) &&
                 Objects.equals(this.palabrasClaveIds, entity.palabrasClaveIds) &&
-                Objects.equals(this.relUsuariosEmpresaIds, entity.relUsuariosEmpresaIds) &&
+                Objects.equals(this.relUsuarioEmpresaIds, entity.relUsuarioEmpresaIds) &&
                 Objects.equals(this.roleIds, entity.roleIds);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, idUbicacion, tipoDocumentoUsuario, documentoUsuario, nombresUsuario, apellidosUsuario, estadoUsuario, accesoId, archivoIds, imageneIds, intereseIds, mensajeIds, postulacioneIds, palabrasClaveIds, relUsuariosEmpresaIds, roleIds);
+        return Objects.hash(id, idUbicacion, tipoDocumentoUsuario, documentoUsuario, nombresUsuario, apellidosUsuario, estadoUsuario, accesoId, archivoIds, imageneIds, interesIds, mensajeIds, postulacioneIds, palabrasClaveIds, relUsuarioEmpresaIds, roleIds);
     }
 }

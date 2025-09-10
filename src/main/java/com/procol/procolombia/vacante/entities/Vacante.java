@@ -17,55 +17,54 @@ import java.util.Set;
 @Table(name = "vacantes")
 public class Vacante {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vacantes_id_gen")
-    @SequenceGenerator(name = "vacantes_id_gen", sequenceName = "vacantes_id_vacante_seq", allocationSize = 1)
-    @Column(name = "id_vacante", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idVacante", nullable = false)
     private Integer id;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "id_ubicacion", nullable = false)
+    @JoinColumn(name = "idUbicacion", nullable = false)
     private Ubicacione idUbicacion;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    private RelUsuariosEmpresa relUsuariosEmpresas;
+    private RelUsuarioEmpresa relUsuarioEmpresas;
 
     @Size(max = 300)
     @NotNull
-    @Column(name = "titulo_vacante", nullable = false, length = 300)
+    @Column(name = "tituloVacante", nullable = false, length = 300)
     private String tituloVacante;
 
     @NotNull
-    @Column(name = "detalle_vacante", nullable = false, length = Integer.MAX_VALUE)
+    @Column(name = "detalleVacante", nullable = false, length = Integer.MAX_VALUE)
     private String detalleVacante;
 
     @NotNull
-    @Column(name = "fecha_inicio_vacante", nullable = false)
+    @Column(name = "fechaInicioVacante", nullable = false)
     private Instant fechaInicioVacante;
 
     @NotNull
-    @Column(name = "fecha_fin_vacante", nullable = false)
+    @Column(name = "fechaFinVacante", nullable = false)
     private Instant fechaFinVacante;
 
     @NotNull
     @ColumnDefault("1")
-    @Column(name = "estado_vacante", nullable = false)
+    @Column(name = "estadoVacante", nullable = false)
     private Short estadoVacante;
 
     @OneToOne(mappedBy = "idVacante")
     private Anuncio anuncio;
 
     @OneToMany(mappedBy = "idVacante")
-    private Set<HistorialEstadosVacante> historialEstadosVacantes = new LinkedHashSet<>();
+    private Set<HistorialEstadoVacante> historialEstadoVacantes = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idVacante")
     private Set<Postulacione> postulaciones = new LinkedHashSet<>();
 
     @ManyToMany(mappedBy = "vacantes")
-    private Set<PalabrasClave> palabrasClaves = new LinkedHashSet<>();
+    private Set<PalabraClave> palabraClaves = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idVacante")
     private Set<Requisito> requisitos = new LinkedHashSet<>();
@@ -86,12 +85,12 @@ public class Vacante {
         this.idUbicacion = idUbicacion;
     }
 
-    public RelUsuariosEmpresa getRelUsuariosEmpresas() {
-        return relUsuariosEmpresas;
+    public RelUsuarioEmpresa getRelUsuariosEmpresas() {
+        return relUsuarioEmpresas;
     }
 
-    public void setRelUsuariosEmpresas(RelUsuariosEmpresa relUsuariosEmpresas) {
-        this.relUsuariosEmpresas = relUsuariosEmpresas;
+    public void setRelUsuariosEmpresas(RelUsuarioEmpresa relUsuarioEmpresas) {
+        this.relUsuarioEmpresas = relUsuarioEmpresas;
     }
 
     public String getTituloVacante() {
@@ -142,12 +141,12 @@ public class Vacante {
         this.anuncio = anuncio;
     }
 
-    public Set<HistorialEstadosVacante> getHistorialEstadosVacantes() {
-        return historialEstadosVacantes;
+    public Set<HistorialEstadoVacante> getHistorialEstadosVacantes() {
+        return historialEstadoVacantes;
     }
 
-    public void setHistorialEstadosVacantes(Set<HistorialEstadosVacante> historialEstadosVacantes) {
-        this.historialEstadosVacantes = historialEstadosVacantes;
+    public void setHistorialEstadosVacantes(Set<HistorialEstadoVacante> historialEstadoVacantes) {
+        this.historialEstadoVacantes = historialEstadoVacantes;
     }
 
     public Set<Postulacione> getPostulaciones() {
@@ -158,12 +157,12 @@ public class Vacante {
         this.postulaciones = postulaciones;
     }
 
-    public Set<PalabrasClave> getPalabrasClaves() {
-        return palabrasClaves;
+    public Set<PalabraClave> getPalabrasClaves() {
+        return palabraClaves;
     }
 
-    public void setPalabrasClaves(Set<PalabrasClave> palabrasClaves) {
-        this.palabrasClaves = palabrasClaves;
+    public void setPalabrasClaves(Set<PalabraClave> palabraClaves) {
+        this.palabraClaves = palabraClaves;
     }
 
     public Set<Requisito> getRequisitos() {
@@ -174,4 +173,22 @@ public class Vacante {
         this.requisitos = requisitos;
     }
 
+    public Vacante() {
+    }
+
+    public Vacante(Integer id, Ubicacione idUbicacion, RelUsuarioEmpresa relUsuarioEmpresas, String tituloVacante, String detalleVacante, Instant fechaInicioVacante, Instant fechaFinVacante, Short estadoVacante, Anuncio anuncio, Set<HistorialEstadoVacante> historialEstadoVacantes, Set<Postulacione> postulaciones, Set<PalabraClave> palabraClaves, Set<Requisito> requisitos) {
+        this.id = id;
+        this.idUbicacion = idUbicacion;
+        this.relUsuarioEmpresas = relUsuarioEmpresas;
+        this.tituloVacante = tituloVacante;
+        this.detalleVacante = detalleVacante;
+        this.fechaInicioVacante = fechaInicioVacante;
+        this.fechaFinVacante = fechaFinVacante;
+        this.estadoVacante = estadoVacante;
+        this.anuncio = anuncio;
+        this.historialEstadoVacantes = historialEstadoVacantes;
+        this.postulaciones = postulaciones;
+        this.palabraClaves = palabraClaves;
+        this.requisitos = requisitos;
+    }
 }

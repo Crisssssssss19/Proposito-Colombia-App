@@ -13,37 +13,36 @@ import java.util.Set;
 @Table(name = "empresas")
 public class Empresa {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "empresas_id_gen")
-    @SequenceGenerator(name = "empresas_id_gen", sequenceName = "empresas_id_empresa_seq", allocationSize = 1)
-    @Column(name = "id_empresa", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idEmpresa", nullable = false)
     private Integer id;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "id_tipo_empresa", nullable = false)
+    @JoinColumn(name = "idTipoEmpresa", nullable = false)
     private TipoEmpresa idTipoEmpresa;
 
     @Size(max = 200)
     @NotNull
-    @Column(name = "nombre_empresa", nullable = false, length = 200)
+    @Column(name = "nombreEmpresa", nullable = false, length = 200)
     private String nombreEmpresa;
 
     @Size(max = 200)
     @NotNull
-    @Column(name = "direccion_empresa", nullable = false, length = 200)
+    @Column(name = "direccionEmpresa", nullable = false, length = 200)
     private String direccionEmpresa;
 
     @Size(max = 200)
     @NotNull
-    @Column(name = "telefono_empresa", nullable = false, length = 200)
+    @Column(name = "telefonoEmpresa", nullable = false, length = 200)
     private String telefonoEmpresa;
 
     @OneToMany(mappedBy = "idEmpresa")
-    private Set<Interese> intereses = new LinkedHashSet<>();
+    private Set<Interes> interes = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idEmpresa")
-    private Set<RelUsuariosEmpresa> relUsuariosEmpresas = new LinkedHashSet<>();
+    private Set<RelUsuarioEmpresa> relUsuarioEmpresas = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -85,20 +84,38 @@ public class Empresa {
         this.telefonoEmpresa = telefonoEmpresa;
     }
 
-    public Set<Interese> getIntereses() {
-        return intereses;
+    public Set<Interes> getIntereses() {
+        return interes;
     }
 
-    public void setIntereses(Set<Interese> intereses) {
-        this.intereses = intereses;
+    public void setIntereses(Set<Interes> interes) {
+        this.interes = interes;
     }
 
-    public Set<RelUsuariosEmpresa> getRelUsuariosEmpresas() {
-        return relUsuariosEmpresas;
+    public Set<RelUsuarioEmpresa> getRelUsuariosEmpresas() {
+        return relUsuarioEmpresas;
     }
 
-    public void setRelUsuariosEmpresas(Set<RelUsuariosEmpresa> relUsuariosEmpresas) {
-        this.relUsuariosEmpresas = relUsuariosEmpresas;
+    public void setRelUsuariosEmpresas(Set<RelUsuarioEmpresa> relUsuarioEmpresas) {
+        this.relUsuarioEmpresas = relUsuarioEmpresas;
+    }
+    public Empresa() {
+    }
+
+    public Empresa(Integer id,
+                   TipoEmpresa idTipoEmpresa,
+                   String nombreEmpresa,
+                   String direccionEmpresa,
+                   String telefonoEmpresa,
+                   Set<Interes> interes,
+                   Set<RelUsuarioEmpresa> relUsuarioEmpresas) {
+        this.id = id;
+        this.idTipoEmpresa = idTipoEmpresa;
+        this.nombreEmpresa = nombreEmpresa;
+        this.direccionEmpresa = direccionEmpresa;
+        this.telefonoEmpresa = telefonoEmpresa;
+        this.interes = interes;
+        this.relUsuarioEmpresas = relUsuarioEmpresas;
     }
 
 }

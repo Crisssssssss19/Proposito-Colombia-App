@@ -3,9 +3,9 @@ package com.procol.procolombia.auth.entities;
 import com.procol.procolombia.postulacion.entities.Archivo;
 import com.procol.procolombia.postulacion.entities.Mensaje;
 import com.procol.procolombia.postulacion.entities.Postulacione;
-import com.procol.procolombia.vacante.entities.Interese;
-import com.procol.procolombia.vacante.entities.PalabrasClave;
-import com.procol.procolombia.vacante.entities.RelUsuariosEmpresa;
+import com.procol.procolombia.vacante.entities.Interes;
+import com.procol.procolombia.vacante.entities.PalabraClave;
+import com.procol.procolombia.vacante.entities.RelUsuarioEmpresa;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -60,7 +60,7 @@ public class Usuario {
     private Set<Imagene> imagenes = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idUsuario")
-    private Set<Interese> intereses = new LinkedHashSet<>();
+    private Set<Interes> interes = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idUsuarioResponde")
     private Set<Mensaje> mensajes = new LinkedHashSet<>();
@@ -69,10 +69,10 @@ public class Usuario {
     private Set<Postulacione> postulaciones = new LinkedHashSet<>();
 
     @ManyToMany(mappedBy = "usuarios")
-    private Set<PalabrasClave> palabrasClaves = new LinkedHashSet<>();
+    private Set<PalabraClave> palabraClaves = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idUsuario")
-    private Set<RelUsuariosEmpresa> relUsuariosEmpresas = new LinkedHashSet<>();
+    private Set<RelUsuarioEmpresa> relUsuarioEmpresas = new LinkedHashSet<>();
 
     @ManyToMany(mappedBy = "usuarios")
     private Set<Role> roles = new LinkedHashSet<>();
@@ -157,12 +157,12 @@ public class Usuario {
         this.imagenes = imagenes;
     }
 
-    public Set<Interese> getIntereses() {
-        return intereses;
+    public Set<Interes> getIntereses() {
+        return interes;
     }
 
-    public void setIntereses(Set<Interese> intereses) {
-        this.intereses = intereses;
+    public void setIntereses(Set<Interes> interes) {
+        this.interes = interes;
     }
 
     public Set<Mensaje> getMensajes() {
@@ -181,20 +181,20 @@ public class Usuario {
         this.postulaciones = postulaciones;
     }
 
-    public Set<PalabrasClave> getPalabrasClaves() {
-        return palabrasClaves;
+    public Set<PalabraClave> getPalabrasClaves() {
+        return palabraClaves;
     }
 
-    public void setPalabrasClaves(Set<PalabrasClave> palabrasClaves) {
-        this.palabrasClaves = palabrasClaves;
+    public void setPalabrasClaves(Set<PalabraClave> palabraClaves) {
+        this.palabraClaves = palabraClaves;
     }
 
-    public Set<RelUsuariosEmpresa> getRelUsuariosEmpresas() {
-        return relUsuariosEmpresas;
+    public Set<RelUsuarioEmpresa> getRelUsuariosEmpresas() {
+        return relUsuarioEmpresas;
     }
 
-    public void setRelUsuariosEmpresas(Set<RelUsuariosEmpresa> relUsuariosEmpresas) {
-        this.relUsuariosEmpresas = relUsuariosEmpresas;
+    public void setRelUsuariosEmpresas(Set<RelUsuarioEmpresa> relUsuarioEmpresas) {
+        this.relUsuarioEmpresas = relUsuarioEmpresas;
     }
 
     public Set<Role> getRoles() {

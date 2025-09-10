@@ -9,22 +9,21 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "tipo_empresas")
+@Table(name = "tiposDeEmpresas")
 public class TipoEmpresa {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tipo_empresas_id_gen")
-    @SequenceGenerator(name = "tipo_empresas_id_gen", sequenceName = "tipo_empresas_id_tipo_empresa_seq", allocationSize = 1)
-    @Column(name = "id_tipo_empresa", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idTipoEmpresa", nullable = false)
     private Integer id;
 
     @Size(max = 150)
     @NotNull
-    @Column(name = "nombre_tipo_empresa", nullable = false, length = 150)
+    @Column(name = "nombreTipoEmpresa", nullable = false, length = 150)
     private String nombreTipoEmpresa;
 
     @NotNull
     @ColumnDefault("1")
-    @Column(name = "estado_tipo_empresa", nullable = false)
+    @Column(name = "estadoTipoEmpresa", nullable = false)
     private Short estadoTipoEmpresa;
 
     @OneToMany(mappedBy = "idTipoEmpresa")
@@ -62,4 +61,13 @@ public class TipoEmpresa {
         this.empresas = empresas;
     }
 
+    public TipoEmpresa() {
+    }
+
+    public TipoEmpresa(Integer id, String nombreTipoEmpresa, Short estadoTipoEmpresa, Set<Empresa> empresas) {
+        this.id = id;
+        this.nombreTipoEmpresa = nombreTipoEmpresa;
+        this.estadoTipoEmpresa = estadoTipoEmpresa;
+        this.empresas = empresas;
+    }
 }
