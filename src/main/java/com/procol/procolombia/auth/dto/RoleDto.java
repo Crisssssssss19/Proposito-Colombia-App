@@ -27,6 +27,26 @@ public class RoleDto implements Serializable {
         this.usuarioIds = usuarioIds;
     }
 
+    public RoleDto() {
+
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setNombreRol(@NotNull @Size(max = 150) String nombreRol) {
+        this.nombreRol = nombreRol;
+    }
+
+    public void setEstadoRol(@NotNull Short estadoRol) {
+        this.estadoRol = estadoRol;
+    }
+
+    public void setUsuarioIds(Set<Integer> usuarioIds) {
+        this.usuarioIds = usuarioIds;
+    }
+
     public Integer getId() {
         return id;
     }
