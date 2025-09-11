@@ -1,5 +1,6 @@
 package com.procol.procolombia.auth.mappers;
 
+import com.procol.procolombia.auth.dto.Request.AccesoRequestDTO;
 import com.procol.procolombia.auth.dto.Response.AccesoResponseDTO;
 import com.procol.procolombia.auth.entities.Acceso;
 import org.mapstruct.Mapper;
@@ -8,5 +9,5 @@ import org.mapstruct.Mapper;
 public interface AccesoMapper {
 
     AccesoResponseDTO toDto(Acceso acceso);
-    Acceso toEntity(AccesoResponseDTO accesoResponseDTO);
+    Acceso toEntity(AccesoRequestDTO accesoRequestDTO);
 }

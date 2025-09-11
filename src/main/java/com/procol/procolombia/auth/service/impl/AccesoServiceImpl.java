@@ -60,7 +60,9 @@ public class AccesoServiceImpl implements AccesoService {
 
     @Override
     public ApiResponseDTO<AccesoResponseDTO> crearAcceso(AccesoRequestDTO requestDTO) {
-        return null;
+        Acceso acceso = accesoMapper.toEntity(requestDTO);
+        Acceso accesoGuardado = accesoRepository.save(acceso);
+        return new ApiResponseDTO<>(201, "Creado exitosamente", accesoMapper.toDto(accesoGuardado), LocalDateTime.now().toString());
     }
 
     @Override
