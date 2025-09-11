@@ -50,7 +50,12 @@ public class AccesoServiceImpl implements AccesoService {
 
     @Override
     public ApiResponseDTO<List<AccesoResponseDTO>> ListarAcceso(Integer idUsuario) {
-        return null;
+        List<AccesoResponseDTO> listaAccesos = accesoRepository.findAll()
+                .stream()
+                .map(accesoMapper::toDto)
+                .toList();
+
+        return new ApiResponseDTO<>(200, "Accesos encontrados: "+ listaAccesos.size(), listaAccesos, LocalDateTime.now().toString());
     }
 
     @Override

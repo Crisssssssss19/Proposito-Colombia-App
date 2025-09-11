@@ -62,7 +62,7 @@ public class UsuarioServiceImpl implements UsuarioService {
                 .map(usuarioMapper::toDto)
                 .toList();
 
-        return new ApiResponseDTO<>(200, "Lista de usuarios", listaUsuarios, LocalDateTime.now().toString());
+        return new ApiResponseDTO<>(200, "Lista de usuarios: "+listaUsuarios.size(), listaUsuarios, LocalDateTime.now().toString());
     }
 
     @Override
