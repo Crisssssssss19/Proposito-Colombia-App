@@ -1,8 +1,10 @@
 package com.procol.procolombia.auth.service.impl;
 
+import com.procol.procolombia.auth.dto.Request.AccesoRequestDTO;
 import com.procol.procolombia.auth.dto.Request.UsuarioRequestDTO;
 import com.procol.procolombia.auth.dto.Response.AccesoResponseDTO;
 import com.procol.procolombia.auth.dto.Response.ApiResponseDTO;
+import com.procol.procolombia.auth.entities.Acceso;
 import com.procol.procolombia.auth.exception.notfound.AccesoNotFoundException;
 import com.procol.procolombia.auth.mappers.AccesoMapper;
 import com.procol.procolombia.auth.repositories.AccesoRepository;
@@ -34,8 +36,16 @@ public class AccesoServiceImpl implements AccesoService {
     }
 
     @Override
-    public ApiResponseDTO<AccesoResponseDTO> editarAcceso(Integer idUsuario, UsuarioRequestDTO requestDTO) {
-        return null;
+    public ApiResponseDTO<AccesoResponseDTO> editarAcceso(Integer idUsuario, AccesoRequestDTO requestDTO) {
+        Acceso acceso = accesoRepository.findById(idUsuario)
+                .orElseThrow(() -> new AccesoNotFoundException("Acceso no encontrado"));
+
+        acceso.setCorreoAcceso(requestDTO.correoAcceso());
+        acceso.setClaveAcceso(requestDTO.claveAcceso());
+        acceso.setTelefonoAcceso(requestDTO.telefonoAcceso());
+
+        Acceso accesoGuardado = accesoRepository.save(acceso);
+        return new ApiResponseDTO<>(200, "Acceso actualizado con exito", accesoMapper.toDto(acceso), LocalDateTime.now().toString());
     }
 
     @Override
@@ -44,7 +54,7 @@ public class AccesoServiceImpl implements AccesoService {
     }
 
     @Override
-    public ApiResponseDTO<AccesoResponseDTO> crearAcceso(UsuarioRequestDTO requestDTO) {
+    public ApiResponseDTO<AccesoResponseDTO> crearAcceso(AccesoRequestDTO requestDTO) {
         return null;
     }
 
