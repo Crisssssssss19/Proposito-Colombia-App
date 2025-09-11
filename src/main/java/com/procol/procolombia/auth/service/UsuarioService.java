@@ -10,7 +10,7 @@ import java.util.List;
 public interface UsuarioService {
     ApiResponseDTO<UsuarioResponseDTO> obtenerUsuarioPorId(Integer idUsuario);
     ApiResponseDTO<List<UsuarioResponseDTO>> obtenerUsuarioPorNombre(String nombre);
-    ApiResponseDTO<List<UsuarioResponseDTO>> obtenerUsuarioPorTipo(String tipo);
+    ApiResponseDTO<List<UsuarioResponseDTO>> obtenerUsuarioPorTipoDocumento(Short tipo);
     ApiResponseDTO<UsuarioResponseDTO> crearUsuario(UsuarioRequestDTO usuario);
     ApiResponseDTO<List<UsuarioResponseDTO>> listarUsuarios();
     ApiResponseDTO<UsuarioResponseDTO> editarUsuario(Integer idUsuario, UsuarioRequestDTO requestDTO);

@@ -34,15 +34,15 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public ApiResponseDTO<List<UsuarioResponseDTO>> obtenerUsuarioPorNombre(String nombre) {
-        List<Usuario> usuarios = usuarioRepository.findByNombreUsuario(nombre);
+        List<Usuario> usuarios = usuarioRepository.findByNombresUsuario(nombre);
         List<UsuarioResponseDTO> usuariosDTO = usuarios.stream().map(usuarioMapper::toDto).toList();
 
         return new ApiResponseDTO<>(200, "Usuarios encontrados :" + usuariosDTO.size(), usuariosDTO, LocalDateTime.now().toString());
     }
 
     @Override
-    public ApiResponseDTO<List<UsuarioResponseDTO>> obtenerUsuarioPorTipo(String tipo) {
-        List<Usuario> usuarios = usuarioRepository.findByTipoUsuario(tipo);
+    public ApiResponseDTO<List<UsuarioResponseDTO>> obtenerUsuarioPorTipoDocumento(Short tipo) {
+        List<Usuario> usuarios = usuarioRepository.findByTipoDocumentoUsuario(tipo);
         List<UsuarioResponseDTO> usuariosDTO = usuarios.stream().map(usuarioMapper::toDto).toList();
 
         return new ApiResponseDTO<>(200, "Usuarios encontrados :" + usuariosDTO.size(), usuariosDTO, LocalDateTime.now().toString());
