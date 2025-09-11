@@ -1,7 +1,6 @@
 package com.procol.procolombia.auth.service.impl;
 
 import com.procol.procolombia.auth.dto.Request.AccesoRequestDTO;
-import com.procol.procolombia.auth.dto.Request.UsuarioRequestDTO;
 import com.procol.procolombia.auth.dto.Response.AccesoResponseDTO;
 import com.procol.procolombia.auth.dto.Response.ApiResponseDTO;
 import com.procol.procolombia.auth.entities.Acceso;
@@ -36,8 +35,8 @@ public class AccesoServiceImpl implements AccesoService {
     }
 
     @Override
-    public ApiResponseDTO<AccesoResponseDTO> editarAcceso(Integer idUsuario, AccesoRequestDTO requestDTO) {
-        Acceso acceso = accesoRepository.findById(idUsuario)
+    public ApiResponseDTO<AccesoResponseDTO> editarAcceso(Integer idAcceso, AccesoRequestDTO requestDTO) {
+        Acceso acceso = accesoRepository.findById(idAcceso)
                 .orElseThrow(() -> new AccesoNotFoundException("Acceso no encontrado"));
 
         acceso.setCorreoAcceso(requestDTO.correoAcceso());
@@ -49,7 +48,7 @@ public class AccesoServiceImpl implements AccesoService {
     }
 
     @Override
-    public ApiResponseDTO<List<AccesoResponseDTO>> ListarAcceso(Integer idUsuario) {
+    public ApiResponseDTO<List<AccesoResponseDTO>> ListarAcceso() {
         List<AccesoResponseDTO> listaAccesos = accesoRepository.findAll()
                 .stream()
                 .map(accesoMapper::toDto)
@@ -66,7 +65,10 @@ public class AccesoServiceImpl implements AccesoService {
     }
 
     @Override
-    public ApiResponseDTO<AccesoResponseDTO> obtenerAccesoPorId(Integer idUsuario) {
-        return null;
+    public ApiResponseDTO<AccesoResponseDTO> obtenerAccesoPorId(Integer idAcceso) {
+        Acceso acceso = accesoRepository.findById(idAcceso)
+                .orElseThrow(() -> new AccesoNotFoundException("Acceso no encontrado"));
+
+        return new ApiResponseDTO<>(200, "Acceso encontrado", accesoMapper.toDto(acceso), LocalDateTime.now().toString());
     }
 }

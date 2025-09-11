@@ -10,7 +10,7 @@ import java.util.List;
 public interface AccesoService {
     ApiResponseDTO<String> eliminarAcceso(Integer idAcceso);
     ApiResponseDTO<AccesoResponseDTO> editarAcceso(Integer idAcceso, AccesoRequestDTO requestDTO);
-    ApiResponseDTO<List<AccesoResponseDTO>> ListarAcceso(Integer idAcceso);
+    ApiResponseDTO<List<AccesoResponseDTO>> ListarAcceso();
     ApiResponseDTO<AccesoResponseDTO> crearAcceso(AccesoRequestDTO requestDTO);
     ApiResponseDTO<AccesoResponseDTO> obtenerAccesoPorId(Integer idAcceso);
 }
