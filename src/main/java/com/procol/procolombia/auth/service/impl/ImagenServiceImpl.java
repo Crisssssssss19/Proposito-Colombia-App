@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.List;
 
 public class ImagenServiceImpl implements ImagenService {
 
@@ -45,6 +46,12 @@ public class ImagenServiceImpl implements ImagenService {
             imagene.setTipoImagen(tipo);
             imagene.setTamanioImagen(tamanio);
             imagene.setFavoritaImagen(favoritaImagen);
+
+            if(favoritaImagen == 1){
+                List<Imagene> todas = imagenRepository.findByIdUsuario_Id(idUsuario);
+                todas.forEach(img -> img.setFavoritaImagen((short) 2));
+                imagenRepository.saveAll(todas);
+            }
 
             Imagene guardada = imagenRepository.save(imagene);
             ImagenResponseDTO dto = imagenMapper.toDto(guardada);
