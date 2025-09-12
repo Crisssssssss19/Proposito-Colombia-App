@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public record GetAcceso(
         Integer idUsuario,
-        String telefonoAcceso,
-        String correoAcceso
+        String telefono,
+        String email
 ) implements Serializable {
 }
