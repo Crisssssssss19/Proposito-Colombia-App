@@ -15,7 +15,7 @@ public class Ubicacione {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ubicaciones_id_gen")
     @SequenceGenerator(name = "ubicaciones_id_gen", sequenceName = "ubicaciones_id_ubicacion_seq", allocationSize = 1)
     @Column(name = "id_ubicacion", nullable = false)
-    private Integer idUbicacion;
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_padre_ubicacion")
@@ -51,11 +51,11 @@ public class Ubicacione {
     private Set<Vacante> vacantes = new LinkedHashSet<>();
 
     public Integer getId() {
-        return idUbicacion;
+        return id;
     }
 
     public void setId(Integer id) {
-        this.idUbicacion = id;
+        this.id = id;
     }
 
     public Ubicacione getIdPadreUbicacion() {

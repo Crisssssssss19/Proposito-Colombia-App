@@ -15,7 +15,7 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "roles_id_gen")
     @SequenceGenerator(name = "roles_id_gen", sequenceName = "roles_id_rol_seq", allocationSize = 1)
     @Column(name = "id_rol", nullable = false)
-    private Integer idRol;
+    private Integer id;
 
     @Size(max = 150)
     @NotNull
@@ -34,11 +34,11 @@ public class Role {
     private Set<Usuario> usuarios = new LinkedHashSet<>();
 
     public Integer getId() {
-        return idRol;
+        return id;
     }
 
     public void setId(Integer id) {
-        this.idRol = id;
+        this.id = id;
     }
 
     public String getNombreRol() {

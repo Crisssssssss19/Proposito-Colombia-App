@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class Ingreso {
     @Id
     @Column(name = "id_ingreso", nullable = false)
-    private Integer idIngreso;
+    private Integer id;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -24,11 +24,11 @@ public class Ingreso {
     private LocalDateTime fechaIngreso;
 
     public Integer getId() {
-        return idIngreso;
+        return id;
     }
 
     public void setId(Integer id) {
-        this.idIngreso = id;
+        this.id = id;
     }
 
     public Acceso getIdUsuario() {

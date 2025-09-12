@@ -1,7 +1,7 @@
 package com.procol.procolombia.auth.dto.Request;
 
 public record AccesoRequestDTO(
-        Integer idUsuario,
+        Integer usuario,
         String correoAcceso,
         String claveAcceso,
         String telefonoAcceso

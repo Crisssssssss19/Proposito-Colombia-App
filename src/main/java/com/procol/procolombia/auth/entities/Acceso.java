@@ -3,6 +3,7 @@ package com.procol.procolombia.auth.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.mapstruct.Builder;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -13,12 +14,12 @@ public class Acceso {
 
     @Id
     @Column(name = "id_usuario", nullable = false)
-    private Integer idUsuario;
+    private Integer id;
 
     @MapsId
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_usuario", nullable = false)
-    private Usuario idUsuarioRef;
+    private Usuario usuario;
 
     @Size(max = 150)
     @NotNull
@@ -44,19 +45,19 @@ public class Acceso {
     private Set<Ingreso> ingresos = new LinkedHashSet<>();
 
     public Integer getId() {
-        return idUsuario;
+        return id;
     }
 
     public void setId(Integer id) {
-        this.idUsuario = id;
+        this.id = id;
     }
 
     public Usuario getUsuario() {
-        return idUsuarioRef;
+        return usuario;
     }
 
     public void setUsuario(Usuario usuarios) {
-        this.idUsuarioRef = usuarios;
+        this.usuario = usuarios;
     }
 
     public String getTelefonoAcceso() {
@@ -99,4 +100,64 @@ public class Acceso {
         this.ingresos = ingresos;
     }
 
+    public static AccesoBuilder builder(){
+        return new AccesoBuilder();
+    }
+
+    private Acceso(AccesoBuilder builder){
+        this.id = builder.id;
+        this.usuario = builder.usuario;
+        this.telefonoAcceso = builder.telefonoAcceso;
+        this.correoAcceso = builder.correoAcceso;
+        this.claveAcceso = builder.claveAcceso;
+        this.uuidAcceso = builder.uuidAcceso;
+        this.ingresos = builder.ingresos;
+    }
+
+    public static class AccesoBuilder{
+        private Integer id;
+        private Usuario usuario;
+        private String telefonoAcceso;
+        private String correoAcceso;
+        private String claveAcceso;
+        private String uuidAcceso;
+        private Set<Ingreso> ingresos = new LinkedHashSet<>();
+
+        public AccesoBuilder id(Integer id){
+            this.id = id;
+            return this;
+        }
+        public AccesoBuilder usuario(Usuario usuario) {
+            this.usuario = usuario;
+            return this;
+        }
+        public AccesoBuilder telefonoAcceso(String telefonoAcceso) {
+            this.telefonoAcceso = telefonoAcceso;
+            return this;
+        }
+        public AccesoBuilder correoAcceso(String correoAcceso) {
+            this.correoAcceso = correoAcceso;
+            return this;
+        }
+        public AccesoBuilder claveAcceso(String claveAcceso) {
+            this.claveAcceso = claveAcceso;
+            return this;
+        }
+        public AccesoBuilder uuidAcceso(String uuidAcceso) {
+            this.uuidAcceso = uuidAcceso;
+            return this;
+        }
+        public AccesoBuilder ingresos(Set<Ingreso> ingresos) {
+            this.ingresos = ingresos;
+            return this;
+        }
+        public AccesoBuilder addIngreso(Ingreso ingreso) {
+            this.ingresos.add(ingreso);
+            return this;
+        }
+
+        public Acceso build() {
+            return new Acceso(this);
+        }
+    }
 }
