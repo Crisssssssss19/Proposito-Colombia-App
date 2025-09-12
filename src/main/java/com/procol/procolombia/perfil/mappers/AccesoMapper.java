@@ -17,6 +17,8 @@ public interface AccesoMapper {
 
     // Acceso -> GetAcceso
     @Mapping(source = "usuario.id", target = "idUsuario")
+    @Mapping(source = "telefonoAcceso", target = "telefono")
+    @Mapping(source = "correoAcceso", target = "email")
     GetAcceso accesoToGetAcceso(Acceso acceso);
 
     List<GetAcceso> accesosToGetAccesos(List<Acceso> accesos);
