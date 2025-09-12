@@ -23,7 +23,7 @@ public class ImagenController {
     @PostMapping("/subir")
     public ResponseEntity<ApiResponse<GetImagen>> subirImagen(@PathVariable Integer idUsuario, @RequestParam("File") MultipartFile file, @RequestParam(value = "favorita", defaultValue = "false") boolean favorita) {
         SaveImagenFile saveImagen = new SaveImagenFile(file, favorita);
-        return ResponseEntity.ok(ApiResponse.success("Imagen subida", imagenService.SubirImagen(idUsuario, saveImagen), HttpStatus.CREATED));
+        return ResponseEntity.ok(ApiResponse.success("Imagene subida", imagenService.SubirImagen(idUsuario, saveImagen), HttpStatus.CREATED));
     }
 
     @GetMapping("verImagenes")
@@ -34,11 +34,11 @@ public class ImagenController {
     @DeleteMapping("/{idImagen}")
     public ResponseEntity<ApiResponse<Void>> eliminarImagen(@PathVariable Integer idImagen) {
         imagenService.eliminarImagen(idImagen);
-        return ResponseEntity.ok(ApiResponse.success("Imagen eliminada correctamente", null, HttpStatus.OK));
+        return ResponseEntity.ok(ApiResponse.success("Imagene eliminada correctamente", null, HttpStatus.OK));
     }
 
     @PutMapping("/{idImagen}/favorita")
     public ResponseEntity<ApiResponse<GetImagen>> marcarComoFavorita(@PathVariable Integer idImagen) {
-        return ResponseEntity.ok(ApiResponse.success("Imagen de perfil cambiada", imagenService.marcarComoFavorita(idImagen), HttpStatus.OK));
+        return ResponseEntity.ok(ApiResponse.success("Imagene de perfil cambiada", imagenService.marcarComoFavorita(idImagen), HttpStatus.OK));
         }
 }

@@ -1,6 +1,6 @@
 package com.procol.procolombia.perfil.services.impl;
 
-import com.procol.procolombia.auth.entities.Imagen;
+import com.procol.procolombia.auth.entities.Imagene;
 import com.procol.procolombia.auth.entities.Usuario;
 import com.procol.procolombia.auth.repositories.ImagenRepository;
 import com.procol.procolombia.auth.repositories.UsuarioRepository;
@@ -66,21 +66,21 @@ public class ImagenServiceImpl implements ImagenService {
         Path destino = directorio.resolve(nombrePrivado);
         try (InputStream inputStream = file.getInputStream()){
             Files.copy(inputStream, destino, StandardCopyOption.REPLACE_EXISTING);
-            System.out.println("Imagen guardada en: " + destino.toAbsolutePath());
+            System.out.println("Imagene guardada en: " + destino.toAbsolutePath());
         } catch (IOException e) {
-            throw new RuntimeException("Error al guardar la imagen", e);
+            throw new RuntimeException("Error al guardar la imagene", e);
         }
 
-        Imagen imagen = new Imagen();
-        imagen.setIdUsuario(usuario);
-        imagen.setNombrePublicoImagen(originalFilename);
-        imagen.setNombrePrivadoImagen(nombrePrivado);
-        imagen.setTipoImagen(file.getContentType());
-        imagen.setTamanioImagen(file.getSize() / 1024 + " KB");
-        imagen.setFavoritaImagen((short) (Boolean.TRUE.equals(saveImagen.favorita()) ? 1 : 2));
-        Imagen imagenGuardada = imagenRepository.save(imagen);
-        String url = "http://localhost:3210/uploads/imagenes/" + imagenGuardada.getNombrePrivadoImagen();
-        return imagenMapper.imagenToGetImagen(imagenGuardada);
+        Imagene imagene = new Imagene();
+        imagene.setIdUsuario(usuario);
+        imagene.setNombrePublicoImagen(originalFilename);
+        imagene.setNombrePrivadoImagen(nombrePrivado);
+        imagene.setTipoImagen(file.getContentType());
+        imagene.setTamanioImagen(file.getSize() / 1024 + " KB");
+        imagene.setFavoritaImagen((short) (Boolean.TRUE.equals(saveImagen.favorita()) ? 1 : 2));
+        Imagene imageneGuardada = imagenRepository.save(imagene);
+        String url = "http://localhost:3210/uploads/imagenes/" + imageneGuardada.getNombrePrivadoImagen();
+        return imagenMapper.imagenToGetImagen(imageneGuardada);
     }
 
     @Override
@@ -91,27 +91,27 @@ public class ImagenServiceImpl implements ImagenService {
     @Override
     public void eliminarImagen(Integer idImagen) {
         if (!imagenRepository.existsById(idImagen)) {
-            throw new EntityNotFoundException("Imagen no encontrada");
+            throw new EntityNotFoundException("Imagene no encontrada");
         }
         imagenRepository.deleteById(idImagen);
     }
 
     @Override
     public GetImagen marcarComoFavorita(Integer idImagen) {
-        Imagen imagen = imagenRepository.findById(idImagen)
-                .orElseThrow(() -> new EntityNotFoundException("Imagen no encontrada"));
+        Imagene imagene = imagenRepository.findById(idImagen)
+                .orElseThrow(() -> new EntityNotFoundException("Imagene no encontrada"));
 
         // Poner todas las imagenes del usuario como no favoritas
-        imagenRepository.findByIdUsuario_Id(imagen.getIdUsuario().getId())
+        imagenRepository.findByIdUsuario_Id(imagene.getIdUsuario().getId())
                 .forEach(img ->{
                     img.setFavoritaImagen((short)2);
                     imagenRepository.save(img);
                 });
 
         // Marcar la actual como favorita
-        imagen.setFavoritaImagen((short)1);
-        Imagen imagenActualizada = imagenRepository.save(imagen);
+        imagene.setFavoritaImagen((short)1);
+        Imagene imageneActualizada = imagenRepository.save(imagene);
 
-        return imagenMapper.imagenToGetImagen(imagenActualizada);
+        return imagenMapper.imagenToGetImagen(imageneActualizada);
     }
 }

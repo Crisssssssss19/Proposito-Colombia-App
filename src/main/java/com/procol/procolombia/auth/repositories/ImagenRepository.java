@@ -1,6 +1,6 @@
 package com.procol.procolombia.auth.repositories;
 
-import com.procol.procolombia.auth.entities.Imagen;
+import com.procol.procolombia.auth.entities.Imagene;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,20 +10,20 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ImagenRepository extends JpaRepository<Imagen, Integer> {
+public interface ImagenRepository extends JpaRepository<Imagene, Integer> {
 
-    List<Imagen> findByIdUsuario_Id(Integer idUsuario);
+    List<Imagene> findByIdUsuario_Id(Integer idUsuario);
 
-    List<Imagen> findByFavoritaImagen(Short favoritaImagen);
+    List<Imagene> findByFavoritaImagen(Short favoritaImagen);
 
-    Optional<Imagen> findByIdUsuario_IdAndFavoritaImagen(Integer idUsuario, Short favoritaImagen);
+    Optional<Imagene> findByIdUsuario_IdAndFavoritaImagen(Integer idUsuario, Short favoritaImagen);
 
-    @Query("SELECT i FROM Imagen i WHERE i.idUsuario.id = :usuarioId AND i.favoritaImagen = 1")
-    Optional<Imagen> findImagenFavoritaByUsuario(@Param("usuarioId") Integer usuarioId);
+    @Query("SELECT i FROM Imagene i WHERE i.idUsuario.id = :usuarioId AND i.favoritaImagen = 1")
+    Optional<Imagene> findImagenFavoritaByUsuario(@Param("usuarioId") Integer usuarioId);
 
-    @Query("SELECT COUNT(i) FROM Imagen i WHERE i.idUsuario.id = :usuarioId")
+    @Query("SELECT COUNT(i) FROM Imagene i WHERE i.idUsuario.id = :usuarioId")
     long countByUsuario(@Param("usuarioId") Integer usuarioId);
 
-    List<Imagen> findByTipoImagen(String tipoImagen);
+    List<Imagene> findByTipoImagen(String tipoImagen);
 
 }

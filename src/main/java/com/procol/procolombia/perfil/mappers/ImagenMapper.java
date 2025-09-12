@@ -1,6 +1,6 @@
 package com.procol.procolombia.perfil.mappers;
 
-import com.procol.procolombia.auth.entities.Imagen;
+import com.procol.procolombia.auth.entities.Imagene;
 import com.procol.procolombia.perfil.dtos.request.SaveImagen;
 import com.procol.procolombia.perfil.dtos.response.GetImagen;
 import org.mapstruct.Mapper;
@@ -10,18 +10,18 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ImagenMapper {
-    // SaveImagen -> Imagen
+    // SaveImagen -> Imagene
     @Mapping(source = "idUsuario", target = "idUsuario.id")
-    Imagen saveImagenToImagen(SaveImagen saveImagen);
+    Imagene saveImagenToImagen(SaveImagen saveImagen);
 
-    // Imagen -> GetImagen
+    // Imagene -> GetImagen
     @Mapping(source = "nombrePublicoImagen", target = "nombrePublico")
     @Mapping(source = "nombrePrivadoImagen", target = "nombrePrivado")
     @Mapping(source = "favoritaImagen", target = "favorita")
     @Mapping(source = "tipoImagen", target = "tipo")
     @Mapping(source = "tamanioImagen", target = "tamanio")
     @Mapping(source = "fechaSubida", target = "fechaSubida")
-    GetImagen imagenToGetImagen(Imagen imagen);
+    GetImagen imagenToGetImagen(Imagene imagene);
 
-    List<GetImagen> imagenListToGetImagenList(List<Imagen> imagens);
+    List<GetImagen> imagenListToGetImagenList(List<Imagene> imagenes);
 }

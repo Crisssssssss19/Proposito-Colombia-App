@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "imagenes")
-public class Imagen {
+public class Imagene {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imagenes_id_gen")
     @SequenceGenerator(name = "imagenes_id_gen", sequenceName = "imagenes_id_imagen_seq", allocationSize = 1)

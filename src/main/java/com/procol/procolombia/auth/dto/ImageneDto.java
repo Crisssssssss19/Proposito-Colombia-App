@@ -1,6 +1,6 @@
 package com.procol.procolombia.auth.dto;
 
-import com.procol.procolombia.auth.entities.Imagen;
+import com.procol.procolombia.auth.entities.Imagene;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * DTO for {@link Imagen}
+ * DTO for {@link Imagene}
  */
 public class ImageneDto implements Serializable {
     private final Integer id;
