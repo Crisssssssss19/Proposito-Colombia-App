@@ -24,7 +24,7 @@ public class AccesoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<GetAcceso> actualizarAcceso(@PathVariable Integer id, @RequestBody SaveAcceso saveAcceso){
-        return ResponseEntity.ok(accesoService.actualizarAcceso(saveAcceso, id));
+        return ResponseEntity.ok(accesoService.actualizarAcceso(id, saveAcceso));
     }
 
     @GetMapping("/{id}")
