@@ -1,8 +1,10 @@
 package com.procol.procolombia.perfil.controllers;
 
 import com.procol.procolombia.perfil.dtos.request.SaveUsuario;
+import com.procol.procolombia.perfil.dtos.response.ApiResponse;
 import com.procol.procolombia.perfil.dtos.response.GetUsuario;
 import com.procol.procolombia.perfil.services.UsuarioService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,13 +26,13 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<GetUsuario> actualizarUsuario(@PathVariable Integer id, @RequestBody SaveUsuario saveUsuario) {
-        return ResponseEntity.ok(usuarioService.actualizarUsuario(id, saveUsuario));
+    public ResponseEntity<ApiResponse<GetUsuario>> actualizarUsuario(@PathVariable Integer id, @RequestBody SaveUsuario saveUsuario) {
+        return ResponseEntity.ok(ApiResponse.success("Usuario actualizado correctamente", usuarioService.actualizarUsuario(id, saveUsuario), HttpStatus.OK));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GetUsuario> getUsuario(@PathVariable Integer id) {
-        return ResponseEntity.ok(usuarioService.obtenerUsuarioPorId(id));
+    public ResponseEntity<ApiResponse<GetUsuario>> getUsuario(@PathVariable Integer id) {
+        return ResponseEntity.ok(ApiResponse.success("Usuario obtenido correctamente", usuarioService.obtenerUsuarioPorId(id), HttpStatus.OK));
     }
 
     @GetMapping
@@ -39,8 +41,8 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarUsuario(@PathVariable Integer id) {
+    public ResponseEntity<ApiResponse<Void>> eliminarUsuario(@PathVariable Integer id) {
         usuarioService.eliminarUsuario(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(ApiResponse.success("Usuario eliminado correctamente", null, HttpStatus.OK));
     }
 }

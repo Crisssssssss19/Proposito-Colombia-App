@@ -1,8 +1,10 @@
 package com.procol.procolombia.perfil.controllers;
 
 import com.procol.procolombia.perfil.dtos.request.SaveArchivoFile;
+import com.procol.procolombia.perfil.dtos.response.ApiResponse;
 import com.procol.procolombia.perfil.dtos.response.GetArchivo;
 import com.procol.procolombia.perfil.services.ArchivoService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,20 +22,20 @@ public class ArchivoController {
     }
 
     @PostMapping("/subir")
-    public ResponseEntity<GetArchivo> subirArchivo(@PathVariable Integer idUsuario, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<ApiResponse<GetArchivo>> subirArchivo(@PathVariable Integer idUsuario, @RequestParam("file") MultipartFile file) {
         SaveArchivoFile saveArchivoFile = new SaveArchivoFile(file);
-        return ResponseEntity.ok(archivoService.SubirArchivo(idUsuario, saveArchivoFile));
+        return ResponseEntity.ok(ApiResponse.success("Archivo subido correctamente", archivoService.SubirArchivo(idUsuario, saveArchivoFile), HttpStatus.CREATED));
     }
 
     @GetMapping("/verArchivos")
-    public ResponseEntity<List<GetArchivo>> listarArchivos(@PathVariable Integer idUsuario) {
-        return ResponseEntity.ok(archivoService.listarArchivosPorUsuario(idUsuario));
+    public ResponseEntity<ApiResponse<List<GetArchivo>>> listarArchivos(@PathVariable Integer idUsuario) {
+        return ResponseEntity.ok(ApiResponse.success("Lista de archivos obtenida correctamente", archivoService.listarArchivosPorUsuario(idUsuario), HttpStatus.OK));
     }
 
     @DeleteMapping("/{idArchivo}")
-    public ResponseEntity<Void> eliminarArchivo(@PathVariable Integer idArchivo) {
+    public ResponseEntity<ApiResponse<Void>> eliminarArchivo(@PathVariable Integer idArchivo) {
         archivoService.eliminarArchivo(idArchivo);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(ApiResponse.success("Archivo eliminado correctamente", null, HttpStatus.OK));
     }
 
 }
