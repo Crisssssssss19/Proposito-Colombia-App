@@ -1,17 +1,12 @@
 package com.procol.procolombia.perfil.dtos.response;
 
 import java.io.Serializable;
-import java.util.List;
 
 public record GetUsuario(
         Integer id,
-        String nombres,
-        String apellidos,
-        String documento,
-        String tipoDocumento,
+        String nombresUsuario,
+        String apellidosUsuario,
         Short estado,
-        String telefono,
-        List<String> imagenes,
-        List<String> archivos
+        Integer idUbicacion
 ) implements Serializable {
 }
