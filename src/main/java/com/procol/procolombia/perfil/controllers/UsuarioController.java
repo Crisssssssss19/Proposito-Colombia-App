@@ -19,7 +19,8 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<GetUsuario> crearUsuario(@RequestBody SaveUsuario saveUsuario) {
-        return ResponseEntity.ok(usuarioService.crearUsuario(saveUsuario));
+        GetUsuario usuario = usuarioService.crearUsuario(saveUsuario);
+        return ResponseEntity.status(201).body(usuario);
     }
 
     @PutMapping("/{id}")
