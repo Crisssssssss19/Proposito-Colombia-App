@@ -5,8 +5,10 @@ import java.time.LocalDateTime;
 
 public record GetArchivo(
         Integer id,
-        String nombre,
+        String nombrePublico,
+        String nombrePrivado,
         String tipo,
+        String tamanio,
         LocalDateTime fechaSubida
 ) implements Serializable {
 }
