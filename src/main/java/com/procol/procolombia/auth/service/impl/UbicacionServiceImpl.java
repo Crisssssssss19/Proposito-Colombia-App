@@ -5,10 +5,13 @@ import com.procol.procolombia.auth.dto.Response.UbicacionResponseDTO;
 import com.procol.procolombia.auth.mappers.UbicacionMapper;
 import com.procol.procolombia.auth.repositories.UbicacioneRepository;
 import com.procol.procolombia.auth.service.UbicacionService;
+import jdk.jfr.SettingDefinition;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Service
 public class UbicacionServiceImpl implements UbicacionService {
 
     private final UbicacioneRepository ubicacioneRepository;
