@@ -9,7 +9,7 @@ public interface AccesoService {
 
     GetAcceso crearAcceso(SaveAcceso saveAcceso);
 
-    GetAcceso actualizarAcceso(SaveAcceso saveAcceso, Integer idUsuario);
+    GetAcceso actualizarAcceso(Integer idUsuario, SaveAcceso saveAcceso);
 
     GetAcceso obtenerAccesoPorUsuarioId(Integer idUsuario);
 
