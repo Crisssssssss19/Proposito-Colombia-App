@@ -5,7 +5,6 @@ import com.procol.procolombia.perfil.dtos.response.GetArchivo;
 import com.procol.procolombia.postulacion.entities.Archivo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
@@ -16,6 +15,11 @@ public interface ArchivoMapper {
     Archivo saveArchivoToArchivo(SaveArchivo saveArchivo);
 
     // Archivo -> GetArchivo
+    @Mapping(source = "nombrePublicoArchivo", target = "nombrePublico")
+    @Mapping(source = "nombreArchivoArchivo", target = "nombrePrivado")
+    @Mapping(source = "tipoArchivo", target = "tipo")
+    @Mapping(source = "tamanioArchivo", target = "tamanio")
+    @Mapping(source = "fechaSubida", target = "fechaSubida")
     GetArchivo archivoToGetArchivo(Archivo archivo);
 
     List<GetArchivo> archivosToGetArchivoList(List<Archivo> archivos);
