@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/estados-postulacion")
+@RequestMapping("api/estados-postulacion")
 @CrossOrigin(origins = "*")
 public class EstadosPostulacioneController {
 
@@ -75,7 +75,6 @@ public class EstadosPostulacioneController {
         }
     }
 
-    // Endpoints específicos del negocio
     @GetMapping("/nombre/{nombreEstado}")
     public ResponseEntity<EstadosPostulacioneDto> getEstadoByNombre(@PathVariable String nombreEstado) {
         try {

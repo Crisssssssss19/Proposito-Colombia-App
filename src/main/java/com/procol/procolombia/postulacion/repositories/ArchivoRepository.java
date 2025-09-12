@@ -1,5 +1,6 @@
 package com.procol.procolombia.postulacion.repositories;
 
+import com.procol.procolombia.postulacion.dto.ArchivoDto;
 import com.procol.procolombia.postulacion.entities.Archivo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,6 +11,9 @@ import java.util.List;
 
 @Repository
 public interface ArchivoRepository extends JpaRepository<Archivo, Integer> {
+
+  @Query("SELECT a FROM Archivo a LEFT JOIN FETCH a.idUsuario")
+  List<Archivo> findAllWithUsuario();
 
   List<Archivo> findByIdUsuario_Id(Integer idUsuario);
 

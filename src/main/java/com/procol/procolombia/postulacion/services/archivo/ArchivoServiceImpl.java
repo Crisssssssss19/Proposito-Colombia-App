@@ -40,7 +40,6 @@ public class ArchivoServiceImpl implements ArchivoService{
     public ArchivoDto save(ArchivoDto archivoDto) {
         Archivo archivo = ArchivoMapper.toEntity(archivoDto);
 
-        // Establecer la relación con Usuario
         if (archivoDto.getIdUsuario() != null) {
             Usuario usuario = usuarioRepository.findById(archivoDto.getIdUsuario())
                     .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + archivoDto.getIdUsuario()));

@@ -80,7 +80,6 @@ public class MensajeController {
         }
     }
 
-    // Endpoints específicos del negocio
     @GetMapping("/postulacion/{postulacionId}")
     public ResponseEntity<List<MensajeDto>> getMensajesByPostulacion(@PathVariable Integer postulacionId) {
         try {
@@ -155,18 +154,4 @@ public class MensajeController {
         }
     }
 
-    @PostMapping("/crear")
-    public ResponseEntity<MensajeDto> crearMensaje(
-            @RequestParam Integer postulacionId,
-            @RequestParam Integer usuarioId,
-            @RequestParam String texto) {
-        try {
-            MensajeDto mensaje = mensajeService.crearMensaje(postulacionId, usuarioId, texto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(mensaje);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
 }

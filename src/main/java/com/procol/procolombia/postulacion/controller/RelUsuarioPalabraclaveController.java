@@ -63,21 +63,6 @@ public class RelUsuarioPalabraclaveController {
         return ResponseEntity.ok(relUsuarioPalabraclaveService.findByPalabraClave(idPalabraClave));
     }
 
-    @PostMapping("/asociar/{idUsuario}/{idPalabraClave}")
-    public ResponseEntity<RelUsuarioPalabraclaveDto> asociar(
-            @PathVariable Integer idUsuario,
-            @PathVariable Integer idPalabraClave) {
-        return ResponseEntity.ok(relUsuarioPalabraclaveService.asociarUsuarioConPalabraClave(idUsuario, idPalabraClave));
-    }
-
-    @DeleteMapping("/desasociar/{idUsuario}/{idPalabraClave}")
-    public ResponseEntity<Void> desasociar(
-            @PathVariable Integer idUsuario,
-            @PathVariable Integer idPalabraClave) {
-        relUsuarioPalabraclaveService.desasociarUsuarioDePalabraClave(idUsuario, idPalabraClave);
-        return ResponseEntity.noContent().build();
-    }
-
     @PostMapping("/asociar-multiples/{idUsuario}")
     public ResponseEntity<Void> asociarMultiples(
             @PathVariable Integer idUsuario,

@@ -1,6 +1,7 @@
 package com.procol.procolombia.postulacion.services.archivo;
 
 import com.procol.procolombia.postulacion.dto.ArchivoDto;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;

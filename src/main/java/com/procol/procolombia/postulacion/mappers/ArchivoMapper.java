@@ -12,6 +12,7 @@ public class ArchivoMapper {
         if (archivo == null) return null;
         ArchivoDto archivoDto = new ArchivoDto();
         archivoDto.setId(archivo.getId());
+        archivoDto.setIdUsuario(archivo.getIdUsuario() != null ? archivo.getIdUsuario().getId() : null);
         archivoDto.setNombrePublicoArchivo(archivo.getNombrePublicoArchivo());
         archivoDto.setNombreArchivoArchivo(archivo.getNombreArchivoArchivo());
         archivoDto.setTipoArchivo(archivo.getTipoArchivo());

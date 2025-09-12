@@ -80,7 +80,6 @@ public class HistorialEstadosPostulacioneController {
         }
     }
 
-    // Endpoints específicos del negocio
     @GetMapping("/postulacion/{postulacionId}")
     public ResponseEntity<List<HistorialEstadosPostulacioneDto>> getHistorialByPostulacion(@PathVariable Integer postulacionId) {
         try {
@@ -139,21 +138,6 @@ public class HistorialEstadosPostulacioneController {
         try {
             List<HistorialEstadosPostulacioneDto> historiales = historialService.searchByDetalle(detalle);
             return ResponseEntity.ok(historiales);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    @PostMapping("/crear")
-    public ResponseEntity<HistorialEstadosPostulacioneDto> crearHistorial(
-    @RequestParam Integer postulacionId,
-    @RequestParam Integer estadoId,
-    @RequestParam String detalle) {
-        try {
-            HistorialEstadosPostulacioneDto historial = historialService.crearHistorial(postulacionId, estadoId, detalle);
-            return ResponseEntity.status(HttpStatus.CREATED).body(historial);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
