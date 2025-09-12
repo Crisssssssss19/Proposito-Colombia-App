@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class RelUsuarioPalabraclaveServiceImpl {
+public class RelUsuarioPalabraclaveServiceImpl implements RelUsuarioPalabraclaveService {
 
     private final RelUsuarioPalabraclaveRepository relUsuarioPalabraclaveRepository;
 
@@ -32,16 +32,19 @@ public class RelUsuarioPalabraclaveServiceImpl {
         this.palabrasClaveRepository = palabrasClaveRepository;
     }
 
+    @Override
     public List<RelUsuarioPalabraclaveDto> findAll() {
         List<RelUsuarioPalabraclave> relaciones = relUsuarioPalabraclaveRepository.findAll();
         return RelUsuarioPalabraclaveMapper.toDtoList(relaciones);
     }
 
+    @Override
     public Optional<RelUsuarioPalabraclaveDto> findById(RelUsuarioPalabraclaveId id) {
         Optional<RelUsuarioPalabraclave> relacion = relUsuarioPalabraclaveRepository.findById(id);
         return relacion.map(RelUsuarioPalabraclaveMapper::toDto);
     }
 
+    @Override
     public RelUsuarioPalabraclaveDto save(RelUsuarioPalabraclaveDto relUsuarioPalabraclaveDto) {
         RelUsuarioPalabraclave relacion = RelUsuarioPalabraclaveMapper.toEntity(relUsuarioPalabraclaveDto);
 
@@ -66,36 +69,44 @@ public class RelUsuarioPalabraclaveServiceImpl {
         return RelUsuarioPalabraclaveMapper.toDto(savedRelacion);
     }
 
+    @Override
     public void deleteById(RelUsuarioPalabraclaveId id) {
         relUsuarioPalabraclaveRepository.deleteById(id);
     }
 
+    @Override
     public void deleteByUsuarioAndPalabraClave(Integer idUsuario, Integer idPalabraClave) {
         relUsuarioPalabraclaveRepository.deleteByIdUsuario_IdAndIdPalabraClave_Id(idUsuario, idPalabraClave);
     }
 
+    @Override
     public List<RelUsuarioPalabraclaveDto> findByUsuario(Integer idUsuario) {
         List<RelUsuarioPalabraclave> relaciones = relUsuarioPalabraclaveRepository.findByIdUsuario_Id(idUsuario);
         return RelUsuarioPalabraclaveMapper.toDtoList(relaciones);
     }
 
+    @Override
     public List<RelUsuarioPalabraclaveDto> findByPalabraClave(Integer idPalabraClave) {
         List<RelUsuarioPalabraclave> relaciones = relUsuarioPalabraclaveRepository.findByIdPalabraClave_Id(idPalabraClave);
         return RelUsuarioPalabraclaveMapper.toDtoList(relaciones);
     }
 
+    @Override
     public boolean existsByUsuarioAndPalabraClave(Integer idUsuario, Integer idPalabraClave) {
         return relUsuarioPalabraclaveRepository.existsByIdUsuario_IdAndIdPalabraClave_Id(idUsuario, idPalabraClave);
     }
 
+    @Override
     public long countByUsuario(Integer usuarioId) {
         return relUsuarioPalabraclaveRepository.countByUsuario(usuarioId);
     }
 
+    @Override
     public long countByPalabra(Integer palabraId) {
         return relUsuarioPalabraclaveRepository.countByPalabra(palabraId);
     }
 
+    @Override
     public RelUsuarioPalabraclaveDto asociarUsuarioConPalabraClave(Integer usuarioId, Integer palabraClaveId) {
         if (existsByUsuarioAndPalabraClave(usuarioId, palabraClaveId)) {
             throw new RuntimeException("Ya existe la asociación entre el usuario y la palabra clave");
@@ -108,6 +119,7 @@ public class RelUsuarioPalabraclaveServiceImpl {
         return save(relacionDto);
     }
 
+    @Override
     public void desasociarUsuarioDePalabraClave(Integer usuarioId, Integer palabraClaveId) {
         if (!existsByUsuarioAndPalabraClave(usuarioId, palabraClaveId)) {
             throw new RuntimeException("No existe la asociación entre el usuario y la palabra clave");
@@ -115,6 +127,7 @@ public class RelUsuarioPalabraclaveServiceImpl {
         deleteByUsuarioAndPalabraClave(usuarioId, palabraClaveId);
     }
 
+    @Override
     public void asociarMultiplesPalabrasClaveAUsuario(Integer usuarioId, List<Integer> palabrasClaveIds) {
         for (Integer palabraClaveId : palabrasClaveIds) {
             if (!existsByUsuarioAndPalabraClave(usuarioId, palabraClaveId)) {
@@ -123,6 +136,7 @@ public class RelUsuarioPalabraclaveServiceImpl {
         }
     }
 
+    @Override
     public void desasociarTodasLasPalabrasDeUsuario(Integer usuarioId) {
         List<RelUsuarioPalabraclaveDto> relaciones = findByUsuario(usuarioId);
         for (RelUsuarioPalabraclaveDto relacion : relaciones) {

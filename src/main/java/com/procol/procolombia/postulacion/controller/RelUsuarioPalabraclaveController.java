@@ -91,4 +91,24 @@ public class RelUsuarioPalabraclaveController {
         relUsuarioPalabraclaveService.desasociarTodasLasPalabrasDeUsuario(idUsuario);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/existe/{idUsuario}/{idPalabraClave}")
+    public ResponseEntity<Boolean> existsByUsuarioAndPalabraClave(
+            @PathVariable Integer idUsuario,
+            @PathVariable Integer idPalabraClave) {
+        boolean exists = relUsuarioPalabraclaveService.existsByUsuarioAndPalabraClave(idUsuario, idPalabraClave);
+        return ResponseEntity.ok(exists);
+    }
+
+    @GetMapping("/count/usuario/{idUsuario}")
+    public ResponseEntity<Long> countByUsuario(@PathVariable Integer idUsuario) {
+        long count = relUsuarioPalabraclaveService.countByUsuario(idUsuario);
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("/count/palabra/{idPalabraClave}")
+    public ResponseEntity<Long> countByPalabra(@PathVariable Integer idPalabraClave) {
+        long count = relUsuarioPalabraclaveService.countByPalabra(idPalabraClave);
+        return ResponseEntity.ok(count);
+    }
 }

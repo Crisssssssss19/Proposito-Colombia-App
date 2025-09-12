@@ -1,9 +1,8 @@
 package com.procol.procolombia.postulacion.controller;
 
 import com.procol.procolombia.postulacion.dto.MensajeDto;
-import com.procol.procolombia.postulacion.services.mensaje.MensajeService;
+import com.procol.procolombia.postulacion.services.mensaje.MensajeServiceImpl;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,9 +19,9 @@ import java.util.Optional;
 @CrossOrigin(origins = "*")
 public class MensajeController {
 
-    private final MensajeService mensajeService;
+    private final MensajeServiceImpl mensajeService;
 
-    public MensajeController(MensajeService mensajeService) {
+    public MensajeController(MensajeServiceImpl mensajeService) {
         this.mensajeService = mensajeService;
     }
 
