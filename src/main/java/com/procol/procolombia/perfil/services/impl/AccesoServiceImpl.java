@@ -31,7 +31,7 @@ public class AccesoServiceImpl implements AccesoService {
     }
 
     @Override
-    public GetAcceso actualizarAcceso(SaveAcceso saveAcceso, Integer idUsuario) {
+    public GetAcceso actualizarAcceso(Integer idUsuario, SaveAcceso saveAcceso) {
         Acceso acceso = accesoRepository.findById(idUsuario)
                 .orElseThrow(() -> new RuntimeException("Acceso no encontrado"));
         acceso.setTelefonoAcceso(saveAcceso.telefonoAcceso());
