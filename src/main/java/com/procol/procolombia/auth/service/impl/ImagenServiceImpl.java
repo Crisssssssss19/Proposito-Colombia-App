@@ -9,6 +9,7 @@ import com.procol.procolombia.auth.mappers.ImagenMapper;
 import com.procol.procolombia.auth.repositories.ImageneRepository;
 import com.procol.procolombia.auth.repositories.UsuarioRepository;
 import com.procol.procolombia.auth.service.ImagenService;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
 
+@Service
 public class ImagenServiceImpl implements ImagenService {
 
     private final ImageneRepository imagenRepository;

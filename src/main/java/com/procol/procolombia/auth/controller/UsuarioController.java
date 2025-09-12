@@ -53,5 +53,4 @@ public class UsuarioController {
         ApiResponseDTO<String> usuario = usuarioService.eliminarUsuario(id);
         return ResponseEntity.status(usuario.codigoEstado()).body(usuario);
     }
-
 }
