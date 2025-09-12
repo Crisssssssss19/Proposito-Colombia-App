@@ -2,31 +2,31 @@ package com.procol.procolombia.vacante.mappers;
 
 
 import com.procol.procolombia.auth.entities.Ubicacione;
+import com.procol.procolombia.postulacion.entities.Postulacione;
 import com.procol.procolombia.vacante.dto.VacanteDto;
 import com.procol.procolombia.vacante.entities.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
+import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface VacanteMapper {
     @Mapping(source = "idUbicacion.id", target = "idUbicacion")
-    @Mapping(source = "anuncio.id", target = "anuncioId")
-    @Mapping(source = "historialEstadoVacantes", target = "historialEstadosVacanteIds", qualifiedByName = "mapHistorialToIds")
-    @Mapping(source = "postulaciones", target = "postulacionIds", qualifiedByName = "mapPostulacionesToIds")
-    @Mapping(source = "palabraClaves", target = "palabrasClaveIds", qualifiedByName = "mapPalabrasToIds")
+    @Mapping(source = "palabrasClaves", target = "palabrasClaveIds", qualifiedByName = "mapPalabrasToIds")
     @Mapping(source = "requisitos", target = "requisitoIds", qualifiedByName = "mapRequisitosToIds")
+    @Mapping(source = "relUsuarioEmpresas.id", target = "relUsuarioEmpresaId")
     VacanteDto toDto(Vacante entity);
 
     @Mapping(source = "idUbicacion", target = "idUbicacion", qualifiedByName = "mapUbicacion")
-    @Mapping(source = "anuncioId", target = "anuncio", qualifiedByName = "mapAnuncio")
-    @Mapping(source = "historialEstadosVacanteIds", target = "historialEstadoVacantes", qualifiedByName = "mapIdsToHistorial")
-    @Mapping(source = "postulacionIds", target = "postulaciones", qualifiedByName = "mapIdsToPostulaciones")
-    @Mapping(source = "palabrasClaveIds", target = "palabraClaves", qualifiedByName = "mapIdsToPalabras")
+    @Mapping(target = "historialEstadosVacantes", ignore=true)
+    @Mapping(target = "postulaciones", ignore = true)
+    @Mapping(source = "palabrasClaveIds", target = "palabrasClaves", qualifiedByName = "mapIdsToPalabras")
     @Mapping(source = "requisitoIds", target = "requisitos", qualifiedByName = "mapIdsToRequisitos")
+    @Mapping(source = "relUsuarioEmpresaId", target = "relUsuarioEmpresas", qualifiedByName = "mapRelUsuarioEmpresa")
     Vacante toEntity(VacanteDto dto);
 
     @Named("mapUbicacion")
@@ -35,30 +35,6 @@ public interface VacanteMapper {
         Ubicacione u = new Ubicacione();
         u.setId(id);
         return u;
-    }
-
-    @Named("mapAnuncio")
-    default Anuncio mapAnuncio(Integer id) {
-        if (id == null) return null;
-        Anuncio a = new Anuncio();
-        a.setId(id);
-        return a;
-    }
-
-    @Named("mapHistorialToIds")
-    default Set<Integer> mapHistorialToIds(Set<HistorialEstadoVacante> set) {
-        if (set == null) return null;
-        return set.stream().map(HistorialEstadoVacante::getId).collect(Collectors.toSet());
-    }
-
-    @Named("mapIdsToHistorial")
-    default Set<HistorialEstadoVacante> mapIdsToHistorial(Set<Integer> ids) {
-        if (ids == null) return null;
-        return ids.stream().map(id -> {
-            HistorialEstadoVacante h = new HistorialEstadoVacante();
-            h.setId(id);
-            return h;
-        }).collect(Collectors.toSet());
     }
 
     @Named("mapPalabrasToIds")
@@ -90,5 +66,12 @@ public interface VacanteMapper {
             r.setId(id);
             return r;
         }).collect(Collectors.toSet());
+    }
+    @Named("mapRelUsuarioEmpresa")
+    default RelUsuarioEmpresa mapRelUsuarioEmpresa(RelUsuarioEmpresaId id) {
+        if (id == null) return null;
+        RelUsuarioEmpresa rel = new RelUsuarioEmpresa();
+        rel.setId(id);
+        return rel;
     }
 }

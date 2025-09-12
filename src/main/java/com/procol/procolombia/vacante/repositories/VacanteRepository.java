@@ -16,5 +16,9 @@ import java.util.List;
 public interface VacanteRepository extends JpaRepository<Vacante, Integer> {
 
     List<Vacante> findByRelUsuarioEmpresasIdEmpresaId(Integer empresaId);
-
+    @Query("SELECT v FROM Vacante v " +
+            "WHERE v.relUsuarioEmpresas.id.idUsuario = :idUsuario " +
+            "AND v.relUsuarioEmpresas.id.idEmpresa = :idEmpresa")
+    List<Vacante> findByUsuarioAndEmpresa(@Param("idUsuario") Integer idUsuario,
+                                          @Param("idEmpresa") Integer idEmpresa);
 }

@@ -16,7 +16,7 @@ public class Interes {
     @MapsId("idEmpresa")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "id_empresa", nullable = false)
+    @JoinColumn(name = "idEmpresa", nullable = false)
     private Empresa idEmpresa;
 
     @MapsId("idUsuario")

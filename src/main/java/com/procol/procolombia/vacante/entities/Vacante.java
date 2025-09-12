@@ -63,8 +63,11 @@ public class Vacante {
     @OneToMany(mappedBy = "idVacante")
     private Set<Postulacione> postulaciones = new LinkedHashSet<>();
 
-    @ManyToMany(mappedBy = "vacantes")
-    private Set<PalabraClave> palabraClaves = new LinkedHashSet<>();
+    @ManyToMany
+    @JoinTable(name = "relVacantePalabraClave",
+            joinColumns = @JoinColumn(name = "idVacante"),
+            inverseJoinColumns = @JoinColumn(name = "idPalabraClave"))
+    private Set<PalabraClave> palabrasClaves = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idVacante")
     private Set<Requisito> requisitos = new LinkedHashSet<>();
@@ -85,11 +88,11 @@ public class Vacante {
         this.idUbicacion = idUbicacion;
     }
 
-    public RelUsuarioEmpresa getRelUsuariosEmpresas() {
+    public RelUsuarioEmpresa getRelUsuarioEmpresas() {
         return relUsuarioEmpresas;
     }
 
-    public void setRelUsuariosEmpresas(RelUsuarioEmpresa relUsuarioEmpresas) {
+    public void setRelUsuarioEmpresas(RelUsuarioEmpresa relUsuarioEmpresas) {
         this.relUsuarioEmpresas = relUsuarioEmpresas;
     }
 
@@ -158,11 +161,11 @@ public class Vacante {
     }
 
     public Set<PalabraClave> getPalabrasClaves() {
-        return palabraClaves;
+        return palabrasClaves;
     }
 
     public void setPalabrasClaves(Set<PalabraClave> palabraClaves) {
-        this.palabraClaves = palabraClaves;
+        this.palabrasClaves = palabraClaves;
     }
 
     public Set<Requisito> getRequisitos() {
@@ -176,7 +179,15 @@ public class Vacante {
     public Vacante() {
     }
 
-    public Vacante(Integer id, Ubicacione idUbicacion, RelUsuarioEmpresa relUsuarioEmpresas, String tituloVacante, String detalleVacante, Instant fechaInicioVacante, Instant fechaFinVacante, Short estadoVacante, Anuncio anuncio, Set<HistorialEstadoVacante> historialEstadoVacantes, Set<Postulacione> postulaciones, Set<PalabraClave> palabraClaves, Set<Requisito> requisitos) {
+    public Vacante(Integer id, Ubicacione idUbicacion,
+                   RelUsuarioEmpresa relUsuarioEmpresas,
+                   String tituloVacante, String detalleVacante,
+                   Instant fechaInicioVacante,
+                   Instant fechaFinVacante,
+                   Short estadoVacante, Anuncio anuncio,
+                   Set<HistorialEstadoVacante> historialEstadoVacantes,
+                   Set<Postulacione> postulaciones,
+                   Set<PalabraClave> palabrasClaves, Set<Requisito> requisitos) {
         this.id = id;
         this.idUbicacion = idUbicacion;
         this.relUsuarioEmpresas = relUsuarioEmpresas;
@@ -188,7 +199,7 @@ public class Vacante {
         this.anuncio = anuncio;
         this.historialEstadoVacantes = historialEstadoVacantes;
         this.postulaciones = postulaciones;
-        this.palabraClaves = palabraClaves;
+        this.palabrasClaves = palabrasClaves;
         this.requisitos = requisitos;
     }
 }

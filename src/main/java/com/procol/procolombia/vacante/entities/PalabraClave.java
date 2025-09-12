@@ -27,10 +27,7 @@ public class PalabraClave {
             inverseJoinColumns = @JoinColumn(name = "idUsuario"))
     private Set<Usuario> usuarios = new LinkedHashSet<>();
 
-    @ManyToMany
-    @JoinTable(name = "relVacantePalabraClave",
-            joinColumns = @JoinColumn(name = "idPalabraClave"),
-            inverseJoinColumns = @JoinColumn(name = "idVacante"))
+    @ManyToMany(mappedBy = "palabrasClaves")
     private Set<Vacante> vacantes = new LinkedHashSet<>();
 
     public Integer getId() {

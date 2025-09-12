@@ -11,7 +11,7 @@ import org.hibernate.annotations.OnDeleteAction;
 public class Anuncio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idVacante", nullable = false)
+    @Column(name = "id_Vacante", nullable = false)
     private Integer id;
 
     @MapsId

@@ -11,6 +11,4 @@ import java.util.Optional;
 
 @Repository
 public interface EstadoVacanteRepository extends JpaRepository<EstadoVacante, Integer> {
-    List<EstadoVacante> findByEstadoVacantesId(Integer vacanteId);
-
 }

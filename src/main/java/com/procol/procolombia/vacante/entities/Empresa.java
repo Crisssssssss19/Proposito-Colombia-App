@@ -92,11 +92,11 @@ public class Empresa {
         this.interes = interes;
     }
 
-    public Set<RelUsuarioEmpresa> getRelUsuariosEmpresas() {
+    public Set<RelUsuarioEmpresa> getRelUsuarioEmpresas() {
         return relUsuarioEmpresas;
     }
 
-    public void setRelUsuariosEmpresas(Set<RelUsuarioEmpresa> relUsuarioEmpresas) {
+    public void setRelUsuarioEmpresas(Set<RelUsuarioEmpresa> relUsuarioEmpresas) {
         this.relUsuarioEmpresas = relUsuarioEmpresas;
     }
     public Empresa() {

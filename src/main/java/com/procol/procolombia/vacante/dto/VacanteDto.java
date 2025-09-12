@@ -1,5 +1,7 @@
 package com.procol.procolombia.vacante.dto;
 
+import com.procol.procolombia.vacante.entities.RelUsuarioEmpresaId;
+
 import java.time.Instant;
 import java.util.Set;
 
@@ -11,9 +13,7 @@ public record VacanteDto (
     Instant fechaInicioVacante,
     Instant fechaFinVacante,
     Short estadoVacante,
-    Integer anuncioId,
-    Set<Integer> historialEstadosVacanteIds,
-    Set<Integer> postulacionIds,
     Set<Integer> palabrasClaveIds,
-    Set<Integer> requisitoIds
+    Set<Integer> requisitoIds,
+    RelUsuarioEmpresaId relUsuarioEmpresaId
 ){}
