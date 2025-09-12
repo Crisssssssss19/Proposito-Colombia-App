@@ -20,7 +20,7 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuarios_id_gen")
     @SequenceGenerator(name = "usuarios_id_gen", sequenceName = "usuarios_id_usuario_seq", allocationSize = 1)
     @Column(name = "id_usuario", nullable = false)
-    private Integer idUsuario;
+    private Integer id;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -78,11 +78,11 @@ public class Usuario {
     private Set<Role> roles = new LinkedHashSet<>();
 
     public Integer getId() {
-        return idUsuario;
+        return id;
     }
 
     public void setId(Integer id) {
-        this.idUsuario = id;
+        this.id = id;
     }
 
     public Ubicacione getIdUbicacion() {

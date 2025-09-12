@@ -4,8 +4,9 @@ import com.procol.procolombia.auth.entities.Usuario;
 
 public record ImagenResponseDTO(
         Integer idImagen,
-        Usuario idUsuario,
+        Integer idUsuario,
         String nombrePublicoImagen,
+        String nombrePrivadoImagen,
         String tipoImagen,
         String tamanioImagen,
         Short favoritaImagen
