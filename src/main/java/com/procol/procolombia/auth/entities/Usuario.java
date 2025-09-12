@@ -57,7 +57,7 @@ public class Usuario {
     private Set<Archivo> archivos = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idUsuario")
-    private Set<Imagene> imagenes = new LinkedHashSet<>();
+    private Set<Imagen> imagenes = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idUsuario")
     private Set<Interese> intereses = new LinkedHashSet<>();
@@ -149,11 +149,11 @@ public class Usuario {
         this.archivos = archivos;
     }
 
-    public Set<Imagene> getImagenes() {
+    public Set<Imagen> getImagenes() {
         return imagenes;
     }
 
-    public void setImagenes(Set<Imagene> imagenes) {
+    public void setImagenes(Set<Imagen> imagenes) {
         this.imagenes = imagenes;
     }
 
