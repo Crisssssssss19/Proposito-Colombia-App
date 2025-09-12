@@ -1,12 +1,12 @@
 package com.procol.procolombia.perfil.services;
 
-import com.procol.procolombia.perfil.dtos.request.SaveArchivo;
+import com.procol.procolombia.perfil.dtos.request.SaveArchivoFile;
 import com.procol.procolombia.perfil.dtos.response.GetArchivo;
 
 import java.util.List;
 
 public interface ArchivoService {
-    GetArchivo crearArchivo(SaveArchivo  saveArchivo);
-    List<GetArchivo> listarArchivos(Integer idUsuario);
+    GetArchivo SubirArchivo(Integer idUsuario, SaveArchivoFile saveArchivo);
+    List<GetArchivo> listarArchivosPorUsuario(Integer idUsuario);
     void eliminarArchivo(Integer idArchivo);
 }
