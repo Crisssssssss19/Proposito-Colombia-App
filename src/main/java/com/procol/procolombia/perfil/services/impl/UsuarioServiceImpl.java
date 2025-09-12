@@ -29,9 +29,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     public GetUsuario crearUsuario(SaveUsuario saveUsuario) {
         Usuario usuario = usuarioMapper.saveUsuarioToUsuario(saveUsuario);
         if (saveUsuario.idUbicacion() != null) {
-            Ubicacione ubicacione = ubicacioneRepository.findById(saveUsuario.idUbicacion())
-                    .orElseThrow(() -> new RuntimeException("Ubicación no encontrada"));
-            usuario.setIdUbicacion(ubicacione);
+            usuario.setIdUbicacion(obtenerUbicacionPorId(saveUsuario.idUbicacion()));
         }
         Usuario usarioGuardado = usuarioRepository.save(usuario);
         return usuarioMapper.usuarioToGetUsuario(usarioGuardado);
@@ -45,9 +43,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setTipoDocumentoUsuario(saveUsuario.tipoDocumento());
         usuario.setEstadoUsuario(saveUsuario.estado());
         if (saveUsuario.idUbicacion() != null) {
-            Ubicacione ubicacione = ubicacioneRepository.findById(saveUsuario.idUbicacion())
-                    .orElseThrow(() -> new EntityNotFoundException("Ubicación no encontrada"));
-            usuario.setIdUbicacion(ubicacione);
+            usuario.setIdUbicacion(obtenerUbicacionPorId(saveUsuario.idUbicacion()));
         }
         Usuario usuarioActualizado = usuarioRepository.save(usuario);
         return usuarioMapper.usuarioToGetUsuario(usuarioActualizado);
@@ -71,5 +67,10 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new EntityNotFoundException("Usuario no encontrado con id " + id);
         }
         usuarioRepository.deleteById(id);
+    }
+
+    private Ubicacione obtenerUbicacionPorId(Integer id) {
+        return ubicacioneRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Ubicación no encontrada"));
     }
 }

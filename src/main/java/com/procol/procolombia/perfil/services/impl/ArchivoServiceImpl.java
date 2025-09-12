@@ -67,7 +67,6 @@ public class ArchivoServiceImpl implements ArchivoService {
         Path destino = directorio.resolve(nombrePrivado);
         try (InputStream inputStream = file.getInputStream()) {
             Files.copy(inputStream, destino, StandardCopyOption.REPLACE_EXISTING);
-            System.out.println("Archivo guardado en: " + destino.toAbsolutePath());
         } catch (IOException e) {
             throw new RuntimeException("Error al guardar el archivo", e);
         }

@@ -48,7 +48,6 @@ public class ImagenServiceImpl implements ImagenService {
             throw new RuntimeException("El archivo está vacio");
         }
 
-        // Generar el nombre privado con UUID + extension
         String extension = "";
         String originalFilename = file.getOriginalFilename();
         if (originalFilename != null && originalFilename.contains(".")) {
@@ -101,14 +100,13 @@ public class ImagenServiceImpl implements ImagenService {
         Imagene imagene = imagenRepository.findById(idImagen)
                 .orElseThrow(() -> new EntityNotFoundException("Imagene no encontrada"));
 
-        // Poner todas las imagenes del usuario como no favoritas
+
         imagenRepository.findByIdUsuario_Id(imagene.getIdUsuario().getId())
                 .forEach(img ->{
                     img.setFavoritaImagen((short)2);
                     imagenRepository.save(img);
                 });
 
-        // Marcar la actual como favorita
         imagene.setFavoritaImagen((short)1);
         Imagene imageneActualizada = imagenRepository.save(imagene);
 
