@@ -6,7 +6,8 @@ import com.procol.procolombia.perfil.dtos.response.GetImagen;
 import java.util.List;
 
 public interface ImagenService {
-    GetImagen crearImagen(SaveImagen saveImagen);
+    GetImagen SubirImagen(Integer idUsuario, SaveImagenFile saveImagen);
     List<GetImagen> listarImagenesPorUsuario(Integer idUsuario);
     void eliminarImagen(Integer idImagen);
+    GetImagen marcarComoFavorita(Integer idImagen);
 }
