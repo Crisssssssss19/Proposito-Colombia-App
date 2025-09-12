@@ -1,6 +1,6 @@
 package com.procol.procolombia.perfil.services;
 
-import com.procol.procolombia.perfil.dtos.request.SaveImagen;
+import com.procol.procolombia.perfil.dtos.request.SaveImagenFile;
 import com.procol.procolombia.perfil.dtos.response.GetImagen;
 
 import java.util.List;
