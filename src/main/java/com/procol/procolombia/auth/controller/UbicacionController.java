@@ -22,14 +22,14 @@ public class UbicacionController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('Administrador', 'Empresa', 'Aspirante')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'EMPRESA', 'ASPIRANTE')")
     public ResponseEntity<ApiResponseDTO<List<UbicacionResponseDTO>>> getUbicaciones() {
         ApiResponseDTO<List<UbicacionResponseDTO>> ubicaciones = ubicacionService.listarUbicaciones();
         return ResponseEntity.status(ubicaciones.codigoEstado()).body(ubicaciones);
     }
 
     @GetMapping("/buscar")
-    @PreAuthorize("hasAnyRole('Administrador', 'Empresa', 'Aspirante')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'EMPRESA', 'ASPIRANTE')")
     public ResponseEntity<ApiResponseDTO<List<UbicacionResponseDTO>>> getAutocompletado(@RequestParam String nombre) {
         return ResponseEntity.ok(ubicacionService.autocompletarUbicaciones(nombre));
     }

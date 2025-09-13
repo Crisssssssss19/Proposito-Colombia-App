@@ -61,7 +61,7 @@ public class UserInfoService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         return acceso.getUsuario().getRoles().stream()
-                .map(rol -> "ROLE_" + rol.getNombreRol().toUpperCase())
+                .map(rol -> rol.getNombreRol().toUpperCase())
                 .toList();
     }
 

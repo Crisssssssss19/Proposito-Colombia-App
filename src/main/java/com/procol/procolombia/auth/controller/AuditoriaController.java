@@ -21,14 +21,14 @@ public class AuditoriaController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'Tecnologia')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'TECNOLOGIA')")
     public ResponseEntity<ApiResponseDTO<List<AuditoriaResponseDTO>>> getAllAuditorias() {
 
         return ResponseEntity.ok(auditoriaService.listarAuditorias());
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'Tecnologia')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'TECNOLOGIA')")
     public ResponseEntity<ApiResponseDTO<AuditoriaResponseDTO>> getAuditoria(@PathVariable Integer idAuditoria) {
         return ResponseEntity.ok(auditoriaService.obtenerAuditoriaPorId(idAuditoria));
     }

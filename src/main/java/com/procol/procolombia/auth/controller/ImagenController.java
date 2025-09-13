@@ -31,21 +31,21 @@ public class ImagenController {
     }
 
     @GetMapping("/usuario/{idUsuario}")
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'Aspirante', 'Empresa')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'ASPIRANTE', 'EMPRESA')")
     public ResponseEntity<ApiResponseDTO<ImagenResponseDTO>> getUsuario(@PathVariable Integer idUsuario) {
         ApiResponseDTO<ImagenResponseDTO> responseDTO = imagenService.imagenPerfil(idUsuario);
         return ResponseEntity.status(responseDTO.codigoEstado()).body(responseDTO);
     }
 
     @DeleteMapping("/{IdImagen}")
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', ' Aspirante')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', ' ASPIRANTE')")
     public ResponseEntity<ApiResponseDTO<String>> eliminarImagen(@PathVariable Integer IdImagen) {
         ApiResponseDTO<String> responseDTO = imagenService.eliminarImagen(IdImagen);
         return ResponseEntity.status(responseDTO.codigoEstado()).body(responseDTO);
     }
 
     @PutMapping("{idImagen}/favorita")
-    @PreAuthorize("hasAnyRole('Administrador', 'Aspirante')")
+    @PreAuthorize("hasAnyRole('Administrador', 'ASPIRANTE')")
     public ResponseEntity<ApiResponseDTO<ImagenResponseDTO>> marcarFavorita(
             @PathVariable Integer idImagen,
             @RequestParam Integer idUsuario

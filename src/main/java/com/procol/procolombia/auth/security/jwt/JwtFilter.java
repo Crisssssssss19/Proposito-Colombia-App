@@ -45,16 +45,15 @@ public class JwtFilter extends OncePerRequestFilter {
 
                     if (jwtService.isTokenValid(jwtToken)) {
                         List<String> roles = jwtService.extractRoles(jwtToken);
+                        var authorities = roles.stream()
+                                .map(SimpleGrantedAuthority::new)
+                                .toList();
 
                         UsernamePasswordAuthenticationToken authentication =
                                 new UsernamePasswordAuthenticationToken(
                                         userDetails,
                                         null,
-                                        roles.stream()
-                                                .map(String::trim)
-                                                .map(r -> r.startsWith("ROLE_") ? r : "ROLE_" + r)  // si ya tiene ROLE_, no lo duplicamos
-                                                .map(SimpleGrantedAuthority::new)
-                                                .toList()
+                                        authorities
 
                                 );
 

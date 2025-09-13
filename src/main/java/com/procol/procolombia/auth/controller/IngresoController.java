@@ -19,28 +19,28 @@ public class IngresoController {
     }
 
     @GetMapping("/usuario/{idUsuario}")
-    @PreAuthorize("hasAnyRole('Administrador', 'Aspirante')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'ASPIRANTE')")
     public ResponseEntity<ApiResponseDTO<List<IngresoResponseDTO>>> getPorUsuario(@PathVariable Integer idUsuario) {
         ApiResponseDTO<List<IngresoResponseDTO>> ingreso = ingresoService.listarIngresosPorUsuario(idUsuario);
         return ResponseEntity.status(ingreso.codigoEstado()).body(ingreso);
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('Administrador', 'Aspirante')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'ASPIRANTE')")
     public ResponseEntity<ApiResponseDTO<IngresoResponseDTO>> createIngreso(@RequestParam Integer idAcceso){
         ApiResponseDTO<IngresoResponseDTO> ingreso = ingresoService.crearIngreso(idAcceso);
         return ResponseEntity.status(ingreso.codigoEstado()).body(ingreso);
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('Administrador')")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<ApiResponseDTO<List<IngresoResponseDTO>>> listarIngresos() {
         ApiResponseDTO<List<IngresoResponseDTO>> ingresos = ingresoService.listarIngresos();
         return ResponseEntity.status(ingresos.codigoEstado()).body(ingresos);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('Administrador', 'Tecnologia')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'TECNOLOGIA')")
     public ResponseEntity<ApiResponseDTO<IngresoResponseDTO>> getIngreso(@PathVariable Integer id) {
         ApiResponseDTO<IngresoResponseDTO> ingreso = ingresoService.buscarIngresoPorId(id);
         return ResponseEntity.status(ingreso.codigoEstado()).body(ingreso);

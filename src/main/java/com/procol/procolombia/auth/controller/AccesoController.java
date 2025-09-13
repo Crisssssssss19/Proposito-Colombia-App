@@ -31,14 +31,14 @@ public class AccesoController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('Administrador')")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<ApiResponseDTO<AccesoResponseDTO>> crearAcceso(@RequestBody AccesoRequestDTO requestDTO) {
         ApiResponseDTO<AccesoResponseDTO> response = accesoService.crearAcceso(requestDTO);
         return ResponseEntity.status(response.codigoEstado()).body(response);
     }
 
     @PutMapping("/{idAcceso}")
-    @PreAuthorize("hasRole('Administrador')")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<ApiResponseDTO<AccesoResponseDTO>> editarAcceso(
             @PathVariable Integer idAcceso,
             @RequestBody AccesoRequestDTO requestDTO
@@ -48,14 +48,14 @@ public class AccesoController {
     }
 
     @DeleteMapping("/{idAcceso}")
-    @PreAuthorize("hasRole('Administrador')")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<ApiResponseDTO<String>> eliminarAcceso(@PathVariable Integer idAcceso) {
         ApiResponseDTO<String> response = accesoService.eliminarAcceso(idAcceso);
         return ResponseEntity.status(response.codigoEstado()).body(response);
     }
 
     @GetMapping("/{idAcceso}")
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'Tecnologia')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'TECNOLOGIA')")
     public ResponseEntity<ApiResponseDTO<AccesoResponseDTO>> obtenerAccesoPorId(@PathVariable Integer idAcceso) {
         ApiResponseDTO<AccesoResponseDTO> response = accesoService.obtenerAccesoPorId(idAcceso);
         return ResponseEntity.status(response.codigoEstado()).body(response);

@@ -23,7 +23,7 @@ public class RolController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('Administrador')")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<ApiResponseDTO<List<RolResponseDTO>>> listarRols() {
         ApiResponseDTO<List<RolResponseDTO>> roles = rolService.listarRols();
         return ResponseEntity.status(listarRols().getStatusCode()).body(roles);

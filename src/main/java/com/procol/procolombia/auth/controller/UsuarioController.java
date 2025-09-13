@@ -20,7 +20,7 @@ public class UsuarioController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'Tecnologia')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'TECNOLOGIA')")
     public ResponseEntity<ApiResponseDTO<List<UsuarioResponseDTO>>> getAllUsuarios() {
         ApiResponseDTO<List<UsuarioResponseDTO>> usuarios = usuarioService.listarUsuarios();
         return ResponseEntity.status(usuarios.codigoEstado()).body(usuarios);
@@ -41,7 +41,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/buscar")
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'Tecnologia', 'Empresa')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'TECNOLOGIA', 'EMPRESA')")
     public ResponseEntity<ApiResponseDTO<List<UsuarioResponseDTO>>> getAllUsuariosByNombre(@RequestParam String nombre) {
         ApiResponseDTO<List<UsuarioResponseDTO>> usuarios = usuarioService.obtenerUsuarioPorNombre(nombre);
         return ResponseEntity.status(usuarios.codigoEstado()).body(usuarios);
@@ -55,14 +55,14 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('Administrador')")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<ApiResponseDTO<String>> deleteUsuario(@PathVariable Integer id) {
         ApiResponseDTO<String> usuario = usuarioService.eliminarUsuario(id);
         return ResponseEntity.status(usuario.codigoEstado()).body(usuario);
     }
 
     @GetMapping("/{tipo}")
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'Empresa')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'EMPRESA')")
     public ResponseEntity<ApiResponseDTO<List<UsuarioResponseDTO>>> getAllUsuariosByTipo(@PathVariable Short tipo) {
         ApiResponseDTO<List<UsuarioResponseDTO>> usuariosDTO = usuarioService.obtenerUsuarioPorTipoDocumento(tipo);
         return ResponseEntity.status(usuariosDTO.codigoEstado()).body(usuariosDTO);
