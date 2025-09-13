@@ -33,9 +33,10 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager getAuthenticationManager(AuthenticationConfiguration configuration) throws Exception {
-        return configuration.getAuthenticationManager();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
     }
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtFilter jwtFilter, UserInfoService userInfoService, CorsConfigurationSource corsConfigurationSource) throws Exception {
@@ -45,12 +46,13 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(unauthorizedHandler))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/usuario/**").permitAll()
-                        .requestMatchers("/api/ingreso/**").permitAll()
+                        .requestMatchers("/api/acceso/**").permitAll()
                         .requestMatchers("/api/auditoria/**").permitAll()
-                        .requestMatchers("/api/role/**").permitAll()
+                        .requestMatchers("/api/imagen/**").permitAll()
+                        .requestMatchers("/api/ingreso/**").permitAll()
+                        .requestMatchers("/api/rol/**").permitAll()
                         .requestMatchers("/api/ubicacion/**").permitAll()
+                        .requestMatchers("/api/usuario/**").permitAll()
                         .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider(userInfoService))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

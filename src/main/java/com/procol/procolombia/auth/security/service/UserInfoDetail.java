@@ -27,7 +27,7 @@ public class UserInfoDetail implements UserDetails {
         this.uuidAcceso = acceso.getUuidAcceso() != null ? acceso.getUuidAcceso() : "XXX_UUID";
 
         this.authorities = acceso.getUsuario().getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getNombreRol()))
+                .map(role -> new SimpleGrantedAuthority("ROLE_"+role.getNombreRol()))
                 .collect(Collectors.toSet());
     }
 

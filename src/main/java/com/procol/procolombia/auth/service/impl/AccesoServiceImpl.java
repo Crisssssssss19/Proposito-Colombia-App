@@ -21,8 +21,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -64,33 +66,41 @@ public class AccesoServiceImpl implements AccesoService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ApiResponseDTO<LoginResponseDTO> login(LoginRequestDTO requestDTO) {
-        // 1. Buscar acceso por correo
-        Acceso acceso = accesoRepository.findByCorreoAcceso(requestDTO.correoAcceso())
-                .orElseThrow(() -> new RuntimeException("Credenciales inválidas"));
+        // 1️⃣ Autenticación con Spring Security
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        requestDTO.correoAcceso(),
+                        requestDTO.claveAcceso()
+                )
+        );
 
-        // 2. Validar clave
-        if (!passwordEncoder.matches(requestDTO.claveAcceso(), acceso.getClaveAcceso())) {
-            throw new RuntimeException("Credenciales inválidas");
+        if (!authentication.isAuthenticated()) {
+            throw new UsernameNotFoundException("Credenciales inválidas");
         }
+        // 3️⃣ Obtener roles del usuario autenticado
+        List<String> roles = userInfoService.getUserRoles(requestDTO.correoAcceso());
 
+        // 2️⃣ Generar token JWT
+        String token = jwtService.generateToken(requestDTO.correoAcceso(), roles);
+
+        // 4️⃣ Obtener foto de perfil favorita (si existe)
+        Acceso acceso = accesoRepository.findByCorreoAcceso(requestDTO.correoAcceso())
+                .orElseThrow(() -> new AccesoNotFoundException("Acceso no encontrado"));
         Usuario usuario = acceso.getUsuario();
-
-        // 3. Generar token JWT
-        String token = jwtService.generateToken(acceso.getCorreoAcceso());
-
-        // 4. Buscar imagen favorita (o devolver "XXX_IMG" si no hay)
         String fotoBase64 = usuario.getImagenes().stream()
                 .filter(img -> img.getFavoritaImagen() == 1)
                 .map(Imagene::getNombrePrivadoImagen)
                 .findFirst()
                 .orElse("XXX_IMG");
 
-        // 5. Armar respuesta
+        // 5️⃣ Armar respuesta DTO
         LoginResponseDTO loginResponse = new LoginResponseDTO(
                 token,
                 fotoBase64,
                 jwtService.getExpirationTime()
+
         );
 
         return new ApiResponseDTO<>(
@@ -100,6 +110,7 @@ public class AccesoServiceImpl implements AccesoService {
                 LocalDateTime.now().toString()
         );
     }
+
 
 
     @Override

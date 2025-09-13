@@ -1,6 +1,7 @@
 package com.procol.procolombia.auth.repositories;
 
 import com.procol.procolombia.auth.entities.Acceso;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,6 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface AccesoRepository extends JpaRepository<Acceso, Integer> {
+    @EntityGraph(attributePaths = "usuario")
     Optional<Acceso> findByCorreoAcceso(String correoAcceso);
     Optional<Acceso> findByTelefonoAcceso(String telefonoAcceso);
     Optional<Acceso> findByUuidAcceso(String uuidAcceso);

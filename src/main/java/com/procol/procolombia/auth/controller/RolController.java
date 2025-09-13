@@ -5,6 +5,7 @@ import com.procol.procolombia.auth.dto.Response.RolResponseDTO;
 import com.procol.procolombia.auth.service.RolService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +23,7 @@ public class RolController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<ApiResponseDTO<List<RolResponseDTO>>> listarRols() {
         ApiResponseDTO<List<RolResponseDTO>> roles = rolService.listarRols();
         return ResponseEntity.status(listarRols().getStatusCode()).body(roles);

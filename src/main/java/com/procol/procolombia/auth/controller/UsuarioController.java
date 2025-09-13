@@ -6,6 +6,7 @@ import com.procol.procolombia.auth.dto.Response.UsuarioResponseDTO;
 import com.procol.procolombia.auth.service.UsuarioService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,38 +20,51 @@ public class UsuarioController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'Tecnologia')")
     public ResponseEntity<ApiResponseDTO<List<UsuarioResponseDTO>>> getAllUsuarios() {
         ApiResponseDTO<List<UsuarioResponseDTO>> usuarios = usuarioService.listarUsuarios();
         return ResponseEntity.status(usuarios.codigoEstado()).body(usuarios);
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<ApiResponseDTO<UsuarioResponseDTO>> getUsuario(@PathVariable Integer idUsuario) {
         ApiResponseDTO<UsuarioResponseDTO> usuario = usuarioService.obtenerUsuarioPorId(idUsuario);
         return ResponseEntity.status(usuario.codigoEstado()).body(usuario);
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<ApiResponseDTO<UsuarioResponseDTO>> createUsuario(@RequestBody UsuarioRequestDTO usuarioRequest) {
         ApiResponseDTO<UsuarioResponseDTO> usuario = usuarioService.crearUsuario(usuarioRequest);
         return ResponseEntity.status(usuario.codigoEstado()).body(usuario);
     }
 
     @GetMapping("/buscar")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'Tecnologia', 'Empresa')")
     public ResponseEntity<ApiResponseDTO<List<UsuarioResponseDTO>>> getAllUsuariosByNombre(@RequestParam String nombre) {
         ApiResponseDTO<List<UsuarioResponseDTO>> usuarios = usuarioService.obtenerUsuarioPorNombre(nombre);
         return ResponseEntity.status(usuarios.codigoEstado()).body(usuarios);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<ApiResponseDTO<UsuarioResponseDTO>> updateUsuario(@PathVariable Integer id, @RequestBody UsuarioRequestDTO usuarioRequest) {
         ApiResponseDTO<UsuarioResponseDTO> usuario = usuarioService.editarUsuario(id, usuarioRequest);
         return ResponseEntity.status(usuario.codigoEstado()).body(usuario);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<ApiResponseDTO<String>> deleteUsuario(@PathVariable Integer id) {
         ApiResponseDTO<String> usuario = usuarioService.eliminarUsuario(id);
         return ResponseEntity.status(usuario.codigoEstado()).body(usuario);
+    }
+
+    @GetMapping("/{tipo}")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'Empresa')")
+    public ResponseEntity<ApiResponseDTO<List<UsuarioResponseDTO>>> getAllUsuariosByTipo(@PathVariable Short tipo) {
+        ApiResponseDTO<List<UsuarioResponseDTO>> usuariosDTO = usuarioService.obtenerUsuarioPorTipoDocumento(tipo);
+        return ResponseEntity.status(usuariosDTO.codigoEstado()).body(usuariosDTO);
     }
 }
