@@ -1,5 +1,6 @@
 package com.procol.procolombia.postulacion.services.archivo;
 
+import com.procol.procolombia.abtract.AbstractService;
 import com.procol.procolombia.auth.entities.Usuario;
 import com.procol.procolombia.auth.repositories.UsuarioRepository;
 import com.procol.procolombia.postulacion.dto.ArchivoDto;
@@ -7,6 +8,7 @@ import com.procol.procolombia.postulacion.entities.Archivo;
 import com.procol.procolombia.postulacion.mappers.ArchivoMapper;
 import com.procol.procolombia.postulacion.repositories.ArchivoRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,15 +16,22 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class ArchivoServiceImpl implements ArchivoService{
+public class ArchivoServiceImpl extends AbstractService<ArchivoDto, Integer> implements ArchivoService  {
 
     private final ArchivoRepository archivoRepository;
     private final UsuarioRepository usuarioRepository;
+
+    @Override
+    protected JpaRepository<ArchivoDto, Integer> getRepository() {
+        return archivoRepository;
+    }
 
     public ArchivoServiceImpl(ArchivoRepository archivoRepository, UsuarioRepository usuarioRepository) {
         this.archivoRepository = archivoRepository;
         this.usuarioRepository = usuarioRepository;
     }
+
+
 
     @Override
     public List<ArchivoDto> findAll() {

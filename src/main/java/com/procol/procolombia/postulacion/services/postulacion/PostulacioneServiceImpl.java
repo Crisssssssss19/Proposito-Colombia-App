@@ -1,21 +1,22 @@
 package com.procol.procolombia.postulacion.services.postulacion;
 
-import com.procol.procolombia.postulacion.dto.PostulacioneDto;
-import com.procol.procolombia.postulacion.entities.Postulacione;
-import com.procol.procolombia.postulacion.mappers.PostulacioneMapper;
-import com.procol.procolombia.postulacion.repositories.PostulacioneRepository;
-import com.procol.procolombia.auth.entities.Usuario;
-import com.procol.procolombia.auth.repositories.UsuarioRepository;
-import com.procol.procolombia.vacante.entities.Vacante;
-import com.procol.procolombia.vacante.repositories.VacanteRepository;
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
+import com.procol.procolombia.auth.entities.Usuario;
+import com.procol.procolombia.auth.repositories.UsuarioRepository;
+import com.procol.procolombia.postulacion.dto.PostulacioneDto;
+import com.procol.procolombia.postulacion.entities.Postulacione;
+import com.procol.procolombia.postulacion.mappers.PostulacioneMapper;
+import com.procol.procolombia.postulacion.repositories.PostulacioneRepository;
+import com.procol.procolombia.vacante.entities.Vacante;
+import com.procol.procolombia.vacante.repositories.VacanteRepository;
 
 @Service
 @Transactional
@@ -44,9 +45,18 @@ public class PostulacioneServiceImpl implements PostulacioneService {
     }
 
     public PostulacioneDto save(PostulacioneDto postulacioneDto) {
-        Postulacione postulacion = PostulacioneMapper.toEntity(postulacioneDto);
+        if (postulacioneDto.getIdUsuario() != null && postulacioneDto.getIdVacante() != null) {
+        boolean exists = postulacioneRepository.existsByIdUsuario_IdAndIdVacante_Id(
+            postulacioneDto.getIdUsuario(),
+            postulacioneDto.getIdVacante()
+        );
+        if (exists) {
+            throw new RuntimeException("El usuario ya está postulado a esta vacante.");
+        }
+    }
 
-        // Establecer las relaciones
+    Postulacione postulacion = PostulacioneMapper.toEntity(postulacioneDto);
+
         if (postulacioneDto.getIdUsuario() != null) {
             Usuario usuario = usuarioRepository.findById(postulacioneDto.getIdUsuario())
                     .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + postulacioneDto.getIdUsuario()));

@@ -21,11 +21,11 @@ import java.util.Optional;
 @Transactional
 public class MensajeServiceImpl implements MensajeService {
 
-    private MensajeRepository mensajeRepository;
+    private final MensajeRepository mensajeRepository;
 
-    private PostulacioneRepository postulacioneRepository;
+    private final PostulacioneRepository postulacioneRepository;
 
-    private UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
 
     public MensajeServiceImpl(MensajeRepository mensajeRepository, PostulacioneRepository postulacioneRepository, UsuarioRepository usuarioRepository) {
         this.mensajeRepository = mensajeRepository;

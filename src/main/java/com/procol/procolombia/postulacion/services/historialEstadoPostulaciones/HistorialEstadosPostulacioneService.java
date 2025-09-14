@@ -9,16 +9,16 @@ import java.util.List;
 import java.util.Optional;
 
 public interface HistorialEstadosPostulacioneService {
-    public List<HistorialEstadosPostulacioneDto> findAll();
-    public Optional<HistorialEstadosPostulacioneDto> findById(Integer id);
-    public HistorialEstadosPostulacioneDto save(HistorialEstadosPostulacioneDto historialDto);
-    public HistorialEstadosPostulacioneDto update(Integer id, HistorialEstadosPostulacioneDto historialDto);
-    public void deleteById(Integer id);
-    public List<HistorialEstadosPostulacioneDto> findByPostulacion(Integer idPostulacion);
-    public List<HistorialEstadosPostulacioneDto> findByEstado(Integer idEstado);
-    public List<HistorialEstadosPostulacioneDto> findByPostulacionOrdenado(Integer postulacionId);
-    public Page<HistorialEstadosPostulacioneDto> findByFechaRange(Instant fechaInicio, Instant fechaFin, Pageable pageable);
-    public long countByPostulacion(Integer postulacionId);
-    public List<HistorialEstadosPostulacioneDto> searchByDetalle(String detalle);
-    public HistorialEstadosPostulacioneDto crearHistorial(Integer postulacionId, Integer estadoId, String detalle);
+    List<HistorialEstadosPostulacioneDto> findAll();
+    Optional<HistorialEstadosPostulacioneDto> findById(Integer id);
+    HistorialEstadosPostulacioneDto save(HistorialEstadosPostulacioneDto historialDto);
+    HistorialEstadosPostulacioneDto update(Integer id, HistorialEstadosPostulacioneDto historialDto);
+    void deleteById(Integer id);
+    List<HistorialEstadosPostulacioneDto> findByPostulacion(Integer idPostulacion);
+    List<HistorialEstadosPostulacioneDto> findByEstado(Integer idEstado);
+    List<HistorialEstadosPostulacioneDto> findByPostulacionOrdenado(Integer postulacionId);
+    Page<HistorialEstadosPostulacioneDto> findByFechaRange(Instant fechaInicio, Instant fechaFin, Pageable pageable);
+    long countByPostulacion(Integer postulacionId);
+    List<HistorialEstadosPostulacioneDto> searchByDetalle(String detalle);
+    HistorialEstadosPostulacioneDto crearHistorial(Integer postulacionId, Integer estadoId, String detalle);
 }
