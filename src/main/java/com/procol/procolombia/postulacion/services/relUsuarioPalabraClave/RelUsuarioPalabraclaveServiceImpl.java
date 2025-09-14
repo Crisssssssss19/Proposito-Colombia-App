@@ -1,5 +1,6 @@
 package com.procol.procolombia.postulacion.services.relUsuarioPalabraClave;
 
+import com.procol.procolombia.abtract.AbstractService;
 import com.procol.procolombia.postulacion.dto.RelUsuarioPalabraclaveDto;
 import com.procol.procolombia.postulacion.entities.RelUsuarioPalabraclave;
 import com.procol.procolombia.postulacion.entities.RelUsuarioPalabraclaveId;
@@ -9,69 +10,79 @@ import com.procol.procolombia.auth.entities.Usuario;
 import com.procol.procolombia.auth.repositories.UsuarioRepository;
 import com.procol.procolombia.vacante.entities.PalabrasClave;
 import com.procol.procolombia.vacante.repositories.PalabrasClaveRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
-public class RelUsuarioPalabraclaveServiceImpl implements RelUsuarioPalabraclaveService {
-
+public class RelUsuarioPalabraclaveServiceImpl extends AbstractService<RelUsuarioPalabraclave,RelUsuarioPalabraclaveDto,RelUsuarioPalabraclaveId> implements RelUsuarioPalabraclaveService {
     private final RelUsuarioPalabraclaveRepository relUsuarioPalabraclaveRepository;
-
     private final UsuarioRepository usuarioRepository;
-
     private final PalabrasClaveRepository palabrasClaveRepository;
 
-    public RelUsuarioPalabraclaveServiceImpl(RelUsuarioPalabraclaveRepository relUsuarioPalabraclaveRepository, UsuarioRepository usuarioRepository, PalabrasClaveRepository palabrasClaveRepository) {
+    public RelUsuarioPalabraclaveServiceImpl(RelUsuarioPalabraclaveRepository relUsuarioPalabraclaveRepository,
+                                             UsuarioRepository usuarioRepository,
+                                             PalabrasClaveRepository palabrasClaveRepository) {
         this.relUsuarioPalabraclaveRepository = relUsuarioPalabraclaveRepository;
         this.usuarioRepository = usuarioRepository;
         this.palabrasClaveRepository = palabrasClaveRepository;
     }
 
     @Override
-    public List<RelUsuarioPalabraclaveDto> findAll() {
-        List<RelUsuarioPalabraclave> relaciones = relUsuarioPalabraclaveRepository.findAll();
-        return RelUsuarioPalabraclaveMapper.toDtoList(relaciones);
+    protected JpaRepository<RelUsuarioPalabraclave, RelUsuarioPalabraclaveId> getEntityRepository() {
+        return relUsuarioPalabraclaveRepository;
     }
 
     @Override
-    public Optional<RelUsuarioPalabraclaveDto> findById(RelUsuarioPalabraclaveId id) {
-        Optional<RelUsuarioPalabraclave> relacion = relUsuarioPalabraclaveRepository.findById(id);
-        return relacion.map(RelUsuarioPalabraclaveMapper::toDto);
+    protected RelUsuarioPalabraclaveDto mapToDto(RelUsuarioPalabraclave entity) {
+        return RelUsuarioPalabraclaveMapper.toDto(entity);
     }
 
     @Override
-    public RelUsuarioPalabraclaveDto save(RelUsuarioPalabraclaveDto relUsuarioPalabraclaveDto) {
-        RelUsuarioPalabraclave relacion = RelUsuarioPalabraclaveMapper.toEntity(relUsuarioPalabraclaveDto);
+    protected RelUsuarioPalabraclave mapToEntity(RelUsuarioPalabraclaveDto dto) {
+        RelUsuarioPalabraclave relacion = RelUsuarioPalabraclaveMapper.toEntity(dto);
 
         RelUsuarioPalabraclaveId id = new RelUsuarioPalabraclaveId();
-        id.setIdUsuario(relUsuarioPalabraclaveDto.getIdUsuario());
-        id.setIdPalabraClave(relUsuarioPalabraclaveDto.getIdPalabraClave());
+        id.setIdUsuario(dto.getIdUsuario());
+        id.setIdPalabraClave(dto.getIdPalabraClave());
         relacion.setId(id);
 
-        if (relUsuarioPalabraclaveDto.getIdUsuario() != null) {
-            Usuario usuario = usuarioRepository.findById(relUsuarioPalabraclaveDto.getIdUsuario())
-                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + relUsuarioPalabraclaveDto.getIdUsuario()));
+        if (dto.getIdUsuario() != null) {
+            Usuario usuario = usuarioRepository.findById(dto.getIdUsuario())
+                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + dto.getIdUsuario()));
             relacion.setIdUsuario(usuario);
         }
 
-        if (relUsuarioPalabraclaveDto.getIdPalabraClave() != null) {
-            PalabrasClave palabraClave = palabrasClaveRepository.findById(relUsuarioPalabraclaveDto.getIdPalabraClave())
-                    .orElseThrow(() -> new RuntimeException("Palabra clave no encontrada con id: " + relUsuarioPalabraclaveDto.getIdPalabraClave()));
+        if (dto.getIdPalabraClave() != null) {
+            PalabrasClave palabraClave = palabrasClaveRepository.findById(dto.getIdPalabraClave())
+                    .orElseThrow(() -> new RuntimeException("Palabra clave no encontrada con id: " + dto.getIdPalabraClave()));
             relacion.setIdPalabraClave(palabraClave);
         }
 
-        RelUsuarioPalabraclave savedRelacion = relUsuarioPalabraclaveRepository.save(relacion);
-        return RelUsuarioPalabraclaveMapper.toDto(savedRelacion);
+        return relacion;
     }
 
     @Override
-    public void deleteById(RelUsuarioPalabraclaveId id) {
-        relUsuarioPalabraclaveRepository.deleteById(id);
+    protected List<RelUsuarioPalabraclaveDto> mapToDtoList(List<RelUsuarioPalabraclave> entities) {
+        return RelUsuarioPalabraclaveMapper.toDtoList(entities);
+    }
+
+    @Override
+    protected void updateEntityFromDto(RelUsuarioPalabraclave entity, RelUsuarioPalabraclaveDto dto) {
+
+        if (dto.getIdUsuario() != null) {
+            Usuario usuario = usuarioRepository.findById(dto.getIdUsuario())
+                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + dto.getIdUsuario()));
+            entity.setIdUsuario(usuario);
+        }
+
+        if (dto.getIdPalabraClave() != null) {
+            PalabrasClave palabraClave = palabrasClaveRepository.findById(dto.getIdPalabraClave())
+                    .orElseThrow(() -> new RuntimeException("Palabra clave no encontrada con id: " + dto.getIdPalabraClave()));
+            entity.setIdPalabraClave(palabraClave);
+        }
     }
 
     @Override
@@ -82,13 +93,13 @@ public class RelUsuarioPalabraclaveServiceImpl implements RelUsuarioPalabraclave
     @Override
     public List<RelUsuarioPalabraclaveDto> findByUsuario(Integer idUsuario) {
         List<RelUsuarioPalabraclave> relaciones = relUsuarioPalabraclaveRepository.findByIdUsuario_Id(idUsuario);
-        return RelUsuarioPalabraclaveMapper.toDtoList(relaciones);
+        return mapToDtoList(relaciones);
     }
 
     @Override
     public List<RelUsuarioPalabraclaveDto> findByPalabraClave(Integer idPalabraClave) {
         List<RelUsuarioPalabraclave> relaciones = relUsuarioPalabraclaveRepository.findByIdPalabraClave_Id(idPalabraClave);
-        return RelUsuarioPalabraclaveMapper.toDtoList(relaciones);
+        return mapToDtoList(relaciones);
     }
 
     @Override

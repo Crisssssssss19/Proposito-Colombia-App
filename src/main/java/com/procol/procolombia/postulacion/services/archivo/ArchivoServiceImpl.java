@@ -12,77 +12,60 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
-public class ArchivoServiceImpl extends AbstractService<ArchivoDto, Integer> implements ArchivoService  {
+public class ArchivoServiceImpl extends AbstractService<Archivo, ArchivoDto, Integer> implements ArchivoService {
 
     private final ArchivoRepository archivoRepository;
     private final UsuarioRepository usuarioRepository;
-
-    @Override
-    protected JpaRepository<ArchivoDto, Integer> getRepository() {
-        return archivoRepository;
-    }
 
     public ArchivoServiceImpl(ArchivoRepository archivoRepository, UsuarioRepository usuarioRepository) {
         this.archivoRepository = archivoRepository;
         this.usuarioRepository = usuarioRepository;
     }
 
-
-
     @Override
-    public List<ArchivoDto> findAll() {
-        List<Archivo> archivos = archivoRepository.findAll();
-        return ArchivoMapper.toDtoList(archivos);
+    protected JpaRepository<Archivo, Integer> getEntityRepository() {
+        return archivoRepository;
     }
 
     @Override
-    public Optional<ArchivoDto> findById(Integer id) {
-        Optional<Archivo> archivo = archivoRepository.findById(id);
-        return archivo.map(ArchivoMapper::toDto);
+    protected ArchivoDto mapToDto(Archivo entity) {
+        return ArchivoMapper.toDto(entity);
     }
 
     @Override
-    public ArchivoDto save(ArchivoDto archivoDto) {
-        Archivo archivo = ArchivoMapper.toEntity(archivoDto);
-
-        if (archivoDto.getIdUsuario() != null) {
-            Usuario usuario = usuarioRepository.findById(archivoDto.getIdUsuario())
-                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + archivoDto.getIdUsuario()));
+    protected Archivo mapToEntity(ArchivoDto dto) {
+        Archivo archivo = ArchivoMapper.toEntity(dto);
+        
+        if (dto.getIdUsuario() != null) {
+            Usuario usuario = usuarioRepository.findById(dto.getIdUsuario())
+                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + dto.getIdUsuario()));
             archivo.setIdUsuario(usuario);
         }
-
-        Archivo savedArchivo = archivoRepository.save(archivo);
-        return ArchivoMapper.toDto(savedArchivo);
+        
+        return archivo;
     }
 
     @Override
-    public ArchivoDto update(Integer id, ArchivoDto archivoDto) {
-        return archivoRepository.findById(id)
-                .map(existingArchivo -> {
-                    existingArchivo.setNombrePublicoArchivo(archivoDto.getNombrePublicoArchivo());
-                    existingArchivo.setNombreArchivoArchivo(archivoDto.getNombreArchivoArchivo());
-                    existingArchivo.setTipoArchivo(archivoDto.getTipoArchivo());
-                    existingArchivo.setTamanioArchivo(archivoDto.getTamanioArchivo());
-                    existingArchivo.setGrupoArchivo(archivoDto.getGrupoArchivo());
-
-                    if (archivoDto.getIdUsuario() != null) {
-                        Usuario usuario = usuarioRepository.findById(archivoDto.getIdUsuario())
-                                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + archivoDto.getIdUsuario()));
-                        existingArchivo.setIdUsuario(usuario);
-                    }
-
-                    return ArchivoMapper.toDto(archivoRepository.save(existingArchivo));
-                })
-                .orElseThrow(() -> new RuntimeException("Archivo no encontrado con id: " + id));
+    protected List<ArchivoDto> mapToDtoList(List<Archivo> entities) {
+        return ArchivoMapper.toDtoList(entities);
     }
 
     @Override
-    public void deleteById(Integer id) {
-        archivoRepository.deleteById(id);
+    protected void updateEntityFromDto(Archivo entity, ArchivoDto dto) {
+        entity.setNombrePublicoArchivo(dto.getNombrePublicoArchivo());
+        entity.setNombreArchivoArchivo(dto.getNombreArchivoArchivo());
+        entity.setTipoArchivo(dto.getTipoArchivo());
+        entity.setTamanioArchivo(dto.getTamanioArchivo());
+        entity.setGrupoArchivo(dto.getGrupoArchivo());
+
+        if (dto.getIdUsuario() != null) {
+            Usuario usuario = usuarioRepository.findById(dto.getIdUsuario())
+                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + dto.getIdUsuario()));
+            entity.setIdUsuario(usuario);
+        }
     }
 
     @Override

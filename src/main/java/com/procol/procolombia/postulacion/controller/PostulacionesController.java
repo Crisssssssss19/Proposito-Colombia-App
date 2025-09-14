@@ -3,7 +3,6 @@ package com.procol.procolombia.postulacion.controller;
 import com.procol.procolombia.postulacion.dto.PostulacioneDto;
 import com.procol.procolombia.postulacion.services.postulacion.PostulacioneServiceImpl;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;

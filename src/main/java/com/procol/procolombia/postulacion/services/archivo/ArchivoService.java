@@ -5,11 +5,6 @@ import com.procol.procolombia.postulacion.dto.ArchivoDto;
 import java.util.List;
 
 public interface ArchivoService {
-    //List<ArchivoDto> findAll();
-    //Optional<ArchivoDto> findById(Integer id);
-    //ArchivoDto save(ArchivoDto archivoDto);
-    //ArchivoDto update(Integer id, ArchivoDto archivoDto);
-    //void deleteById(Integer id);
     List<ArchivoDto> findByUsuario(Integer idUsuario);
     List<ArchivoDto> findByGrupoArchivo(Short grupoArchivo);
     List<ArchivoDto> findByTipoArchivo(String tipoArchivo);

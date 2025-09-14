@@ -6,11 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface EstadosPostulacionesServices {
-    List<EstadosPostulacioneDto> findAll();
-    Optional<EstadosPostulacioneDto> findById(Integer id) ;
-    EstadosPostulacioneDto save(EstadosPostulacioneDto estadosPostulacioneDto);
-    EstadosPostulacioneDto update(Integer id, EstadosPostulacioneDto estadosPostulacioneDto);
-    void deleteById(Integer id);
     Optional<EstadosPostulacioneDto> findByNombre(String nombreEstado);
     List<EstadosPostulacioneDto> findAllOrderByOrden();
     Optional<EstadosPostulacioneDto> findByOrden(Short orden);

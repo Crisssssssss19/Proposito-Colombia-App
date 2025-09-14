@@ -8,11 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PostulacioneService {
-    List<PostulacioneDto> findAll();
-    Optional<PostulacioneDto> findById(Integer id);
-    PostulacioneDto save(PostulacioneDto postulacioneDto);
-    PostulacioneDto update(Integer id, PostulacioneDto postulacioneDto);
-    void deleteById(Integer id);
     List<PostulacioneDto> findByUsuario(Integer idUsuario);
     List<PostulacioneDto> findByVacante(Integer idVacante);
     List<PostulacioneDto> findByEstado(Short estadoPostulacion);
