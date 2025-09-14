@@ -8,6 +8,5 @@ public record RelUsuarioEmpresaDto(
     RelUsuarioEmpresaId id,
     Integer idUsuario,
     Integer idEmpresa,
-    Short permisoRelUsuarioEmpresa,
-    Set<Integer> vacanteIds
+    Short permisoRelUsuarioEmpresa
 ){}

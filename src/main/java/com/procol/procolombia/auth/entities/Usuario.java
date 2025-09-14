@@ -77,6 +77,32 @@ public class Usuario {
     @ManyToMany(mappedBy = "usuarios")
     private Set<Role> roles = new LinkedHashSet<>();
 
+    public Usuario(Integer id, Short tipoDocumentoUsuario, String documentoUsuario, String apellidosUsuario, String nombresUsuario, Short estadoUsuario, Acceso acceso, Set<Archivo> archivos, Set<Imagene> imagenes, Set<Interes> interes, Set<Mensaje> mensajes, Ubicacione idUbicacion, Set<Postulacione> postulaciones, Set<PalabraClave> palabraClaves, Set<RelUsuarioEmpresa> relUsuarioEmpresas, Set<Role> roles) {
+        this.id = id;
+        this.tipoDocumentoUsuario = tipoDocumentoUsuario;
+        this.documentoUsuario = documentoUsuario;
+        this.apellidosUsuario = apellidosUsuario;
+        this.nombresUsuario = nombresUsuario;
+        this.estadoUsuario = estadoUsuario;
+        this.acceso = acceso;
+        this.archivos = archivos;
+        this.imagenes = imagenes;
+        this.interes = interes;
+        this.mensajes = mensajes;
+        this.idUbicacion = idUbicacion;
+        this.postulaciones = postulaciones;
+        this.palabraClaves = palabraClaves;
+        this.relUsuarioEmpresas = relUsuarioEmpresas;
+        this.roles = roles;
+    }
+
+    public Usuario(Integer id, String s) {
+    }
+
+    public Usuario() {
+
+    }
+
     public Integer getId() {
         return id;
     }
@@ -189,11 +215,11 @@ public class Usuario {
         this.palabraClaves = palabraClaves;
     }
 
-    public Set<RelUsuarioEmpresa> getRelUsuariosEmpresas() {
+    public Set<RelUsuarioEmpresa> getRelUsuarioEmpresas() {
         return relUsuarioEmpresas;
     }
 
-    public void setRelUsuariosEmpresas(Set<RelUsuarioEmpresa> relUsuarioEmpresas) {
+    public void setRelUsuarioEmpresas(Set<RelUsuarioEmpresa> relUsuarioEmpresas) {
         this.relUsuarioEmpresas = relUsuarioEmpresas;
     }
 

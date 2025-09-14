@@ -11,7 +11,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "relUsuariosEmpresas")
+@Table(name = "rel_usuario_empresas")
 public class RelUsuarioEmpresa {
 
     @EmbeddedId
@@ -26,15 +26,15 @@ public class RelUsuarioEmpresa {
     @MapsId("idEmpresa")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "idEmpresa", nullable = false)
+    @JoinColumn(name = "id_empresa", nullable = false)
     private Empresa idEmpresa;
 
     @NotNull
     @ColumnDefault("2")
-    @Column(name = "permisoRelUsuarioEmpresa", nullable = false)
+    @Column(name = "permiso_rel_usuario_empresa", nullable = false)
     private Short permisoRelUsuarioEmpresa;
 
-    @OneToMany(mappedBy = "relUsuariosEmpresas")
+    @OneToMany(mappedBy = "relUsuarioEmpresas")
     private Set<Vacante> vacantes = new LinkedHashSet<>();
 
     public RelUsuarioEmpresaId getId() {

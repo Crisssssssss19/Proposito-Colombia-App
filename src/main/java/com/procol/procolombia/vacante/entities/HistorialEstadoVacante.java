@@ -13,23 +13,23 @@ public class HistorialEstadoVacante {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idHistorialEstadoVacante", nullable = false)
+    @Column(name = "id_historial_estado_vacante", nullable = false)
     private Integer id;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "idvacante", nullable = false)
+    @JoinColumn(name = "id_vacante", nullable = false)
     private Vacante idVacante;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "idEstadoVacante", nullable = false)
+    @JoinColumn(name = "id_estado_vacante", nullable = false)
     private EstadoVacante idEstadoVacante;
 
     @NotNull
-    @Column(name = "fechaHistorialEstadoVacante", nullable = false)
+    @Column(name = "fecha_historial_estado_vacante", nullable = false)
     private Instant fechaHistorialEstadoVacante;
 
     public Integer getId() {

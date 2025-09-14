@@ -114,7 +114,7 @@ public class UsuarioDto implements Serializable {
         return palabrasClaveIds;
     }
 
-    public Set<RelUsuarioEmpresaId> getRelUsuariosEmpresaIds() {
+    public Set<RelUsuarioEmpresaId> getRelUsuarioEmpresaIds() {
         return relUsuarioEmpresaIds;
     }
 

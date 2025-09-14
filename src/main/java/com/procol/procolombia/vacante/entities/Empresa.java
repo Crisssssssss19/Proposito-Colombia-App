@@ -14,28 +14,28 @@ import java.util.Set;
 public class Empresa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idEmpresa", nullable = false)
+    @Column(name = "id_empresa", nullable = false)
     private Integer id;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "idTipoEmpresa", nullable = false)
+    @JoinColumn(name = "id_tipo_empresa", nullable = false)
     private TipoEmpresa idTipoEmpresa;
 
     @Size(max = 200)
     @NotNull
-    @Column(name = "nombreEmpresa", nullable = false, length = 200)
+    @Column(name = "nombre_empresa", nullable = false, length = 200)
     private String nombreEmpresa;
 
     @Size(max = 200)
     @NotNull
-    @Column(name = "direccionEmpresa", nullable = false, length = 200)
+    @Column(name = "direccion_empresa", nullable = false, length = 200)
     private String direccionEmpresa;
 
     @Size(max = 200)
     @NotNull
-    @Column(name = "telefonoEmpresa", nullable = false, length = 200)
+    @Column(name = "telefono_empresa", nullable = false, length = 200)
     private String telefonoEmpresa;
 
     @OneToMany(mappedBy = "idEmpresa")
@@ -92,11 +92,11 @@ public class Empresa {
         this.interes = interes;
     }
 
-    public Set<RelUsuarioEmpresa> getRelUsuariosEmpresas() {
+    public Set<RelUsuarioEmpresa> getRelUsuarioEmpresas() {
         return relUsuarioEmpresas;
     }
 
-    public void setRelUsuariosEmpresas(Set<RelUsuarioEmpresa> relUsuarioEmpresas) {
+    public void setRelUsuarioEmpresas(Set<RelUsuarioEmpresa> relUsuarioEmpresas) {
         this.relUsuarioEmpresas = relUsuarioEmpresas;
     }
     public Empresa() {

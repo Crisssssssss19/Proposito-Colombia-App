@@ -9,21 +9,21 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "tiposDeEmpresas")
+@Table(name = "tipos_de_empresas")
 public class TipoEmpresa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idTipoEmpresa", nullable = false)
+    @Column(name = "id_tipo_empresa", nullable = false)
     private Integer id;
 
     @Size(max = 150)
     @NotNull
-    @Column(name = "nombreTipoEmpresa", nullable = false, length = 150)
+    @Column(name = "nombre_tipo_empresa", nullable = false, length = 150)
     private String nombreTipoEmpresa;
 
     @NotNull
     @ColumnDefault("1")
-    @Column(name = "estadoTipoEmpresa", nullable = false)
+    @Column(name = "estado_tipo_empresa", nullable = false)
     private Short estadoTipoEmpresa;
 
     @OneToMany(mappedBy = "idTipoEmpresa")

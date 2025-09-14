@@ -6,15 +6,18 @@ import com.procol.procolombia.vacante.entities.TipoEmpresa;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public interface EmpresaMapper {
 
     @Mapping(source = "idTipoEmpresa.id", target = "idTipoEmpresa")
+    @Mapping(target = "interes", ignore = true)
+    @Mapping(target = "relUsuarioEmpresa", ignore = true)
     EmpresaDto toDto(Empresa empresa);
 
     @Mapping(source = "idTipoEmpresa", target = "idTipoEmpresa", qualifiedByName = "mapTipoEmpresa")
+    @Mapping(target = "intereses", ignore = true)
+    @Mapping(target = "relUsuarioEmpresas", ignore = true)
     Empresa toEntity(EmpresaDto dto);
 
     @Named("mapTipoEmpresa")

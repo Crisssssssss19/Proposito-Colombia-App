@@ -14,11 +14,11 @@ public class RelUsuarioEmpresaId implements Serializable {
     private static final long serialVersionUID = -5996370328529538837L;
 
     @NotNull
-    @Column(name = "idUsuario", nullable = false)
+    @Column(name = "id_usuario", nullable = false)
     private Integer idUsuario;
 
     @NotNull
-    @Column(name = "idEmpresa", nullable = false)
+    @Column(name = "id_empresa", nullable = false)
     private Integer idEmpresa;
 
     public Integer getIdUsuario() {

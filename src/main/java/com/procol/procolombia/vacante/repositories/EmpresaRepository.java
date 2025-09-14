@@ -14,7 +14,8 @@ import java.util.List;
 @Repository
 public interface EmpresaRepository extends JpaRepository<Empresa, Integer> {
 
-  Page<Empresa> findByNombreContainingIgnoreCase(String filtro, Pageable pageable);
-  List<Empresa> findByVacantesId(Integer vacanteId);
+  Page<Empresa> findBynombreEmpresaContainingIgnoreCase(String filtro, Pageable pageable);
+  @Query("SELECT e FROM Empresa e WHERE e.idTipoEmpresa.id = :idTipoEmpresa")
+  List<Empresa> findEmpresasByTipoEmpresaId(@Param("idTipoEmpresa") Integer idTipoEmpresa);
 
 }

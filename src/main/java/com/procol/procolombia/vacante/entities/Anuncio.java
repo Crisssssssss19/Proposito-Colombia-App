@@ -9,35 +9,33 @@ import org.hibernate.annotations.OnDeleteAction;
 @Entity
 @Table(name = "anuncios")
 public class Anuncio {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idVacante", nullable = false)
+    @Id 
+    @Column(name = "id_vacante", nullable = false)
     private Integer id;
 
-    @MapsId
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "idVacante", nullable = false)
+    @MapsId
+    @JoinColumn(name = "id_vacante", nullable = false)
     private Vacante idVacante;
 
     @Size(max = 200)
     @NotNull
-    @Column(name = "nombrePublicoAnuncio", nullable = false, length = 200)
+    @Column(name = "nombre_publico_anuncio", nullable = false, length = 200)
     private String nombrePublicoAnuncio;
 
     @Size(max = 200)
     @NotNull
-    @Column(name = "nombrePrivadoAnuncio", nullable = false, length = 200)
+    @Column(name = "nombre_privado_anuncio", nullable = false, length = 200)
     private String nombrePrivadoAnuncio;
 
     @Size(max = 50)
     @NotNull
-    @Column(name = "tipoAnuncio", nullable = false, length = 50)
+    @Column(name = "tipo_anuncio", nullable = false, length = 50)
     private String tipoAnuncio;
 
     @Size(max = 50)
     @NotNull
-    @Column(name = "tamanioAnuncio", nullable = false, length = 50)
+    @Column(name = "tamanio_anuncio", nullable = false, length = 50)
     private String tamanioAnuncio;
 
     public Integer getId() {

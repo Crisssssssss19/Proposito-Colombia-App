@@ -8,20 +8,20 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "estadosVacantes")
+@Table(name = "estados_vacantes")
 public class EstadoVacante {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idEstadoVacante", nullable = false)
+    @Column(name = "id_estado_vacante", nullable = false)
     private Integer id;
 
     @Size(max = 100)
     @NotNull
-    @Column(name = "nombreEstadoVacante", nullable = false, length = 100)
+    @Column(name = "nombre_estado_vacante", nullable = false, length = 100)
     private String nombreEstadoVacante;
 
     @NotNull
-    @Column(name = "ordenEstadoVacante", nullable = false)
+    @Column(name = "orden_estado_vacante", nullable = false)
     private Short ordenEstadoVacante;
 
     @OneToMany(mappedBy = "idEstadoVacante")

@@ -36,7 +36,4 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
   @Query("SELECT COUNT(u) FROM Usuario u WHERE u.estadoUsuario = 1")
   long countActiveUsers();
-
-  @Query("SELECT u FROM Usuario u JOIN u.palabrasClaves p WHERE p.textoPalabraClave IN :palabras")
-  List<Usuario> findByPalabrasClave(@Param("palabras") List<String> palabras);
 }

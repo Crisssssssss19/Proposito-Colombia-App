@@ -14,11 +14,11 @@ public class InteresId implements Serializable {
     private static final long serialVersionUID = 3592177676509978413L;
 
     @NotNull
-    @Column(name = "idEmpresa", nullable = false)
+    @Column(name = "id_empresa", nullable = false)
     private Integer idEmpresa;
 
     @NotNull
-    @Column(name = "idUsuario", nullable = false)
+    @Column(name = "id_usuario", nullable = false)
     private Integer idUsuario;
 
     public Integer getIdEmpresa() {

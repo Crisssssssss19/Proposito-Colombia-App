@@ -8,31 +8,23 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface InteresRepository extends JpaRepository<Interes, InteresId> {
 
-    List<Interes> findByIdEmpresa_Id(Integer idEmpresa);
+    @Query("SELECT i.tipoInteres FROM Interes i WHERE i.id.idEmpresa = :idEmpresa AND i.id.idUsuario = :idUsuario")
+    Optional<Short> findTipoInteresByEmpresaAndUsuario(@Param("idEmpresa") Integer idEmpresa,
+                                                       @Param("idUsuario") Integer idUsuario);
 
-    List<Interes> findByIdUsuario_Id(Integer idUsuario);
 
     List<Interes> findByTipoInteres(Short tipoInteres);
 
-    @Query("SELECT i FROM Interes i WHERE i.idUsuario.id = :usuarioId AND i.tipoInteres IN (1, 3)")
-    List<Interes> findEmpresasQueSigueUsuario(@Param("usuarioId") Integer usuarioId);
+    @Query("SELECT i.id.idEmpresa FROM Interes i WHERE i.id.idUsuario = :idUsuario AND i.tipoInteres = :tipoInteres")
+    List<Integer> findEmpresasByUsuarioAndTipo(@Param("idUsuario") Integer idUsuario,
+                                               @Param("tipoInteres") Short tipoInteres);
 
-    @Query("SELECT i FROM Interes i WHERE i.idEmpresa.id = :empresaId AND i.tipoInteres IN (2, 3)")
-    List<Interes> findUsuariosQueSigueEmpresa(@Param("empresaId") Integer empresaId);
-
-    @Query("SELECT i FROM Interes i WHERE i.tipoInteres = 3")
-    List<Interes> findInteresesMutuos();
-
-    @Query("SELECT COUNT(i) FROM Interes i WHERE i.idEmpresa.id = :empresaId")
-    long countByEmpresa(@Param("empresaId") Integer empresaId);
-
-    @Query("SELECT COUNT(i) FROM Interes i WHERE i.idUsuario.id = :usuarioId")
-    long countByUsuario(@Param("usuarioId") Integer usuarioId);
-
-    boolean existsByIdEmpresa_IdAndIdUsuario_Id(Integer idEmpresa, Integer idUsuario);
-
+    @Query("SELECT i.id.idUsuario FROM Interes i WHERE i.id.idEmpresa = :idEmpresa AND i.tipoInteres = :tipoInteres")
+    List<Integer> findUsuariosByEmpresaAndTipo(@Param("idEmpresa") Integer idEmpresa,
+                                               @Param("tipoInteres") Short tipoInteres);
 }

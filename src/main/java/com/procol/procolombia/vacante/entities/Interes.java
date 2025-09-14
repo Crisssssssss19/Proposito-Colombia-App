@@ -22,11 +22,11 @@ public class Interes {
     @MapsId("idUsuario")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "idUsuario", nullable = false)
+    @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario idUsuario;
 
     @NotNull
-    @Column(name = "tipoInteres", nullable = false)
+    @Column(name = "tipo_interes", nullable = false)
     private Short tipoInteres;
 
     public InteresId getId() {

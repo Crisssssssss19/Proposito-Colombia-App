@@ -9,28 +9,25 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "palabrasClaves")
+@Table(name = "palabras_claves")
 public class PalabraClave {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idPalabraClave", nullable = false)
+    @Column(name = "id_palabra_clave", nullable = false)
     private Integer id;
 
     @Size(max = 150)
     @NotNull
-    @Column(name = "textoPalabraClave", nullable = false, length = 150)
+    @Column(name = "texto_palabra_clave", nullable = false, length = 150)
     private String textoPalabraClave;
 
     @ManyToMany
-    @JoinTable(name = "relUsuarioPalabraclave",
-            joinColumns = @JoinColumn(name = "idPalabraClave"),
-            inverseJoinColumns = @JoinColumn(name = "idUsuario"))
+    @JoinTable(name = "rel_usuario_palabra_clave",
+            joinColumns = @JoinColumn(name = "id_palabra_Clave"),
+            inverseJoinColumns = @JoinColumn(name = "id_usuario"))
     private Set<Usuario> usuarios = new LinkedHashSet<>();
 
-    @ManyToMany
-    @JoinTable(name = "relVacantePalabraClave",
-            joinColumns = @JoinColumn(name = "idPalabraClave"),
-            inverseJoinColumns = @JoinColumn(name = "idVacante"))
+    @ManyToMany(mappedBy = "palabrasClaves")
     private Set<Vacante> vacantes = new LinkedHashSet<>();
 
     public Integer getId() {

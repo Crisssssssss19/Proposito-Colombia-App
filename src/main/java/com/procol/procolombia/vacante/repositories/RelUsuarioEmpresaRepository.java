@@ -12,7 +12,8 @@ import java.util.Optional;
 
 @Repository
 public interface RelUsuarioEmpresaRepository extends JpaRepository<RelUsuarioEmpresa, RelUsuarioEmpresaId> {
-    Optional<RelUsuarioEmpresa> findByUsuarioId(Integer usuarioId);
-    Optional<RelUsuarioEmpresa> findByEmpresaId(Integer empresaId);
-    void deleteByUsuarioId(Integer usuarioId);
+    Optional<RelUsuarioEmpresa> findById_IdUsuario(Integer idUsuario);
+    Optional<RelUsuarioEmpresa> findById_IdEmpresa(Integer idEmpresa);
+
+    void deleteById_IdUsuarioAndId_IdEmpresa(Integer idUsuario, Integer idEmpresa);
 }

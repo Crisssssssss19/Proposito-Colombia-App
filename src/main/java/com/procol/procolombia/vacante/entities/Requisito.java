@@ -11,26 +11,26 @@ import org.hibernate.annotations.OnDeleteAction;
 public class Requisito {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idRequisito", nullable = false)
+    @Column(name = "id_requisito", nullable = false)
     private Integer id;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "idVacante", nullable = false)
+    @JoinColumn(name = "id_vacante", nullable = false)
     private Vacante idVacante;
 
     @Size(max = 200)
     @NotNull
-    @Column(name = "tituloRequisito", nullable = false, length = 200)
+    @Column(name = "titulo_requisito", nullable = false, length = 200)
     private String tituloRequisito;
 
     @NotNull
-    @Column(name = "detalleRequisito", nullable = false, length = Integer.MAX_VALUE)
+    @Column(name = "detalle_requisito", nullable = false, length = Integer.MAX_VALUE)
     private String detalleRequisito;
 
     @NotNull
-    @Column(name = "ordenRequisito", nullable = false)
+    @Column(name = "orden_requisito", nullable = false)
     private Short ordenRequisito;
 
     public Integer getId() {
