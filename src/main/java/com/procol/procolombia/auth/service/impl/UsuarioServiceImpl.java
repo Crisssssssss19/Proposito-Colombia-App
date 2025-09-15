@@ -57,7 +57,9 @@ public class UsuarioServiceImpl implements UsuarioService {
     public ApiResponseDTO<UsuarioResponseDTO> crearUsuario(UsuarioRequestDTO usuarioRequestDTO) {
         Usuario usuario = usuarioMapper.toEntity(usuarioRequestDTO);
         Usuario guardado = usuarioRepository.saveAndFlush(usuario);
-        UsuarioResponseDTO usuarioResponseDTO = usuarioMapper.toDto(guardado);
+        Usuario usuarioUbi = usuarioRepository.findByIdWithUbicacion(usuario.getId())
+                .orElseThrow(() -> new UsuarioNotFoundException("No se encontro el usuario recien creado"));
+        UsuarioResponseDTO usuarioResponseDTO = usuarioMapper.toDto(usuarioUbi);
         return new ApiResponseDTO<>(201, "Usuario creado exitosamente", usuarioResponseDTO, LocalDateTime.now().toString());
     }
 

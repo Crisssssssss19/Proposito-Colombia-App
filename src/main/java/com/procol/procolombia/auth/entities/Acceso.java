@@ -22,7 +22,7 @@ public class Acceso {
     private Usuario usuario;
 
     @Size(max = 150)
-    @NotNull
+    //@NotNull
     @Column(name = "telefono_acceso", nullable = false, length = 150)
     private String telefonoAcceso;
 

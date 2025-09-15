@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ImagenServiceImpl implements ImagenService {
@@ -46,22 +47,29 @@ public class ImagenServiceImpl implements ImagenService {
             Usuario usuario = usuarioRepository.findById(idUsuario)
                     .orElseThrow(() -> new UsuarioNotFoundException("Usuario no encontrado"));
 
-            String nombrePublico = archivo.getOriginalFilename();
-            String tipo = archivo.getContentType();
-            String tamanio = archivo.getSize() / 1024 + "KB";
+            Path directorioImagenes = Paths.get("C:/procol/imagenes");
 
-            Path destino = Paths.get(rutaImagenes, nombrePublico);
+            if (!Files.exists(directorioImagenes)) {
+                Files.createDirectories(directorioImagenes);
+            }
+
+            String nombrePublico = archivo.getOriginalFilename();
+            String extension = nombrePublico.substring(nombrePublico.lastIndexOf("."));
+            String nombrePrivado = UUID.randomUUID().toString() + extension;
+
+            Path destino = directorioImagenes.resolve(nombrePrivado);
             Files.copy(archivo.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
 
-            String base64 = Base64.getEncoder().encodeToString(archivo.getBytes());
+            String tipo = archivo.getContentType();
+            String tamanio = archivo.getSize() / 1024 + "KB";
 
             Imagene imagen = new Imagene();
             imagen.setIdUsuario(usuario);
             imagen.setNombrePublicoImagen(nombrePublico);
-            imagen.setNombrePrivadoImagen(base64);
-            imagen.setTamanioImagen(tipo);
+            imagen.setNombrePrivadoImagen(nombrePrivado);
+            imagen.setTipoImagen(tipo);
             imagen.setTamanioImagen(tamanio);
-            imagen.setTipoImagen(favoritaImagen.toString());
+            imagen.setFavoritaImagen(favoritaImagen);
 
             Imagene guardada = imagenRepository.save(imagen);
             ImagenResponseDTO dto = imagenMapper.toDto(guardada);
@@ -69,6 +77,20 @@ public class ImagenServiceImpl implements ImagenService {
         } catch (IOException e) {
             throw new RuntimeException("Error al agregar imagen", e);
         }
+    }
+
+    public String obtenerFotoBase64(Integer idUsuario){
+        return imagenRepository.findFirstByIdUsuario_IdAndFavoritaImagen(idUsuario, (short) 1)
+                .map(imagen -> {
+                    try {
+                        Path rutaImagen = Paths.get(rutaImagenes, imagen.getNombrePrivadoImagen());
+                        byte[] imagenBytes = Files.readAllBytes(rutaImagen);
+                        return Base64.getEncoder().encodeToString(imagenBytes);
+                    } catch (IOException e) {
+                        throw new RuntimeException("Error al leer la imagen", e);
+                    }
+                })
+                .orElse(null);
     }
 
     @Override

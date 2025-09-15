@@ -14,6 +14,8 @@ public interface ImageneRepository extends JpaRepository<Imagene, Integer> {
 
     List<Imagene> findByIdUsuario_Id(Integer idUsuario);
 
+    Optional<Imagene> findFirstByIdUsuario_IdAndFavoritaImagen(Integer idUsuario, Short favoritaImagen);
+
     List<Imagene> findByFavoritaImagen(Short favoritaImagen);
 
     Optional<Imagene> findByIdUsuario_IdAndFavoritaImagen(Integer idUsuario, Short favoritaImagen);

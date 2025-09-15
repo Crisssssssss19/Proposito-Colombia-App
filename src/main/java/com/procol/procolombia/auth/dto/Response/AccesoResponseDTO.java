@@ -5,5 +5,4 @@ public record AccesoResponseDTO(
         String correoAcceso,
         String telefonoAcceso,
         String uuidAcceso
-) {
-}
+) {}
