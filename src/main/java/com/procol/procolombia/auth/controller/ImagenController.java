@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/imagen")
+@RequestMapping("/api/imagen")
 public class ImagenController {
 
     private final ImagenService imagenService;

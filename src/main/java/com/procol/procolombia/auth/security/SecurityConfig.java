@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,7 +26,7 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
     private final JwtEntryPoint unauthorizedHandler;
     public SecurityConfig(JwtEntryPoint unauthorizedHandler) {
@@ -46,14 +47,12 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(unauthorizedHandler))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/acceso/**").permitAll()
-                        .requestMatchers("/api/auditoria/**").permitAll()
-                        .requestMatchers("/api/imagen/**").permitAll()
-                        .requestMatchers("/api/ingreso/**").permitAll()
-                        .requestMatchers("/api/rol/**").permitAll()
-                        .requestMatchers("/api/ubicacion/**").permitAll()
-                        .requestMatchers("/api/usuario/**").permitAll()
-                        .anyRequest().authenticated())
+                        .requestMatchers("/api/acceso/login").permitAll()
+                        .requestMatchers("/api/acceso/registro").permitAll()
+                        .requestMatchers("/api/**").authenticated()
+                        .anyRequest().authenticated()
+                )
+
                 .authenticationProvider(authenticationProvider(userInfoService))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
@@ -70,6 +69,11 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public GrantedAuthorityDefaults grantedAuthorityDefaults() {
+        return new GrantedAuthorityDefaults(""); // Remove the ROLE_ prefix
     }
 
     @Bean

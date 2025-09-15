@@ -19,4 +19,11 @@ public interface AccesoRepository extends JpaRepository<Acceso, Integer> {
     boolean existsByTelefonoAcceso(String telefonoAcceso);
     @Query("SELECT a FROM Acceso a WHERE a.correoAcceso = :correo OR a.telefonoAcceso = :telefono")
     Optional<Acceso> findByCorreoAccesoOrTelefonoAcceso(@Param("correo") String correo, @Param("telefono") String telefono);
+
+    @Query("SELECT a FROM Acceso a " +
+            "JOIN FETCH a.usuario u " +
+            "LEFT JOIN FETCH u.roles " +
+            "WHERE a.correoAcceso = :correo")
+    Optional<Acceso> findByCorreoAccesoWithRoles(@Param("correo") String correo);
+
 }

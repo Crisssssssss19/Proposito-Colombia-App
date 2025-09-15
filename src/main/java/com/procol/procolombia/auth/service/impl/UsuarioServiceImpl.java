@@ -9,7 +9,9 @@ import com.procol.procolombia.auth.mappers.UsuarioMapper;
 import com.procol.procolombia.auth.repositories.UbicacioneRepository;
 import com.procol.procolombia.auth.repositories.UsuarioRepository;
 import com.procol.procolombia.auth.service.UsuarioService;
+import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,9 +21,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final UsuarioMapper usuarioMapper;
+    private final EntityManager entityManager;
 
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, UbicacioneRepository ubicacioneRepository, UsuarioMapper usuarioMapper) {
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, EntityManager entityManager, UbicacioneRepository ubicacioneRepository, UsuarioMapper usuarioMapper) {
         this.usuarioRepository = usuarioRepository;
+        this.entityManager = entityManager;
         this.usuarioMapper = usuarioMapper;
     }
 
@@ -48,11 +52,13 @@ public class UsuarioServiceImpl implements UsuarioService {
         return new ApiResponseDTO<>(200, "Usuarios encontrados :" + usuariosDTO.size(), usuariosDTO, LocalDateTime.now().toString());
     }
 
+    @Transactional
     @Override
     public ApiResponseDTO<UsuarioResponseDTO> crearUsuario(UsuarioRequestDTO usuarioRequestDTO) {
         Usuario usuario = usuarioMapper.toEntity(usuarioRequestDTO);
-        Usuario usuarioGuardado = usuarioRepository.save(usuario);
-        return new ApiResponseDTO<>(201, "Usuario creado exitosamente", usuarioMapper.toDto(usuarioGuardado), LocalDateTime.now().toString());
+        Usuario guardado = usuarioRepository.saveAndFlush(usuario);
+        UsuarioResponseDTO usuarioResponseDTO = usuarioMapper.toDto(guardado);
+        return new ApiResponseDTO<>(201, "Usuario creado exitosamente", usuarioResponseDTO, LocalDateTime.now().toString());
     }
 
     @Override

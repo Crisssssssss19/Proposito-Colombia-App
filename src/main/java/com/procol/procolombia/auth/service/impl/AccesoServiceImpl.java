@@ -17,6 +17,8 @@ import com.procol.procolombia.auth.security.service.UserInfoDetail;
 import com.procol.procolombia.auth.security.service.UserInfoService;
 import com.procol.procolombia.auth.service.AccesoService;
 import com.procol.procolombia.vacante.repositories.RequisitoRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -39,7 +41,7 @@ public class AccesoServiceImpl implements AccesoService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final UserInfoService userInfoService;
-
+    private static final Logger logger = LoggerFactory.getLogger(AccesoServiceImpl.class);
     public AccesoServiceImpl(AccesoRepository accesoRepository, JwtService jwtService, AccesoMapper accesoMapper, RequisitoRepository requisitoRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, UserInfoService userInfoService) {
         this.accesoRepository = accesoRepository;
         this.accesoMapper = accesoMapper;
@@ -68,6 +70,7 @@ public class AccesoServiceImpl implements AccesoService {
     @Override
     @Transactional(readOnly = true)
     public ApiResponseDTO<LoginResponseDTO> login(LoginRequestDTO requestDTO) {
+        logger.debug("Login request para correo={}", requestDTO.correoAcceso());
         // 1️⃣ Autenticación con Spring Security
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -75,15 +78,18 @@ public class AccesoServiceImpl implements AccesoService {
                         requestDTO.claveAcceso()
                 )
         );
+        logger.debug("Authentication result authenticated={} for principal={}", authentication.isAuthenticated(), requestDTO.correoAcceso());
 
         if (!authentication.isAuthenticated()) {
             throw new UsernameNotFoundException("Credenciales inválidas");
         }
         // 3️⃣ Obtener roles del usuario autenticado
         List<String> roles = userInfoService.getUserRoles(requestDTO.correoAcceso());
+        logger.debug("Roles para {} => {}", requestDTO.correoAcceso(), roles);
 
         // 2️⃣ Generar token JWT
         String token = jwtService.generateToken(requestDTO.correoAcceso(), roles);
+        logger.debug("Token generado (masked) for {} => {}...", requestDTO.correoAcceso(), token != null ? token.substring(0, 8) : "null");
 
         // 4️⃣ Obtener foto de perfil favorita (si existe)
         Acceso acceso = accesoRepository.findByCorreoAcceso(requestDTO.correoAcceso())
@@ -94,6 +100,7 @@ public class AccesoServiceImpl implements AccesoService {
                 .map(Imagene::getNombrePrivadoImagen)
                 .findFirst()
                 .orElse("XXX_IMG");
+        logger.debug("Foto favorita encontrada para usuarioId={} : {}", usuario.getId(), fotoBase64.equals("XXX_IMG") ? "NO_ENCONTRADA" : "ENCONTRADA (base64 len=" + fotoBase64.length() + ")");
 
         // 5️⃣ Armar respuesta DTO
         LoginResponseDTO loginResponse = new LoginResponseDTO(

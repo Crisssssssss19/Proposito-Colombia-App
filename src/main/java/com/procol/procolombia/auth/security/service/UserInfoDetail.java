@@ -1,6 +1,8 @@
 package com.procol.procolombia.auth.security.service;
 
 import com.procol.procolombia.auth.entities.Acceso;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +20,7 @@ public class UserInfoDetail implements UserDetails {
     private final String telefonoAcceso;
     private final String uuidAcceso;
     private final Set<GrantedAuthority> authorities;
-
+    private static final Logger log = LoggerFactory.getLogger(UserInfoDetail.class);
     public UserInfoDetail(Acceso acceso) {
         this.idAcceso = acceso.getId();
         this.correoAcceso = acceso.getCorreoAcceso() != null ? acceso.getCorreoAcceso() : "XXX_MAIL";
@@ -26,9 +28,11 @@ public class UserInfoDetail implements UserDetails {
         this.telefonoAcceso = acceso.getTelefonoAcceso() != null ? acceso.getTelefonoAcceso() : "XXX_TEL";
         this.uuidAcceso = acceso.getUuidAcceso() != null ? acceso.getUuidAcceso() : "XXX_UUID";
 
+        log.trace("Construyendo UserInfoDetail para Acceso ID: {}", acceso.getId());
         this.authorities = acceso.getUsuario().getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getNombreRol()))
+                .map(role -> new SimpleGrantedAuthority(role.getNombreRol().toUpperCase()))
                 .collect(Collectors.toSet());
+        log.debug("Authorities en UserInfoDetail: {}", authorities);
     }
 
     public Integer getIdAcceso() {

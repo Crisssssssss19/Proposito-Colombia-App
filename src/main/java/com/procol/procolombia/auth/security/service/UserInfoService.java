@@ -6,10 +6,13 @@ import com.procol.procolombia.auth.entities.Acceso;
 import com.procol.procolombia.auth.entities.Role;
 import com.procol.procolombia.auth.entities.Usuario;
 import com.procol.procolombia.auth.exception.alreadyexists.EmailAlreadyExistsException;
+import com.procol.procolombia.auth.exception.notfound.AccesoNotFoundException;
 import com.procol.procolombia.auth.exception.notfound.RoleNotFoundException;
 import com.procol.procolombia.auth.repositories.AccesoRepository;
 import com.procol.procolombia.auth.repositories.RoleRepository;
 import com.procol.procolombia.auth.repositories.UsuarioRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,6 +30,7 @@ public class UserInfoService implements UserDetailsService {
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder encoder;
     private final RoleRepository roleRepository;
+    private static final Logger logger = LoggerFactory.getLogger(UserInfoService.class);
 
     public UserInfoService(
             AccesoRepository accesoRepository,
@@ -41,8 +45,18 @@ public class UserInfoService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String correo) throws UsernameNotFoundException {
-        Acceso acceso = accesoRepository.findByCorreoAcceso(correo)
-                .orElseThrow(() -> new UsernameNotFoundException("XXX_USER"));
+        logger.debug("loadUserByUsername correo={}", correo);
+        Acceso acceso = accesoRepository.findByCorreoAccesoWithRoles(correo)
+                .orElseThrow(() -> new AccesoNotFoundException("Acceso no encontrado con correo: " + correo));
+        logger.debug("Acceso encontrado -> id={}, correo={}", acceso.getId(), acceso.getCorreoAcceso());
+        logger.debug("Usuario asociado -> id={}, nombre={}", acceso.getUsuario().getId(), acceso.getUsuario().getNombresUsuario());
+
+        //extraer roles
+        Set<Role> roles = acceso.getUsuario().getRoles();
+        logger.debug("Roles asociados al usuario id={} -> {}",
+                acceso.getUsuario().getId(),
+                roles.stream().map(Role::getNombreRol).toList());
+
         return new UserInfoDetail(acceso);
     }
 
