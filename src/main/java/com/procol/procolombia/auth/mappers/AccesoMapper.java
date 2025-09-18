@@ -25,8 +25,6 @@ public interface AccesoMapper {
             Usuario usuario = new Usuario();
             usuario.setId(accesoRequestDTO.usuario());
             acceso.setUsuario(usuario);
-            // El id se establecerá automáticamente por @MapsId cuando la entidad sea persistida
-            // No establezcas acceso.id explícitamente aquí
         }
     }
 }
