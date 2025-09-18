@@ -78,7 +78,7 @@ public class UserInfoService implements UserDetailsService {
                 .map(rol -> rol.getNombreRol().toUpperCase())
                 .toList();
     }
-
+    /*
     // 📌 Crear un nuevo acceso (registro)
     public Acceso crearAcceso(UserRegisterRequestDTO requestDTO) {
         // 1. Validar correo único
@@ -128,4 +128,5 @@ public class UserInfoService implements UserDetailsService {
                 .findFirst()
                 .orElse(null);
     }
+     */
 }
