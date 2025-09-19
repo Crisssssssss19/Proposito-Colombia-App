@@ -2,9 +2,11 @@ package com.procol.procolombia.auth.controller;
 
 import com.procol.procolombia.auth.dto.Request.AccesoRequestDTO;
 import com.procol.procolombia.auth.dto.Request.LoginRequestDTO;
+import com.procol.procolombia.auth.dto.Request.UserRegisterRequestDTO;
 import com.procol.procolombia.auth.dto.Response.AccesoResponseDTO;
 import com.procol.procolombia.auth.dto.Response.ApiResponseDTO;
 import com.procol.procolombia.auth.dto.Response.LoginResponseDTO;
+import com.procol.procolombia.auth.dto.Response.UserRegisterResponseDTO;
 import com.procol.procolombia.auth.service.AccesoService;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,14 @@ public class AccesoController {
         ApiResponseDTO<LoginResponseDTO> response = accesoService.login(requestDTO);
         return ResponseEntity.status(response.codigoEstado()).body(response);
     }
+
+    @PostMapping("/register")
+    @PermitAll
+    public ResponseEntity<ApiResponseDTO<UserRegisterResponseDTO>> register(@RequestBody UserRegisterRequestDTO requestDTO) {
+        ApiResponseDTO<UserRegisterResponseDTO> response = accesoService.register(requestDTO);
+        return ResponseEntity.status(response.codigoEstado()).body(response);
+    }
+
 
     @PostMapping
     @PreAuthorize("hasAuthority('ADMINISTRADOR')")
