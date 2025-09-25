@@ -72,7 +72,7 @@ public class VacanteServiceImpl implements VacanteService {
 
         existing.setIdUbicacion(ubicacione);
         existing.setTituloVacante(vacanteDto.tituloVacante());
-        existing.setDetalleVacante(vacanteDto.detalleVacante());
+        existing.setDescripcionCorta(vacanteDto.descripcionCorta());
         existing.setFechaInicioVacante(vacanteDto.fechaInicioVacante());
         existing.setFechaFinVacante(vacanteDto.fechaFinVacante());
         existing.setEstadoVacante(vacanteDto.estadoVacante());

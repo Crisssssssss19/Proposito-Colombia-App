@@ -39,6 +39,8 @@
         <org.mapstruct.version>1.6.3</org.mapstruct.version>
     </properties>
 
+
+
     <dependencies>
         <dependency>
             <groupId>org.mapstruct</groupId>

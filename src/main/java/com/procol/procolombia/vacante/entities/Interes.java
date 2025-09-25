@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "intereses")
 public class Interes {
@@ -28,6 +31,9 @@ public class Interes {
     @NotNull
     @Column(name = "tipo_interes", nullable = false)
     private Short tipoInteres;
+    @OneToMany(mappedBy = "interes", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HistorialInteres> historial = new ArrayList<>();
+
 
     public InteresId getId() {
         return id;
@@ -64,10 +70,11 @@ public class Interes {
     public Interes() {
     }
 
-    public Interes(InteresId id, Empresa idEmpresa, Usuario idUsuario, Short tipoInteres) {
+    public Interes(InteresId id, List<HistorialInteres> historial, Short tipoInteres, Usuario idUsuario, Empresa idEmpresa) {
         this.id = id;
-        this.idEmpresa = idEmpresa;
-        this.idUsuario = idUsuario;
+        this.historial = historial;
         this.tipoInteres = tipoInteres;
+        this.idUsuario = idUsuario;
+        this.idEmpresa = idEmpresa;
     }
 }
