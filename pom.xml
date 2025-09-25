@@ -76,7 +76,11 @@
             <version>1.5.5.Final</version>
             <scope>provided</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.twilio.sdk</groupId>
+            <artifactId>twilio</artifactId>
+            <version>10.6.7</version>
+        </dependency>
 
         <dependency>
             <groupId>com.vladmihalcea</groupId>
