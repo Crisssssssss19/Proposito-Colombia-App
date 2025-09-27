@@ -20,9 +20,9 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<GetUsuario> crearUsuario(@RequestBody SaveUsuario saveUsuario) {
+    public ResponseEntity<ApiResponse<GetUsuario>> crearUsuario(@RequestBody SaveUsuario saveUsuario) {
         GetUsuario usuario = usuarioService.crearUsuario(saveUsuario);
-        return ResponseEntity.status(201).body(usuario);
+        return ResponseEntity.ok(ApiResponse.success("Usuario creado correctamente", usuario, HttpStatus.CREATED));
     }
 
     @PutMapping("/{id}")

@@ -1,5 +1,6 @@
 package com.procol.procolombia.auth.entities;
 
+import com.procol.procolombia.perfil.entities.Talento;
 import com.procol.procolombia.postulacion.entities.Archivo;
 import com.procol.procolombia.postulacion.entities.Mensaje;
 import com.procol.procolombia.postulacion.entities.Postulacione;
@@ -76,6 +77,14 @@ public class Usuario {
 
     @ManyToMany(mappedBy = "usuarios")
     private Set<Role> roles = new LinkedHashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "id_Habilidad", referencedColumnName = "id")
+    private Talento habilidad;
+
+    @ManyToOne
+    @JoinColumn(name = "id_Competencia", referencedColumnName = "id")
+    private Talento competencia;
 
     public Integer getId() {
         return id;
@@ -205,4 +214,19 @@ public class Usuario {
         this.roles = roles;
     }
 
+    public Talento getHabilidad() {
+        return habilidad;
+    }
+
+    public void setHabilidad(Talento habilidad) {
+        this.habilidad = habilidad;
+    }
+
+    public Talento getCompetencia() {
+        return competencia;
+    }
+
+    public void setCompetencia(Talento competencia) {
+        this.competencia = competencia;
+    }
 }
