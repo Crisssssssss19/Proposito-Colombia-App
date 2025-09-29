@@ -28,6 +28,10 @@ public class EmpresaServiceImpl implements EmpresaService {
 
     @Override
     public EmpresaDto createEmpresa(EmpresaDto empresaDto) {
+
+        TipoEmpresa tipoEmpresa = tipoEmpresaRepository.findById(empresaDto.idTipoEmpresa())
+                .orElseThrow(()-> new RuntimeException("Tipo Empresa no encontrado"));
+
         Empresa entity = empresaMapper.toEntity(empresaDto);
         Empresa saved = empresaRepository.save(entity);
         return empresaMapper.toDto(saved);

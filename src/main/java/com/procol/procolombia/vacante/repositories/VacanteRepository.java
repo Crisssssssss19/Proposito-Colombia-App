@@ -22,9 +22,13 @@ public interface VacanteRepository extends JpaRepository<Vacante, Integer> {
     List<Vacante> findByUsuarioAndEmpresa(@Param("idUsuario") Integer idUsuario,
                                           @Param("idEmpresa") Integer idEmpresa);
 
-    @Query("SELECT CURRENT_DATE - v.fechaInicioVacante " +
-            "FROM Vacante v WHERE v.id = :idVacante")
+    @Query(
+            value = "SELECT EXTRACT(DAY FROM NOW() - fecha_inicio_vacante) " +
+                    "FROM vacantes WHERE id_vacante = :idVacante",
+            nativeQuery = true
+    )
     Integer findDiasPublicada(@Param("idVacante") Integer idVacante);
+
 
 
 }

@@ -99,5 +99,17 @@ public class VacanteController {
         );
         return ResponseEntity.ok(response);
     }
+    @GetMapping("/{id}/dias-publicados")
+    public ResponseEntity<ApiResponse<Integer>> obtenerDiasPublicados (
+            @PathVariable Integer id
+    ){
+        Integer diasPublicados = vacanteService.obtenerDiasPublicados(id);
+        ApiResponse<Integer> response = new ApiResponse<>(
+                200,
+                "Consulta exitosa",
+                diasPublicados
+        );
+        return ResponseEntity.ok(response);
+    }
 
 }
