@@ -55,7 +55,6 @@ public class Vacante {
     @Column(name = "estado_vacante", nullable = false)
     private Short estadoVacante;
 
-
     @OneToOne(mappedBy = "idVacante")
     private Anuncio anuncio;
 
@@ -75,16 +74,13 @@ public class Vacante {
     @OneToMany(mappedBy = "idVacante")
     private Set<Requisito> requisitos = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "idVacante")
-    private Set<Beneficio> beneficios = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "interes")
-    private Set<HistorialInteres> historialInteres = new LinkedHashSet<>();
-
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_rango", nullable = false)
     private RangoSalarial rangoSalarial;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_periodicidad", nullable = false)
+    private PeriodicidadPago periodicidadPago;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_jornada", nullable = false)
@@ -139,14 +135,6 @@ public class Vacante {
 
     public void setRangoSalarial(RangoSalarial rangoSalarial) {
         this.rangoSalarial = rangoSalarial;
-    }
-
-    public Set<HistorialInteres> getHistorialInteres() {
-        return historialInteres;
-    }
-
-    public void setHistorialInteres(Set<HistorialInteres> historialInteres) {
-        this.historialInteres = historialInteres;
     }
 
     public String getTituloVacante() {
@@ -229,14 +217,6 @@ public class Vacante {
         this.requisitos = requisitos;
     }
 
-    public Set<Beneficio> getBeneficios() {
-        return beneficios;
-    }
-
-    public void setBeneficios(Set<Beneficio> beneficios) {
-        this.beneficios = beneficios;
-    }
-
     public RelUsuarioEmpresa getRelUsuarioEmpresas() {
         return relUsuarioEmpresas;
     }
@@ -245,11 +225,40 @@ public class Vacante {
         this.relUsuarioEmpresas = relUsuarioEmpresas;
     }
 
+    public Vacante(Integer id, Ubicacione idUbicacion, RelUsuarioEmpresa relUsuarioEmpresas, String tituloVacante, String descripcionCorta, Instant fechaInicioVacante, Instant fechaFinVacante, Short estadoVacante, Anuncio anuncio, Set<HistorialEstadoVacante> historialEstadoVacantes, Set<Postulacione> postulaciones, Set<PalabraClave> palabrasClaves, Set<Requisito> requisitos, RangoSalarial rangoSalarial, PeriodicidadPago periodicidadPago, Jornada jornada, Modalidad modalidad, Contrato contrato) {
+        this.id = id;
+        this.idUbicacion = idUbicacion;
+        this.relUsuarioEmpresas = relUsuarioEmpresas;
+        this.tituloVacante = tituloVacante;
+        this.descripcionCorta = descripcionCorta;
+        this.fechaInicioVacante = fechaInicioVacante;
+        this.fechaFinVacante = fechaFinVacante;
+        this.estadoVacante = estadoVacante;
+        this.anuncio = anuncio;
+        this.historialEstadoVacantes = historialEstadoVacantes;
+        this.postulaciones = postulaciones;
+        this.palabrasClaves = palabrasClaves;
+        this.requisitos = requisitos;
+        this.rangoSalarial = rangoSalarial;
+        this.periodicidadPago = periodicidadPago;
+        this.jornada = jornada;
+        this.modalidad = modalidad;
+        this.contrato = contrato;
+    }
+
     public Ubicacione getIdUbicacion() {
         return idUbicacion;
     }
 
     public void setIdUbicacion(Ubicacione idUbicacion) {
         this.idUbicacion = idUbicacion;
+    }
+
+    public PeriodicidadPago getPeriodicidadPago() {
+        return periodicidadPago;
+    }
+
+    public void setPeriodicidadPago(PeriodicidadPago periodicidadPago) {
+        this.periodicidadPago = periodicidadPago;
     }
 }

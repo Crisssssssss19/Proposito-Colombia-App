@@ -1,9 +1,9 @@
 package com.procol.procolombia.vacante.repositories;
 
-import com.procol.procolombia.vacante.entities.Jornada;
+import com.procol.procolombia.vacante.entities.Contrato;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface JornadaRepository extends JpaRepository <Jornada, Integer> {
+public interface ContratoRepository extends JpaRepository<Contrato, Integer> {
 }

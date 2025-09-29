@@ -15,10 +15,10 @@ public record VacanteDto (
     Short estadoVacante,
     Set<Integer> palabrasClaveIds,
     Set<Integer> requisitoIds,
-    Set<Integer> beneficioIds,
     Integer idRangoSalarial,
     Integer idJornada,
     Integer idModalidad,
     Integer idContrato,
+    Integer idPeriodicidad,
     RelUsuarioEmpresaId relUsuarioEmpresaId
 ){}

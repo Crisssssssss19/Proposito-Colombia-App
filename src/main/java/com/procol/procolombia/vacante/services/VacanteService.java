@@ -12,4 +12,5 @@ public interface VacanteService {
     List<VacanteDto> findAllVacantes();
     List<VacanteDto> getVacantesByEmpresa(Integer empresa);
     List<VacanteDto> getVacantesByUsuarioAndEmpresa(Integer idUsuario, Integer idEmpresa);
+    Integer obtenerDiasPublicados (Integer idVacante);
 }

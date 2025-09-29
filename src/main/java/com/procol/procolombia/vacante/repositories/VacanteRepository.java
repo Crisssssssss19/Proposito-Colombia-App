@@ -21,4 +21,10 @@ public interface VacanteRepository extends JpaRepository<Vacante, Integer> {
             "AND v.relUsuarioEmpresas.id.idEmpresa = :idEmpresa")
     List<Vacante> findByUsuarioAndEmpresa(@Param("idUsuario") Integer idUsuario,
                                           @Param("idEmpresa") Integer idEmpresa);
+
+    @Query("SELECT CURRENT_DATE - v.fechaInicioVacante " +
+            "FROM Vacante v WHERE v.id = :idVacante")
+    Integer findDiasPublicada(@Param("idVacante") Integer idVacante);
+
+
 }

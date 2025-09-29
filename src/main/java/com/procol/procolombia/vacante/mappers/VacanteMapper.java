@@ -18,25 +18,25 @@ public interface VacanteMapper {
     @Mapping(source = "idUbicacion.id", target = "idUbicacion")
     @Mapping(source = "palabrasClaves", target = "palabrasClaveIds", qualifiedByName = "mapPalabrasToIds")
     @Mapping(source = "requisitos", target = "requisitoIds", qualifiedByName = "mapRequisitosToIds")
-    @Mapping(source = "beneficios", target = "beneficioIds", qualifiedByName = "mapBeneficiosToIds")
     @Mapping(source = "rangoSalarial.id", target = "idRangoSalarial")
     @Mapping(source = "jornada.id", target = "idJornada")
     @Mapping(source = "modalidad.id", target = "idModalidad")
     @Mapping(source = "contrato.id", target = "idContrato")
     @Mapping(source = "relUsuarioEmpresas.id", target = "relUsuarioEmpresaId")
+    @Mapping(source = "periodicidadPago.id", target = "idPeriodicidad")
     VacanteDto toDto(Vacante entity);
 
     @Mapping(source = "idUbicacion", target = "idUbicacion", qualifiedByName = "mapUbicacion")
-    @Mapping(target = "historialEstadosVacantes", ignore=true)
+    @Mapping(target = "historialEstadoVacantes", ignore=true)
     @Mapping(target = "postulaciones", ignore = true)
     @Mapping(source = "palabrasClaveIds", target = "palabrasClaves", qualifiedByName = "mapIdsToPalabras")
     @Mapping(source = "requisitoIds", target = "requisitos", qualifiedByName = "mapIdsToRequisitos")
-    @Mapping(source = "beneficioIds", target = "beneficios", qualifiedByName = "mapIdsToBeneficios")
     @Mapping(source = "idRangoSalarial", target = "rangoSalarial", qualifiedByName = "mapRango")
     @Mapping(source = "idJornada", target = "jornada", qualifiedByName = "mapJornada")
     @Mapping(source = "idModalidad", target = "modalidad", qualifiedByName = "mapModalidad")
     @Mapping(source = "idContrato", target = "contrato", qualifiedByName = "mapContrato")
     @Mapping(source = "relUsuarioEmpresaId", target = "relUsuarioEmpresas", qualifiedByName = "mapRelUsuarioEmpresa")
+    @Mapping(source = "idPeriodicidad", target = "periodicidadPago", qualifiedByName = "mapPeriodicidad")
     Vacante toEntity(VacanteDto dto);
 
     @Named("mapUbicacion")
@@ -78,24 +78,6 @@ public interface VacanteMapper {
         }).collect(Collectors.toSet());
     }
 
-    // --- Beneficios ---
-    @Named("mapBeneficiosToIds")
-    default Set<Integer> mapBeneficiosToIds(Set<Beneficio> set) {
-        if (set == null) return null;
-        return set.stream().map(Beneficio::getId).collect(Collectors.toSet());
-    }
-
-    @Named("mapIdsToBeneficios")
-    default Set<Beneficio> mapIdsToBeneficios(Set<Integer> ids) {
-        if (ids == null) return null;
-        return ids.stream().map(id -> {
-            Beneficio b = new Beneficio();
-            b.setId(id);
-            return b;
-        }).collect(Collectors.toSet());
-    }
-
-    // --- Rango Salarial ---
     @Named("mapRango")
     default RangoSalarial mapRango(Integer id) {
         if (id == null) return null;
@@ -104,7 +86,6 @@ public interface VacanteMapper {
         return r;
     }
 
-    // --- Jornada ---
     @Named("mapJornada")
     default Jornada mapJornada(Integer id) {
         if (id == null) return null;
@@ -113,7 +94,6 @@ public interface VacanteMapper {
         return j;
     }
 
-    // --- Modalidad ---
     @Named("mapModalidad")
     default Modalidad mapModalidad(Integer id) {
         if (id == null) return null;
@@ -122,13 +102,19 @@ public interface VacanteMapper {
         return m;
     }
 
-    // --- Contrato ---
     @Named("mapContrato")
     default Contrato mapContrato(Integer id) {
         if (id == null) return null;
         Contrato c = new Contrato();
         c.setId(id);
         return c;
+    }
+    @Named("mapPeriodicidad")
+    default PeriodicidadPago mapPeriodicidad(Integer id) {
+        if (id == null) return null;
+        PeriodicidadPago p = new PeriodicidadPago();
+        p.setId(id);
+        return p;
     }
 
     @Named("mapRelUsuarioEmpresa")
