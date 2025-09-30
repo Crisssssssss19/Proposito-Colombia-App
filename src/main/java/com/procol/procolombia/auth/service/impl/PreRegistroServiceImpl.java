@@ -37,7 +37,7 @@ public class PreRegistroServiceImpl implements PreRegistroService {
         PreRegistro pre = preRegistroRepository.findById(telefono).orElse(null);
         LocalDateTime ahora = LocalDateTime.now();
 
-        if (pre == null) {
+        if (pre == null || pre.getIntentos()==0) {
             // Primer intento
             pre = new PreRegistro();
             pre.setIdPreRegistro(telefono);

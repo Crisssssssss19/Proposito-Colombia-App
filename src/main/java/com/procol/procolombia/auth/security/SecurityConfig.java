@@ -48,7 +48,7 @@ public class SecurityConfig {
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(unauthorizedHandler))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/acceso/login").permitAll()
-                        .requestMatchers("/api/acceso/registro").permitAll()
+                        .requestMatchers("/api/acceso/register").permitAll()
                         .requestMatchers("/api/preregistro/enviar").permitAll()
                         .requestMatchers("/api/preregistro/validar").permitAll()
                         .requestMatchers("/api/**").authenticated()

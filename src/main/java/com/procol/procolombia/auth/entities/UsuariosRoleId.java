@@ -19,6 +19,15 @@ public class UsuariosRoleId implements Serializable {
     @Column(name = "id_usuario", nullable = false)
     private Integer idUsuario;
 
+    public UsuariosRoleId(Integer idRol, Integer idUsuario) {
+        this.idRol = idRol;
+        this.idUsuario = idUsuario;
+    }
+
+    public UsuariosRoleId() {
+
+    }
+
     public Integer getIdRol() {
         return idRol;
     }
