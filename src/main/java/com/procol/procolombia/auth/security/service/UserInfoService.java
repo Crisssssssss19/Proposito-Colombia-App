@@ -51,7 +51,7 @@ public class UserInfoService implements UserDetailsService {
         logger.debug("Acceso encontrado -> id={}, correo={}", acceso.getId(), acceso.getCorreoAcceso());
         logger.debug("Usuario asociado -> id={}, nombre={}", acceso.getUsuario().getId(), acceso.getUsuario().getNombresUsuario());
 
-        //extraer roles
+        // extraer roles
         Set<Role> roles = acceso.getUsuario().getRoles();
         logger.debug("Roles asociados al usuario id={} -> {}",
                 acceso.getUsuario().getId(),
@@ -60,7 +60,7 @@ public class UserInfoService implements UserDetailsService {
         return new UserInfoDetail(acceso);
     }
 
-    // 🔑 Cambiar clave de acceso
+    // Cambiar clave de acceso
     public void resetPassword(PasswordResetRequestDTO passwordResetRequestDTO) {
         Acceso acceso = accesoRepository.findByCorreoAcceso(passwordResetRequestDTO.correoAcceso())
                 .orElseThrow(() -> new UsernameNotFoundException("Acceso no encontrado"));
@@ -69,7 +69,7 @@ public class UserInfoService implements UserDetailsService {
         accesoRepository.save(acceso);
     }
 
-    // 🔑 Obtener roles de un usuario
+    // Obtener roles de un usuario
     public List<String> getUserRoles(String correo) {
         Acceso acceso = accesoRepository.findByCorreoAcceso(correo)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
@@ -78,55 +78,4 @@ public class UserInfoService implements UserDetailsService {
                 .map(rol -> rol.getNombreRol().toUpperCase())
                 .toList();
     }
-    /*
-    // 📌 Crear un nuevo acceso (registro)
-    public Acceso crearAcceso(UserRegisterRequestDTO requestDTO) {
-        // 1. Validar correo único
-        if (accesoRepository.existsByCorreoAcceso(requestDTO.correoAcceso())) {
-            throw new EmailAlreadyExistsException("Correo ya registrado: " + requestDTO.correoAcceso());
-        }
-
-        // 2. Buscar el usuario por idUsuarioRef
-        Usuario usuario = usuarioRepository.findById(requestDTO.idUsuarioRef())
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con id: " + requestDTO.idUsuarioRef()));
-
-        // 3. Crear el acceso
-        Acceso acceso = Acceso.builder()
-                .correoAcceso(requestDTO.correoAcceso())
-                .claveAcceso(encoder.encode(requestDTO.claveAcceso()))
-                .build();
-
-        // 4. Asignar roles al usuario (no al acceso)
-        Set<String> strRoles = requestDTO.roles();
-        Set<Role> roles = new HashSet<>();
-
-        if (strRoles == null || strRoles.isEmpty()) {
-            Role defaultRole = roleRepository.findByNombreRol("USER")
-                    .orElseThrow(() -> new RoleNotFoundException("Error: Rol USER no existe"));
-            roles.add(defaultRole);
-        } else {
-            strRoles.forEach(roleName -> {
-                Role rol = roleRepository.findByNombreRol(roleName.toUpperCase())
-                        .orElseThrow(() -> new RoleNotFoundException("Error: Rol " + roleName + " no existe"));
-                roles.add(rol);
-            });
-        }
-
-        usuario.setRoles(roles);
-
-        // 5. Guardar ambos
-        usuarioRepository.save(usuario);
-        return accesoRepository.save(acceso);
-    }
-
-    public Integer getUsuarioIdByCorreo(String correo) {
-        Acceso acceso = accesoRepository.findByCorreoAcceso(correo)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        return usuarioRepository.findAll().stream()
-                .filter(usuario -> usuario.getAcceso().getId().equals(acceso.getId()))
-                .map(Usuario::getId)
-                .findFirst()
-                .orElse(null);
-    }
-     */
 }

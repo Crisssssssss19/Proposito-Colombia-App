@@ -65,7 +65,7 @@ public class PreRegistroServiceImpl implements PreRegistroService {
             }
         }
 
-        // Ya existe → incrementar intentos
+        // Ya existe -> incrementar intentos
         pre.setIntentos(pre.getIntentos() + 1);
 
         if (pre.getIntentos() == 2) {

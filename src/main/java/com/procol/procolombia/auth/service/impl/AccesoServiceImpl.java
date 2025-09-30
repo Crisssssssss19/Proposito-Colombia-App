@@ -104,7 +104,7 @@ public class AccesoServiceImpl implements AccesoService {
     @Transactional(readOnly = true)
     public ApiResponseDTO<LoginResponseDTO> login(LoginRequestDTO requestDTO) {
         logger.debug("Login request para correo={}", requestDTO.correoAcceso());
-        // 1️⃣ Autenticación con Spring Security
+        // Autenticación con Spring Security
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         requestDTO.correoAcceso(),
@@ -116,15 +116,15 @@ public class AccesoServiceImpl implements AccesoService {
         if (!authentication.isAuthenticated()) {
             throw new UsernameNotFoundException("Credenciales inválidas");
         }
-        // 3️⃣ Obtener roles del usuario autenticado
+        // Obtener roles del usuario autenticado
         List<String> roles = userInfoService.getUserRoles(requestDTO.correoAcceso());
         logger.debug("Roles para {} => {}", requestDTO.correoAcceso(), roles);
 
-        // 2️⃣ Generar token JWT
+        // Generar token JWT
         String token = jwtService.generateToken(requestDTO.correoAcceso(), roles);
         logger.debug("Token generado (masked) for {} => {}...", requestDTO.correoAcceso(), token != null ? token.substring(0, 8) : "null");
 
-        // 4️⃣ Obtener foto de perfil favorita (si existe)
+        // Obtener foto de perfil favorita (si existe)
         Acceso acceso = accesoRepository.findByCorreoAcceso(requestDTO.correoAcceso())
                 .orElseThrow(() -> new AccesoNotFoundException("Acceso no encontrado"));
         Usuario usuario = acceso.getUsuario();
@@ -134,19 +134,13 @@ public class AccesoServiceImpl implements AccesoService {
         }
         logger.debug("Foto favorita encontrada para usuarioId={} : {}", usuario.getId(), fotoBase64.equals("XXX_IMG") ? "NO_ENCONTRADA" : "ENCONTRADA (base64 len=" + fotoBase64.length() + ")");
 
-        // 5️⃣ Armar respuesta DTO
         LoginResponseDTO loginResponse = new LoginResponseDTO(
                 token,
                 fotoBase64,
                 jwtService.getExpirationTime()
-
         );
 
-        return new ApiResponseDTO<>(
-                200,
-                "Autenticación exitosa",
-                loginResponse,
-                LocalDateTime.now().toString()
+        return new ApiResponseDTO<>(200,"Autenticación exitosa", loginResponse, LocalDateTime.now().toString()
         );
     }
 
