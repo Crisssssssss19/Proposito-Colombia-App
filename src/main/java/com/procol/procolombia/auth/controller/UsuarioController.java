@@ -39,8 +39,6 @@ public class UsuarioController {
     }
 
     @PostMapping
-// 👇 log previo para saber si siquiera entra aquí
-// (esto lo pones arriba de la firma del método, no dentro)
     @PreAuthorize("hasAuthority('ADMINISTRADOR')")
     public ResponseEntity<ApiResponseDTO<UsuarioResponseDTO>> createUsuario(@RequestBody UsuarioRequestDTO usuarioRequest) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

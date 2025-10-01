@@ -1,5 +1,6 @@
 package com.procol.procolombia.auth.service.impl;
 
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.procol.procolombia.auth.dto.Request.AccesoRequestDTO;
 import com.procol.procolombia.auth.dto.Request.LoginRequestDTO;
 import com.procol.procolombia.auth.dto.Request.UserRegisterRequestDTO;
@@ -7,25 +8,29 @@ import com.procol.procolombia.auth.dto.Response.AccesoResponseDTO;
 import com.procol.procolombia.auth.dto.Response.ApiResponseDTO;
 import com.procol.procolombia.auth.dto.Response.LoginResponseDTO;
 import com.procol.procolombia.auth.dto.Response.UserRegisterResponseDTO;
-import com.procol.procolombia.auth.entities.Acceso;
-import com.procol.procolombia.auth.entities.Imagene;
-import com.procol.procolombia.auth.entities.Role;
-import com.procol.procolombia.auth.entities.Usuario;
+import com.procol.procolombia.auth.entities.*;
 import com.procol.procolombia.auth.exception.alreadyexists.EmailAlreadyExistsException;
+import com.procol.procolombia.auth.exception.alreadyexists.UsuarioAlreadyExistsException;
 import com.procol.procolombia.auth.exception.notfound.AccesoNotFoundException;
 import com.procol.procolombia.auth.exception.notfound.RoleNotFoundException;
+import com.procol.procolombia.auth.exception.notfound.UbicacionNotFoundException;
 import com.procol.procolombia.auth.mappers.AccesoMapper;
-import com.procol.procolombia.auth.repositories.AccesoRepository;
-import com.procol.procolombia.auth.repositories.ImageneRepository;
-import com.procol.procolombia.auth.repositories.RoleRepository;
-import com.procol.procolombia.auth.repositories.UsuarioRepository;
+import com.procol.procolombia.auth.repositories.*;
 import com.procol.procolombia.auth.security.jwt.JwtService;
 import com.procol.procolombia.auth.security.service.UserInfoDetail;
 import com.procol.procolombia.auth.security.service.UserInfoService;
 import com.procol.procolombia.auth.service.AccesoService;
 import com.procol.procolombia.vacante.repositories.RequisitoRepository;
+import com.sendgrid.Method;
+import com.sendgrid.SendGrid;
+import com.sendgrid.helpers.mail.Mail;
+import com.sendgrid.helpers.mail.objects.Content;
+import com.sendgrid.Request;
+import com.sendgrid.Response;
+import com.sendgrid.helpers.mail.objects.Email;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,8 +40,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class AccesoServiceImpl implements AccesoService {
@@ -53,9 +60,16 @@ public class AccesoServiceImpl implements AccesoService {
     private final ImagenServiceImpl imagenServiceImpl;
     private final ImageneRepository imageneRepository;
     private final RoleRepository roleRepository;
+    private final String sendGridApiKey;
+    private final String sendGridFromEmail;
+    private final ParameterNamesModule parameterNamesModule;
+    private final UbicacioneRepository ubicacioneRepository;
+    private final UsuariosRoleRepository usuariosRoleRepository;
 
-    public AccesoServiceImpl(AccesoRepository accesoRepository, RoleRepository roleRepository, JwtService jwtService, AccesoMapper accesoMapper, RequisitoRepository requisitoRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, UserInfoService userInfoService, UsuarioRepository usuarioRepository, ImagenServiceImpl imagenServiceImpl, ImageneRepository imageneRepository) {
+    public AccesoServiceImpl(AccesoRepository accesoRepository, @Value("${sendgrid.api.key}") String sendGridApiKey, @Value("${sendgrid.from.email}") String sendGridFromEmail, RoleRepository roleRepository, JwtService jwtService, AccesoMapper accesoMapper, RequisitoRepository requisitoRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, UserInfoService userInfoService, UsuarioRepository usuarioRepository, ImagenServiceImpl imagenServiceImpl, ImageneRepository imageneRepository, ParameterNamesModule parameterNamesModule, UbicacioneRepository ubicacioneRepository, UsuariosRoleRepository usuariosRoleRepository) {
         this.accesoRepository = accesoRepository;
+        this.sendGridApiKey = sendGridApiKey;
+        this.sendGridFromEmail = sendGridFromEmail;
         this.roleRepository = roleRepository;
         this.accesoMapper = accesoMapper;
         this.jwtService = jwtService;
@@ -66,6 +80,9 @@ public class AccesoServiceImpl implements AccesoService {
         this.usuarioRepository = usuarioRepository;
         this.imagenServiceImpl = imagenServiceImpl;
         this.imageneRepository = imageneRepository;
+        this.parameterNamesModule = parameterNamesModule;
+        this.ubicacioneRepository = ubicacioneRepository;
+        this.usuariosRoleRepository = usuariosRoleRepository;
     }
 
 
@@ -87,7 +104,7 @@ public class AccesoServiceImpl implements AccesoService {
     @Transactional(readOnly = true)
     public ApiResponseDTO<LoginResponseDTO> login(LoginRequestDTO requestDTO) {
         logger.debug("Login request para correo={}", requestDTO.correoAcceso());
-        // 1️⃣ Autenticación con Spring Security
+        // Autenticación con Spring Security
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         requestDTO.correoAcceso(),
@@ -99,15 +116,15 @@ public class AccesoServiceImpl implements AccesoService {
         if (!authentication.isAuthenticated()) {
             throw new UsernameNotFoundException("Credenciales inválidas");
         }
-        // 3️⃣ Obtener roles del usuario autenticado
+        // Obtener roles del usuario autenticado
         List<String> roles = userInfoService.getUserRoles(requestDTO.correoAcceso());
         logger.debug("Roles para {} => {}", requestDTO.correoAcceso(), roles);
 
-        // 2️⃣ Generar token JWT
+        // Generar token JWT
         String token = jwtService.generateToken(requestDTO.correoAcceso(), roles);
         logger.debug("Token generado (masked) for {} => {}...", requestDTO.correoAcceso(), token != null ? token.substring(0, 8) : "null");
 
-        // 4️⃣ Obtener foto de perfil favorita (si existe)
+        // Obtener foto de perfil favorita (si existe)
         Acceso acceso = accesoRepository.findByCorreoAcceso(requestDTO.correoAcceso())
                 .orElseThrow(() -> new AccesoNotFoundException("Acceso no encontrado"));
         Usuario usuario = acceso.getUsuario();
@@ -117,32 +134,32 @@ public class AccesoServiceImpl implements AccesoService {
         }
         logger.debug("Foto favorita encontrada para usuarioId={} : {}", usuario.getId(), fotoBase64.equals("XXX_IMG") ? "NO_ENCONTRADA" : "ENCONTRADA (base64 len=" + fotoBase64.length() + ")");
 
-        // 5️⃣ Armar respuesta DTO
         LoginResponseDTO loginResponse = new LoginResponseDTO(
                 token,
                 fotoBase64,
                 jwtService.getExpirationTime()
-
         );
 
-        return new ApiResponseDTO<>(
-                200,
-                "Autenticación exitosa",
-                loginResponse,
-                LocalDateTime.now().toString()
+        return new ApiResponseDTO<>(200,"Autenticación exitosa", loginResponse, LocalDateTime.now().toString()
         );
     }
 
     @Override
+    @Transactional
     public ApiResponseDTO<UserRegisterResponseDTO> register(UserRegisterRequestDTO userRegisterRequestDTO) {
         // Validar correo único
         if (accesoRepository.existsByCorreoAcceso(userRegisterRequestDTO.correoAcceso())) {
             throw new EmailAlreadyExistsException("Correo ya registrado: " + userRegisterRequestDTO.correoAcceso());
         }
 
-        // Buscar el usuario por documento
-        Usuario usuario = usuarioRepository.findByDocumentoUsuario(userRegisterRequestDTO.documentoUsuario())
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con documento: " + userRegisterRequestDTO.documentoUsuario()));
+        // Validar documento único
+        if (usuarioRepository.existsByDocumentoUsuario(userRegisterRequestDTO.documentoUsuario())) {
+            throw new UsuarioAlreadyExistsException("Documento ya registrado: " + userRegisterRequestDTO.documentoUsuario());
+        }
+
+        // Buscar ubicación
+        Ubicacione ubicacion = ubicacioneRepository.findById(userRegisterRequestDTO.idUbicacion())
+                .orElseThrow(() -> new UbicacionNotFoundException("Ubicacion no encontrada"));
 
         // Crear el usuario
         Usuario nuevoUsuario = new Usuario();
@@ -151,35 +168,34 @@ public class AccesoServiceImpl implements AccesoService {
         nuevoUsuario.setTipoDocumentoUsuario(userRegisterRequestDTO.tipoDocumentoUsuario());
         nuevoUsuario.setDocumentoUsuario(userRegisterRequestDTO.documentoUsuario());
         nuevoUsuario.setEstadoUsuario((short) 1); // Activo por defecto
-        nuevoUsuario.setIdUbicacion(usuario.getIdUbicacion()); // Mantener la ubicación existente
+        nuevoUsuario.setIdUbicacion(ubicacion);
         Usuario usuarioGuardado = usuarioRepository.saveAndFlush(nuevoUsuario);
-        logger.debug("Usuario guardado: {}", usuarioGuardado);
+        logger.debug("Nuevo usuario creado: {}", usuarioGuardado);
 
         // Crear el acceso
         Acceso acceso = Acceso.builder()
                 .usuario(usuarioGuardado)
                 .correoAcceso(userRegisterRequestDTO.correoAcceso())
                 .claveAcceso(passwordEncoder.encode(userRegisterRequestDTO.claveAcceso()))
+                .telefonoAcceso(userRegisterRequestDTO.telefonoUsuario())
                 .uuidAcceso(UUID.randomUUID().toString())
                 .build();
-        Acceso accesoGuardado = accesoRepository.saveAndFlush(acceso);
-        logger.debug("Nuevo usuario registrado id={} con acceso id={}", usuarioGuardado.getId(), accesoGuardado.getId());
+        accesoRepository.saveAndFlush(acceso);
+        logger.debug("Nuevo usuario registrado id={}", usuarioGuardado.getId());
 
-        // Asignar roles al usuario (no al acceso)
-        Set<String> strRoles = userRegisterRequestDTO.roles();
-        Set<Role> roles = new HashSet<>();
+        // Asignar roles
+        for (String roleName : userRegisterRequestDTO.roles()) {
+            Role rol = roleRepository.findByNombreRol(roleName)
+                    .orElseThrow(() -> new RoleNotFoundException("Role no encontrado: " + roleName));
 
-        strRoles.forEach(roleName -> {
-            Role rol = roleRepository.findByNombreRol(roleName.toUpperCase())
-                    .orElseThrow(() -> new RoleNotFoundException("Error: Rol " + roleName + " no existe"));
-            roles.add(rol);
-        });
+            UsuariosRoleId id = new UsuariosRoleId(rol.getId(), usuarioGuardado.getId());
+            UsuariosRole usuariosRole = new UsuariosRole();
+            usuariosRole.setId(id);
+            usuariosRole.setIdRol(rol);
+            usuariosRole.setIdUsuario(usuarioGuardado);
 
-        usuario.setRoles(roles);
-
-        // 5. Guardar ambos
-        usuarioRepository.save(usuario);
-
+            usuariosRoleRepository.save(usuariosRole);
+        }
         return new ApiResponseDTO<>(201, "Usuario registrado exitosamente", null, LocalDateTime.now().toString());
     }
 
@@ -230,4 +246,57 @@ public class AccesoServiceImpl implements AccesoService {
 
         return new ApiResponseDTO<>(200, "Acceso encontrado", accesoMapper.toDto(acceso), LocalDateTime.now().toString());
     }
+
+    @Override
+    public ApiResponseDTO<String> enviarVerificarCorreo(String correo) {
+        Acceso acceso = accesoRepository.findByCorreoAcceso(correo)
+                .orElseThrow(() -> new AccesoNotFoundException("Acceso no encontrado con correo: " + correo));
+
+        if(acceso.getCorreoVerificado()==1){
+            return new ApiResponseDTO<>(200, "Correo ya verificado", null, LocalDateTime.now().toString());
+        }
+
+        try{
+            Email from = new Email(sendGridFromEmail);
+            String subject = "verifica tu correo electrónico";
+            Email to = new Email(acceso.getCorreoAcceso());
+
+            String link = "http://localhost:3210/api/accesos/verificar-correo?idUsuario=" + acceso.getUsuario().getId() + "&uuid=" + acceso.getId();
+            Content content = new Content("text/html",
+                    "<h3>Verifica tu correo</h3>" +
+                    "<p>Haz clic en el siguiente enlace para verificar tu correo electrónico:</p>" +
+                    "<a href=\"" + link + "\">Verificar Correo</a>");
+
+            Mail mail = new Mail(from, subject, to, content);
+            SendGrid sg = new SendGrid(sendGridApiKey);
+            Request request = new Request();
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+            request.setBody(mail.build());
+            Response response = sg.api(request);
+
+            if(response.getStatusCode() >= 200 && response.getStatusCode() < 300){
+                return new ApiResponseDTO<>(200, "Correo enviado", "Revisa tu bandeja de entrada", LocalDateTime.now().toString());
+            } else {
+                return new ApiResponseDTO<>(500, "Error al enviar correo", "Código de estado: " + response.getStatusCode(), LocalDateTime.now().toString());
+            }
+        } catch (IOException ex) {
+            return new ApiResponseDTO<>(500, "Excepcion", ex.getMessage(), LocalDateTime.now().toString());
+        }
+    }
+
+    @Override
+    public ApiResponseDTO<String> verificarCorreo(Integer idUsuario, String UUID) {
+        Acceso acceso = accesoRepository.findById(idUsuario)
+                .orElseThrow(() -> new AccesoNotFoundException("Acceso no encontrado con id: " + idUsuario));
+
+        if(!acceso.getUuidAcceso().equals(UUID) || acceso.getUuidAcceso()==null){
+            return new ApiResponseDTO<>(400, "UUID inválido", null, LocalDateTime.now().toString());
+        }
+        acceso.setCorreoVerificado((short) 1);
+        accesoRepository.save(acceso);
+        return new ApiResponseDTO<>(200, "Correo verificado", null, LocalDateTime.now().toString());
+    }
+
+
 }
