@@ -1,7 +1,11 @@
 package com.procol.procolombia.perfil.entities;
 
+import com.procol.procolombia.auth.entities.Usuario;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "talentos")
@@ -20,6 +24,10 @@ public class Talento {
     @Max(2)
     @Column(name = "tipo", nullable = false)
     private Short tipo; // habilidad = 1, competencia = 2
+
+    @ManyToMany(mappedBy = "talentos", fetch = FetchType.LAZY)
+    private List<Usuario> usuarios = new ArrayList<>();
+
 
     public Integer getId() {
         return id;
