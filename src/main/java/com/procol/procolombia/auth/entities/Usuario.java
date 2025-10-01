@@ -78,13 +78,13 @@ public class Usuario {
     @ManyToMany(mappedBy = "usuarios")
     private Set<Role> roles = new LinkedHashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name = "id_Habilidad", referencedColumnName = "id")
-    private Talento habilidad;
-
-    @ManyToOne
-    @JoinColumn(name = "id_Competencia", referencedColumnName = "id")
-    private Talento competencia;
+    @ManyToMany
+    @JoinTable(
+            name = "usuario_talentos",
+            joinColumns = @JoinColumn(name = "id_usuario"),
+            inverseJoinColumns = @JoinColumn(name = "id_talento")
+    )
+    private Set<Talento> talentos = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -214,19 +214,11 @@ public class Usuario {
         this.roles = roles;
     }
 
-    public Talento getHabilidad() {
-        return habilidad;
+    public Set<Talento> getTalentos() {
+        return talentos;
     }
 
-    public void setHabilidad(Talento habilidad) {
-        this.habilidad = habilidad;
-    }
-
-    public Talento getCompetencia() {
-        return competencia;
-    }
-
-    public void setCompetencia(Talento competencia) {
-        this.competencia = competencia;
+    public void setTalentos(Set<Talento> talentos) {
+        this.talentos = talentos;
     }
 }
