@@ -2,7 +2,6 @@ package com.procol.procolombia.perfil.dtos.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
@@ -30,8 +29,11 @@ public record SaveUsuario(
         @NotNull(message = "La ubicacion es obligatoria")
         Integer idUbicacion,
 
-        @NotBlank(message = "El teléfono es obligatorio")
-        @Pattern(regexp = "\\d{7,15}", message = "El teléfono debe contener solo números y tener entre 7 y 15 dígitos")
-        String telefono
+        @Size(max = 100, message = "Tus habilidadades no pueden exceder los 100 caracteres")
+        @NotNull(message = "Las habilidades son obligatorias")
+        String habilidades,
+
+        @Size(min = 4, max = 100, message = "Tus competencias no pueden exceder los 100 caracteres")
+        String competencias
 
 ) implements Serializable {}
