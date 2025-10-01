@@ -1,6 +1,8 @@
 package com.procol.procolombia.auth.repositories;
 
 import com.procol.procolombia.auth.entities.Role;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
@@ -21,5 +23,4 @@ public interface RoleRepository extends JpaRepository<Role, Integer> {
     long countUsuariosByRol(@Param("rolId") Integer rolId);
 
     List<Role> findByNombreRolContainingIgnoreCase(String nombre);
-
 }

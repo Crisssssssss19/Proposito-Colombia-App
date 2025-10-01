@@ -2,8 +2,10 @@ package com.procol.procolombia.auth.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.cglib.core.Local;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "ingresos")
@@ -19,7 +21,7 @@ public class Ingreso {
 
     @NotNull
     @Column(name = "fecha_ingreso", nullable = false)
-    private Instant fechaIngreso;
+    private LocalDateTime fechaIngreso;
 
     public Integer getId() {
         return id;
@@ -37,11 +39,11 @@ public class Ingreso {
         this.idUsuario = idUsuario;
     }
 
-    public Instant getFechaIngreso() {
+    public LocalDateTime getFechaIngreso() {
         return fechaIngreso;
     }
 
-    public void setFechaIngreso(Instant fechaIngreso) {
+    public void setFechaIngreso(LocalDateTime fechaIngreso) {
         this.fechaIngreso = fechaIngreso;
     }
 

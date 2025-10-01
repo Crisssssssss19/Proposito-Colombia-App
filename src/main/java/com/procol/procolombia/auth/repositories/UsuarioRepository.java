@@ -15,6 +15,9 @@ import java.util.Optional;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
   Optional<Usuario> findByDocumentoUsuario(String documentoUsuario);
+  List<Usuario> findByNombresUsuario(String nombresUsuario);
+  List<Usuario> findByTipoDocumentoUsuario(Short tipoUsuario);
+
 
   List<Usuario> findByEstadoUsuario(Short estadoUsuario);
 
@@ -36,6 +39,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
   @Query("SELECT COUNT(u) FROM Usuario u WHERE u.estadoUsuario = 1")
   long countActiveUsers();
+
+  @Query("SELECT u FROM Usuario u JOIN FETCH u.idUbicacion WHERE u.id = :id")
+  Optional<Usuario> findByIdWithUbicacion(@Param("id") Integer id);
 
   @Query("SELECT u FROM Usuario u JOIN u.palabrasClaves p WHERE p.textoPalabraClave IN :palabras")
   List<Usuario> findByPalabrasClave(@Param("palabras") List<String> palabras);

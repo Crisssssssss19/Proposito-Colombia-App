@@ -1,6 +1,7 @@
 package com.procol.procolombia.auth.repositories;
 
 import com.procol.procolombia.auth.entities.Acceso;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,6 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface AccesoRepository extends JpaRepository<Acceso, Integer> {
+    @EntityGraph(attributePaths = "usuario")
     Optional<Acceso> findByCorreoAcceso(String correoAcceso);
     Optional<Acceso> findByTelefonoAcceso(String telefonoAcceso);
     Optional<Acceso> findByUuidAcceso(String uuidAcceso);
@@ -17,4 +19,11 @@ public interface AccesoRepository extends JpaRepository<Acceso, Integer> {
     boolean existsByTelefonoAcceso(String telefonoAcceso);
     @Query("SELECT a FROM Acceso a WHERE a.correoAcceso = :correo OR a.telefonoAcceso = :telefono")
     Optional<Acceso> findByCorreoAccesoOrTelefonoAcceso(@Param("correo") String correo, @Param("telefono") String telefono);
+
+    @Query("SELECT a FROM Acceso a " +
+            "JOIN FETCH a.usuario u " +
+            "LEFT JOIN FETCH u.roles " +
+            "WHERE a.correoAcceso = :correo")
+    Optional<Acceso> findByCorreoAccesoWithRoles(@Param("correo") String correo);
+
 }
