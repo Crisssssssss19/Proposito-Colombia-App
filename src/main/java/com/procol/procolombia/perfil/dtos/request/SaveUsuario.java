@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
+import java.util.List;
 
 public record SaveUsuario(
 
@@ -34,6 +35,9 @@ public record SaveUsuario(
         String habilidades,
 
         @Size(min = 4, max = 100, message = "Tus competencias no pueden exceder los 100 caracteres")
-        String competencias
+        String competencias,
+
+        @Size(min = 4, max = 100, message = "Tus palabras clave no pueden exceder los 100 caracteres")
+        List<String> palabrasClave
 
 ) implements Serializable {}
