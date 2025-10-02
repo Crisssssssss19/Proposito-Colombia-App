@@ -8,11 +8,13 @@ import org.mapstruct.Mapper;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface PalabraClaveMapper {
+public interface PalabrasClaveMapper {
 
     PalabrasClave SavePalabraClaveToPalabraClave(SavePalabraClave savePalabraClave);
 
     GetPalabraClave PalabraClaveToGetPalabraClave(PalabrasClave palabraClave);
 
     List<GetPalabraClave> ListPalabraClaveToListGetPalabraClave(List<PalabrasClave> palabrasClave);
+
+    List<PalabrasClave>  ListGetPalabraClaveToListPalabraClave(List<GetPalabraClave> getPalabraClave);
 }
