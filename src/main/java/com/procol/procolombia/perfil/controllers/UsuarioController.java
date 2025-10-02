@@ -25,7 +25,7 @@ public class UsuarioController {
         return ResponseEntity.ok(ApiResponse.success("Usuario creado correctamente", usuario, HttpStatus.CREATED));
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<ApiResponse<GetUsuario>> actualizarUsuario(@PathVariable Integer id, @RequestBody SaveUsuario saveUsuario) {
         return ResponseEntity.ok(ApiResponse.success("Usuario actualizado correctamente", usuarioService.actualizarUsuario(id, saveUsuario), HttpStatus.OK));
     }
