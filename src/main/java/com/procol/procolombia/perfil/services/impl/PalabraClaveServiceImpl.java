@@ -2,7 +2,7 @@ package com.procol.procolombia.perfil.services.impl;
 
 import com.procol.procolombia.perfil.dtos.request.SavePalabraClave;
 import com.procol.procolombia.perfil.dtos.response.GetPalabraClave;
-import com.procol.procolombia.perfil.mappers.PalabraClaveMapper;
+import com.procol.procolombia.perfil.mappers.PalabrasClaveMapper;
 import com.procol.procolombia.perfil.services.PalabraClaveService;
 import com.procol.procolombia.vacante.entities.PalabrasClave;
 import com.procol.procolombia.vacante.repositories.PalabrasClaveRepository;
@@ -14,9 +14,9 @@ import java.util.List;
 public class PalabraClaveServiceImpl implements PalabraClaveService {
 
     private PalabrasClaveRepository palabrasClaveRepository;
-    private PalabraClaveMapper palabraClaveMapper;
+    private PalabrasClaveMapper palabraClaveMapper;
 
-    public PalabraClaveServiceImpl(PalabrasClaveRepository palabrasClaveRepository, PalabraClaveMapper palabraClaveMapper) {
+    public PalabraClaveServiceImpl(PalabrasClaveRepository palabrasClaveRepository, PalabrasClaveMapper palabraClaveMapper) {
         this.palabrasClaveRepository = palabrasClaveRepository;
         this.palabraClaveMapper = palabraClaveMapper;
     }
