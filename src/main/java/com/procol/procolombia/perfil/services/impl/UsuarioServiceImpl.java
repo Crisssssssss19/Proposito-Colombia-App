@@ -53,22 +53,33 @@ public class UsuarioServiceImpl implements UsuarioService {
             usuario.setIdUbicacion(obtenerUbicacionPorId(saveUsuario.idUbicacion()));
         }
 
-        usuario.getTalentos().clear();
         usuario.getTalentos().addAll(
                 talentoService.asignarTalentos(saveUsuario.habilidades(), saveUsuario.competencias())
         );
 
-        usuario.getPalabrasClaves().clear();
         usuario.getPalabrasClaves().addAll(
                 palabraClaveService.asignarPalabras(saveUsuario.palabrasClave())
         );
 
-        usuario.setNombresUsuario(saveUsuario.nombres());
-        usuario.setApellidosUsuario(saveUsuario.apellidos());
-        usuario.setTipoDocumentoUsuario(saveUsuario.tipoDocumento());
-        usuario.setEstadoUsuario(saveUsuario.estado());
-        usuario.setDocumentoUsuario(saveUsuario.documento());
+        if (saveUsuario.nombres() != null) {
+            usuario.setNombresUsuario(saveUsuario.nombres());
+        }
 
+        if (saveUsuario.apellidos() != null) {
+            usuario.setApellidosUsuario(saveUsuario.apellidos());
+        }
+
+        if (saveUsuario.tipoDocumento() != null) {
+            usuario.setTipoDocumentoUsuario(saveUsuario.tipoDocumento());
+        }
+
+        if (saveUsuario.estado() != null) {
+            usuario.setEstadoUsuario(saveUsuario.estado());
+        }
+
+        if (saveUsuario.documento() != null) {
+            usuario.setDocumentoUsuario(saveUsuario.documento());
+        }
         return usuarioMapper.usuarioToGetUsuario(usuarioRepository.save(usuario));
     }
 
