@@ -5,7 +5,7 @@ import com.procol.procolombia.auth.entities.Usuario;
 import com.procol.procolombia.auth.repositories.UbicacioneRepository;
 import com.procol.procolombia.auth.repositories.UsuarioRepository;
 import com.procol.procolombia.perfil.dtos.response.*;
-import com.procol.procolombia.perfil.mappers.PalabrasClaveMapper;
+import com.procol.procolombia.perfil.mappers.PalabraClaveMapper;
 import com.procol.procolombia.perfil.mappers.TalentoMapper;
 import com.procol.procolombia.perfil.services.*;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +22,9 @@ public class PerfilServiceImpl implements PerfilService {
     private final UbicacioneRepository ubicacioneRepository;
     private final UsuarioRepository usuarioRepository;
     private final TalentoMapper talentoMapper;
-    private final PalabrasClaveMapper palabraClaveMapper;
+    private final PalabraClaveMapper palabraClaveMapper;
 
-    public PerfilServiceImpl(UsuarioService usuarioService, ImagenService imagenService, ArchivoService archivoService, AccesoService accesoService, UbicacioneRepository ubicacioneRepository, UsuarioRepository usuarioRepository, TalentoMapper talentoMapper, PalabrasClaveMapper palabraClaveMapper) {
+    public PerfilServiceImpl(UsuarioService usuarioService, ImagenService imagenService, ArchivoService archivoService, AccesoService accesoService, UbicacioneRepository ubicacioneRepository, UsuarioRepository usuarioRepository, TalentoMapper talentoMapper, PalabraClaveMapper palabraClaveMapper) {
         this.usuarioService = usuarioService;
         this.imagenService = imagenService;
         this.archivoService = archivoService;
