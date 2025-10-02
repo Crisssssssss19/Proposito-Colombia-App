@@ -11,6 +11,9 @@ public record GetPerfil(
         String telefono,
         String ubicacion,
         List<GetImagenConUrl> imagenes,
-        List<GetArchivoConUrl> archivos
+        List<GetArchivoConUrl> archivos,
+        List<GetTalento> habilidades,
+        List<GetTalento> competencias,
+        List<GetPalabraClave> palabrasClave
 ) implements Serializable {
 }
