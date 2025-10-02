@@ -10,6 +10,8 @@ import com.procol.procolombia.perfil.entities.Talento;
 import com.procol.procolombia.perfil.mappers.UsuarioMapper;
 import com.procol.procolombia.perfil.repositories.TalentoRepository;
 import com.procol.procolombia.perfil.services.UsuarioService;
+import com.procol.procolombia.vacante.entities.PalabrasClave;
+import com.procol.procolombia.vacante.repositories.PalabrasClaveRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -24,12 +26,14 @@ public class UsuarioServiceImpl implements UsuarioService {
     private UsuarioMapper usuarioMapper;
     private UbicacioneRepository ubicacioneRepository;
     private TalentoRepository talentoRepository;
+    private PalabrasClaveRepository palabrasClaveRepository;
 
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper, UbicacioneRepository ubicacioneRepository, TalentoRepository talentoRepository) {
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper, UbicacioneRepository ubicacioneRepository, TalentoRepository talentoRepository, PalabrasClaveRepository palabrasClaveRepository) {
         this.usuarioRepository = usuarioRepository;
         this.usuarioMapper = usuarioMapper;
         this.ubicacioneRepository = ubicacioneRepository;
         this.talentoRepository = talentoRepository;
+        this.palabrasClaveRepository = palabrasClaveRepository;
     }
 
     @Override
@@ -67,6 +71,16 @@ public class UsuarioServiceImpl implements UsuarioService {
                     .map(nombre -> obtenerOrCrearTalento(nombre, (short) 2))
                     .toList();
             usuario.getTalentos().addAll(competencias);
+        }
+
+        usuario.getPalabrasClaves().clear();
+
+        if(saveUsuario.palabrasClave() != null && !saveUsuario.palabrasClave().isEmpty()) {
+            List<PalabrasClave> palabras = saveUsuario.palabrasClave().stream()
+                    .map(String::trim)
+                    .map(this::obtenerOcrearPalabraClave)
+                    .toList();
+            usuario.getPalabrasClaves().addAll(palabras);
         }
 
         usuario.setNombresUsuario(saveUsuario.nombres());
@@ -111,6 +125,16 @@ public class UsuarioServiceImpl implements UsuarioService {
                     nuevoTalento.setNombre(nombre);
                     nuevoTalento.setTipo(tipo);
                     return talentoRepository.save(nuevoTalento);
+                });
+    }
+
+    private PalabrasClave obtenerOcrearPalabraClave(String texto) {
+        String textoNormalizado = texto.trim().toLowerCase();
+        return palabrasClaveRepository.findByTextoPalabraClave(texto)
+                .orElseGet(() -> {
+                    PalabrasClave nuevaPalabraClave = new PalabrasClave();
+                    nuevaPalabraClave.setTextoPalabraClave(texto);
+                    return palabrasClaveRepository.save(nuevaPalabraClave);
                 });
     }
 }
