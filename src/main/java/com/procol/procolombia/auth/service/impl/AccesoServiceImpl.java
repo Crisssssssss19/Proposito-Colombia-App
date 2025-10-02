@@ -65,9 +65,11 @@ public class AccesoServiceImpl implements AccesoService {
     private final ParameterNamesModule parameterNamesModule;
     private final UbicacioneRepository ubicacioneRepository;
     private final UsuariosRoleRepository usuariosRoleRepository;
+    private final IngresoRepository ingresoRepository;
 
-    public AccesoServiceImpl(AccesoRepository accesoRepository, @Value("${sendgrid.api.key}") String sendGridApiKey, @Value("${sendgrid.from.email}") String sendGridFromEmail, RoleRepository roleRepository, JwtService jwtService, AccesoMapper accesoMapper, RequisitoRepository requisitoRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, UserInfoService userInfoService, UsuarioRepository usuarioRepository, ImagenServiceImpl imagenServiceImpl, ImageneRepository imageneRepository, ParameterNamesModule parameterNamesModule, UbicacioneRepository ubicacioneRepository, UsuariosRoleRepository usuariosRoleRepository) {
+    public AccesoServiceImpl(AccesoRepository accesoRepository, @Value("${sendgrid.api.key}") String sendGridApiKey, @Value("${sendgrid.from.email}") String sendGridFromEmail, RoleRepository roleRepository, JwtService jwtService, AccesoMapper accesoMapper, RequisitoRepository requisitoRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, UserInfoService userInfoService, UsuarioRepository usuarioRepository, ImagenServiceImpl imagenServiceImpl, ImageneRepository imageneRepository, ParameterNamesModule parameterNamesModule, UbicacioneRepository ubicacioneRepository, UsuariosRoleRepository usuariosRoleRepository, IngresoRepository ingresoRepository) {
         this.accesoRepository = accesoRepository;
+        this.ingresoRepository = ingresoRepository;
         this.sendGridApiKey = sendGridApiKey;
         this.sendGridFromEmail = sendGridFromEmail;
         this.roleRepository = roleRepository;
@@ -101,7 +103,7 @@ public class AccesoServiceImpl implements AccesoService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public ApiResponseDTO<LoginResponseDTO> login(LoginRequestDTO requestDTO) {
         logger.debug("Login request para correo={}", requestDTO.correoAcceso());
         // Autenticación con Spring Security
@@ -139,6 +141,11 @@ public class AccesoServiceImpl implements AccesoService {
                 fotoBase64,
                 jwtService.getExpirationTime()
         );
+
+        Ingreso ingreso = new Ingreso();
+        ingreso.setIdUsuario(acceso);
+        ingreso.setFechaIngreso(LocalDateTime.now());
+        ingresoRepository.save(ingreso);
 
         return new ApiResponseDTO<>(200,"Autenticación exitosa", loginResponse, LocalDateTime.now().toString()
         );
