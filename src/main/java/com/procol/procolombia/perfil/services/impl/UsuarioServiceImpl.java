@@ -6,34 +6,32 @@ import com.procol.procolombia.auth.repositories.UbicacioneRepository;
 import com.procol.procolombia.auth.repositories.UsuarioRepository;
 import com.procol.procolombia.perfil.dtos.request.SaveUsuario;
 import com.procol.procolombia.perfil.dtos.response.GetUsuario;
-import com.procol.procolombia.perfil.entities.Talento;
 import com.procol.procolombia.perfil.mappers.UsuarioMapper;
-import com.procol.procolombia.perfil.repositories.TalentoRepository;
+import com.procol.procolombia.perfil.services.PalabraClaveService;
+import com.procol.procolombia.perfil.services.TalentoService;
 import com.procol.procolombia.perfil.services.UsuarioService;
-import com.procol.procolombia.vacante.entities.PalabrasClave;
-import com.procol.procolombia.vacante.repositories.PalabrasClaveRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Service
 @Transactional
 public class UsuarioServiceImpl implements UsuarioService {
+    private final TalentoService talentoService;
+    private final PalabraClaveService palabraClaveService;
     private UsuarioRepository usuarioRepository;
     private UsuarioMapper usuarioMapper;
     private UbicacioneRepository ubicacioneRepository;
-    private TalentoRepository talentoRepository;
-    private PalabrasClaveRepository palabrasClaveRepository;
 
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper, UbicacioneRepository ubicacioneRepository, TalentoRepository talentoRepository, PalabrasClaveRepository palabrasClaveRepository) {
+
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper, UbicacioneRepository ubicacioneRepository, TalentoService talentoService, PalabraClaveService palabraClaveService) {
         this.usuarioRepository = usuarioRepository;
         this.usuarioMapper = usuarioMapper;
         this.ubicacioneRepository = ubicacioneRepository;
-        this.talentoRepository = talentoRepository;
-        this.palabrasClaveRepository = palabrasClaveRepository;
+        this.talentoService = talentoService;
+        this.palabraClaveService = palabraClaveService;
     }
 
     @Override
@@ -56,32 +54,14 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
 
         usuario.getTalentos().clear();
-
-        if(saveUsuario.habilidades() != null && !saveUsuario.habilidades().isBlank()) {
-            List<Talento> habilidades = Arrays.stream(saveUsuario.habilidades().split(","))
-                    .map(String::trim)
-                    .map(nombre -> obtenerOrCrearTalento(nombre, (short) 1))
-                    .toList();
-            usuario.getTalentos().addAll(habilidades);
-        }
-
-        if(saveUsuario.competencias() != null && !saveUsuario.competencias().isBlank()) {
-            List<Talento> competencias = Arrays.stream(saveUsuario.competencias().split(","))
-                    .map(String::trim)
-                    .map(nombre -> obtenerOrCrearTalento(nombre, (short) 2))
-                    .toList();
-            usuario.getTalentos().addAll(competencias);
-        }
+        usuario.getTalentos().addAll(
+                talentoService.asignarTalentos(saveUsuario.habilidades(), saveUsuario.competencias())
+        );
 
         usuario.getPalabrasClaves().clear();
-
-        if(saveUsuario.palabrasClave() != null && !saveUsuario.palabrasClave().isEmpty()) {
-            List<PalabrasClave> palabras = saveUsuario.palabrasClave().stream()
-                    .map(String::trim)
-                    .map(this::obtenerOcrearPalabraClave)
-                    .toList();
-            usuario.getPalabrasClaves().addAll(palabras);
-        }
+        usuario.getPalabrasClaves().addAll(
+                palabraClaveService.asignarPalabras(saveUsuario.palabrasClave())
+        );
 
         usuario.setNombresUsuario(saveUsuario.nombres());
         usuario.setApellidosUsuario(saveUsuario.apellidos());
@@ -89,8 +69,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setEstadoUsuario(saveUsuario.estado());
         usuario.setDocumentoUsuario(saveUsuario.documento());
 
-        Usuario usuarioActualizado = usuarioRepository.save(usuario);
-        return usuarioMapper.usuarioToGetUsuario(usuarioActualizado);
+        return usuarioMapper.usuarioToGetUsuario(usuarioRepository.save(usuario));
     }
 
     @Override
@@ -116,25 +95,5 @@ public class UsuarioServiceImpl implements UsuarioService {
     private Ubicacione obtenerUbicacionPorId(Integer id) {
         return ubicacioneRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Ubicación no encontrada"));
-    }
-
-    private Talento obtenerOrCrearTalento(String nombre, Short tipo) {
-        return talentoRepository.findByNombreAndTipo(nombre, tipo)
-                .orElseGet(() -> {
-                    Talento nuevoTalento = new Talento();
-                    nuevoTalento.setNombre(nombre);
-                    nuevoTalento.setTipo(tipo);
-                    return talentoRepository.save(nuevoTalento);
-                });
-    }
-
-    private PalabrasClave obtenerOcrearPalabraClave(String texto) {
-        String textoNormalizado = texto.trim().toLowerCase();
-        return palabrasClaveRepository.findByTextoPalabraClave(texto)
-                .orElseGet(() -> {
-                    PalabrasClave nuevaPalabraClave = new PalabrasClave();
-                    nuevaPalabraClave.setTextoPalabraClave(texto);
-                    return palabrasClaveRepository.save(nuevaPalabraClave);
-                });
     }
 }
