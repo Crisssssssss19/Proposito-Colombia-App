@@ -2,6 +2,7 @@ package com.procol.procolombia.perfil.services;
 
 import com.procol.procolombia.perfil.dtos.request.SavePalabraClave;
 import com.procol.procolombia.perfil.dtos.response.GetPalabraClave;
+import com.procol.procolombia.vacante.entities.PalabrasClave;
 
 import java.util.List;
 
@@ -16,4 +17,6 @@ public interface PalabraClaveService {
     void eliminarPalabraClave(Integer id);
 
     List<GetPalabraClave> listarPalabrasClave();
+
+    List<PalabrasClave> asignarPalabras(List<String> palabrasClave);
 }

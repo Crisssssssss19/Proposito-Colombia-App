@@ -2,21 +2,22 @@ package com.procol.procolombia.perfil.services.impl;
 
 import com.procol.procolombia.perfil.dtos.request.SavePalabraClave;
 import com.procol.procolombia.perfil.dtos.response.GetPalabraClave;
-import com.procol.procolombia.perfil.mappers.PalabrasClaveMapper;
+import com.procol.procolombia.perfil.mappers.PalabraClaveMapper;
 import com.procol.procolombia.perfil.services.PalabraClaveService;
 import com.procol.procolombia.vacante.entities.PalabrasClave;
 import com.procol.procolombia.vacante.repositories.PalabrasClaveRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
 public class PalabraClaveServiceImpl implements PalabraClaveService {
 
     private PalabrasClaveRepository palabrasClaveRepository;
-    private PalabrasClaveMapper palabraClaveMapper;
+    private PalabraClaveMapper palabraClaveMapper;
 
-    public PalabraClaveServiceImpl(PalabrasClaveRepository palabrasClaveRepository, PalabrasClaveMapper palabraClaveMapper) {
+    public PalabraClaveServiceImpl(PalabrasClaveRepository palabrasClaveRepository, PalabraClaveMapper palabraClaveMapper) {
         this.palabrasClaveRepository = palabrasClaveRepository;
         this.palabraClaveMapper = palabraClaveMapper;
     }
@@ -70,5 +71,27 @@ public class PalabraClaveServiceImpl implements PalabraClaveService {
             return palabraClaveMapper.ListPalabraClaveToListGetPalabraClave(palabrasClaves);
         }
         return palabraClaveMapper.ListPalabraClaveToListGetPalabraClave(palabrasClaves);
+    }
+
+    @Override
+    public List<PalabrasClave> asignarPalabras(List<String> palabrasClave) {
+        if (palabrasClave == null || palabrasClave.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return palabrasClave.stream()
+                .map(String::trim)
+                .map(this::obtenerOcrearPalabraClave)
+                .toList();
+    }
+
+    private PalabrasClave obtenerOcrearPalabraClave(String texto) {
+        String textoNormalizado = texto.trim().toLowerCase();
+        return palabrasClaveRepository.findByTextoPalabraClave(textoNormalizado)
+                .orElseGet(() -> {
+                    PalabrasClave nuevaPalabraClave = new PalabrasClave();
+                    nuevaPalabraClave.setTextoPalabraClave(textoNormalizado);
+                    return palabrasClaveRepository.save(nuevaPalabraClave);
+                });
     }
 }
