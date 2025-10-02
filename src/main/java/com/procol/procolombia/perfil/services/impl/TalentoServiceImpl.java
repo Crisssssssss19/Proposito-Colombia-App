@@ -9,6 +9,8 @@ import com.procol.procolombia.perfil.services.TalentoService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -87,5 +89,37 @@ public class TalentoServiceImpl implements TalentoService {
             throw new RuntimeException("No hay talentos registrados para el tipo " + tipo + ".");
         }
         return talentoMapper.ListTalentoToListGetTalento(talentos);
+    }
+
+    @Override
+    public List<Talento> asignarTalentos(String habilidades, String competencias) {
+        List<Talento> talentos = new ArrayList<>();
+
+        if (habilidades != null && !habilidades.isBlank()){
+            talentos.addAll(Arrays.stream(habilidades.split(","))
+                    .map(String::trim)
+                    .map(nombre -> obtenerOrCrearTalento(nombre, (short) 1))
+                    .toList()
+            );
+        }
+
+        if (competencias != null && !competencias.isBlank()){
+            talentos.addAll(Arrays.stream(competencias.split(","))
+                    .map(String::trim)
+                    .map(nombre -> obtenerOrCrearTalento(nombre, (short) 2))
+                    .toList()
+            );
+        }
+        return talentos;
+    }
+
+    private Talento obtenerOrCrearTalento(String nombre, Short tipo) {
+        return talentoRepository.findByNombreAndTipo(nombre, tipo)
+                .orElseGet(() -> {
+                    Talento nuevoTalento = new Talento();
+                    nuevoTalento.setNombre(nombre);
+                    nuevoTalento.setTipo(tipo);
+                    return talentoRepository.save(nuevoTalento);
+                });
     }
 }
