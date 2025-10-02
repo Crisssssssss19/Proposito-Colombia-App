@@ -69,7 +69,12 @@ public class Usuario {
     @OneToMany(mappedBy = "idUsuario")
     private Set<Postulacione> postulaciones = new LinkedHashSet<>();
 
-    @ManyToMany(mappedBy = "usuarios")
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(
+            name = "rel_usuario_palabraclave",
+            joinColumns = @JoinColumn(name = "id_usuario"),
+            inverseJoinColumns = @JoinColumn(name = "id_palabra_clave")
+    )
     private Set<PalabrasClave> palabrasClaves = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idUsuario")
