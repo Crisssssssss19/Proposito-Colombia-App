@@ -2,8 +2,8 @@ package com.procol.procolombia.vacante.dto;
 
 public record AnuncioDto (
         Integer id,
-        Integer vacanteId,
-        String NombrePublicoAnuncio,
+        Integer idVacante,
+        String nombrePublicoAnuncio,
     String nombrePrivadoAnuncio,
     String tipoAnuncio,
     String tamanioAnuncio

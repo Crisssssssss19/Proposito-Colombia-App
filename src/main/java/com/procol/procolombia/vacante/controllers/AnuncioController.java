@@ -1,26 +1,42 @@
 package com.procol.procolombia.vacante.controllers;
 
 
+import com.procol.procolombia.vacante.entities.Anuncio;
+import com.procol.procolombia.vacante.mappers.AnuncioMapper;
+import com.procol.procolombia.vacante.repositories.AnuncioRepository;
 import com.procol.procolombia.vacante.services.AnuncioService;
 import com.procol.procolombia.vacante.dto.AnuncioDto;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import com.procol.procolombia.vacante.response.ApiResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.core.io.Resource;
+import jakarta.persistence.EntityNotFoundException;
+
 
 @RestController
 @RequestMapping("/anuncios")
 public class AnuncioController {
     private final AnuncioService anuncioService;
+    private final AnuncioRepository anuncioRepository;
 
-    public AnuncioController(AnuncioService anuncioService) {
+    public AnuncioController(AnuncioService anuncioService, AnuncioRepository anuncioRepository) {
         this.anuncioService = anuncioService;
+        this.anuncioRepository = anuncioRepository;
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<AnuncioDto>> create(@RequestBody AnuncioDto dto) {
-        AnuncioDto created = anuncioService.createAnuncio(dto);
+    public ResponseEntity<ApiResponse<AnuncioDto>> create(
+            @RequestParam("idVacante") Integer idVacante,
+            @RequestParam("file") MultipartFile file) {
+
+        AnuncioDto created = anuncioService.createAnuncio(idVacante, file);
+
         ApiResponse<AnuncioDto> response = new ApiResponse<>(
                 200,
                 "Anuncio creado exitosamente",
@@ -29,9 +45,10 @@ public class AnuncioController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<AnuncioDto>> update(@PathVariable Integer id, @RequestBody AnuncioDto dto) {
-        AnuncioDto updated = anuncioService.updateAnuncio(id, dto);
+    @PutMapping("/{id}/imagen")
+    public ResponseEntity<ApiResponse<AnuncioDto>> update(@PathVariable Integer id,
+                                                          @RequestParam("file") MultipartFile file) {
+        AnuncioDto updated = anuncioService.updateAnuncio(id, file);
         ApiResponse<AnuncioDto> response = new ApiResponse<>(
                 201,
                 "Anuncio actualizado exitosamente",
@@ -82,5 +99,17 @@ public class AnuncioController {
                 anuncio
         );
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{id}/imagen")
+    public ResponseEntity<Resource> verImagen(@PathVariable Integer id) {
+        Anuncio anuncio = anuncioRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Anuncio con id " + id + " no existe"));
+
+        Resource recurso = anuncioService.verImagen(id);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(anuncio.getTipoAnuncio()))
+                .body(recurso);
     }
 }
