@@ -37,10 +37,10 @@ public class InteresServiceImpl implements InteresService {
 
     @Override
     public InteresDto createInteres(InteresDto interesDto) {
-        Empresa empresa = empresaRepository.findById(interesDto.idEmpresa())
-                .orElseThrow(() -> new RuntimeException("Id de empresa no encontrada: " + interesDto.idEmpresa()));
-        Usuario usuario = usuarioRepository.findById(interesDto.idUsuario())
-                .orElseThrow(() -> new RuntimeException("Id de usuario no encontrada: " + interesDto.idUsuario()));
+        Empresa empresa = empresaRepository.findById(interesDto.id().idEmpresa())
+                .orElseThrow(() -> new RuntimeException("Id de empresa no encontrada: " + interesDto.id().idEmpresa()));
+        Usuario usuario = usuarioRepository.findById(interesDto.id().idUsuario())
+                .orElseThrow(() -> new RuntimeException("Id de usuario no encontrada: " + interesDto.id().idUsuario()));
 
         Interes entidad = new Interes();
         InteresId id = new InteresId();
@@ -60,15 +60,19 @@ public class InteresServiceImpl implements InteresService {
         if (interesDto == null || interesDto.id() == null) {
             throw new IllegalArgumentException("El ID compuesto no puede ser nulo");
         }
+        InteresId interesId = interesMapper.toEntity(interesDto.id());
+        interesId.setIdEmpresa(interesDto.id().idEmpresa());
+        interesId.setIdUsuario(interesDto.id().idUsuario());
 
-        Interes existing = interesRepository.findById(interesDto.id())
-                .orElseThrow(() -> new EntityNotFoundException("El interés con empresa " + interesDto.idEmpresa()+ " y usuario " + interesDto.idUsuario() + " no existe"));
+        Interes existing = interesRepository.findById(interesId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "El interés con empresa " + interesDto.id().idEmpresa() +
+                                " y usuario " + interesDto.id().idUsuario() + " no existe"));
 
         existing.setTipoInteres(interesDto.tipoInteres());
 
         Interes saved = interesRepository.save(existing);
         return interesMapper.toDto(saved);
-
     }
 
     @Override

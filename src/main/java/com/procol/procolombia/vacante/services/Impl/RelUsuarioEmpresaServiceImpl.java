@@ -41,10 +41,10 @@ public class RelUsuarioEmpresaServiceImpl implements RelUsuarioEmpresaService {
 
     @Override
     public RelUsuarioEmpresaDto createRelUsuarioEmpresa(RelUsuarioEmpresaDto relUsuarioEmpresaDto) {
-        Empresa empresa = empresaRepository.findById(relUsuarioEmpresaDto.idEmpresa())
-                .orElseThrow(() -> new RuntimeException("Id de empresa no encontrada: " + relUsuarioEmpresaDto.idEmpresa()));
-        Usuario usuario = usuarioRepository.findById(relUsuarioEmpresaDto.idUsuario())
-                .orElseThrow(() -> new RuntimeException("Id de usuario no encontrada: " + relUsuarioEmpresaDto.idUsuario()));
+        Empresa empresa = empresaRepository.findById(relUsuarioEmpresaDto.id().idEmpresa())
+                .orElseThrow(() -> new RuntimeException("Id de empresa no encontrada: " + relUsuarioEmpresaDto.id().idEmpresa()));
+        Usuario usuario = usuarioRepository.findById(relUsuarioEmpresaDto.id().idUsuario())
+                .orElseThrow(() -> new RuntimeException("Id de usuario no encontrada: " + relUsuarioEmpresaDto.id().idUsuario()));
 
         RelUsuarioEmpresa entidad = new RelUsuarioEmpresa();
         RelUsuarioEmpresaId id = new RelUsuarioEmpresaId();
