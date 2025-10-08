@@ -19,6 +19,9 @@ public class HistorialEstadosPostulacioneDto implements Serializable {
     @NotNull
     private String detalleHistorialPostulacion;
 
+    public HistorialEstadosPostulacioneDto() {
+    }
+
     public HistorialEstadosPostulacioneDto(Integer id, Integer idPostulacionId, Integer idEstadoPostulacionId, Instant fechaHistorialPostulacion, String detalleHistorialPostulacion) {
         this.id = id;
         this.idPostulacionId = idPostulacionId;
