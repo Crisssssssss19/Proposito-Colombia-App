@@ -4,9 +4,9 @@ import com.procol.procolombia.perfil.entities.Talento;
 import com.procol.procolombia.postulacion.entities.Archivo;
 import com.procol.procolombia.postulacion.entities.Mensaje;
 import com.procol.procolombia.postulacion.entities.Postulacione;
-import com.procol.procolombia.vacante.entities.Interese;
-import com.procol.procolombia.vacante.entities.PalabrasClave;
-import com.procol.procolombia.vacante.entities.RelUsuariosEmpresa;
+import com.procol.procolombia.vacante.entities.Interes;
+import com.procol.procolombia.vacante.entities.PalabraClave;
+import com.procol.procolombia.vacante.entities.RelUsuarioEmpresa;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -78,7 +78,7 @@ public class Usuario {
     private Set<PalabrasClave> palabrasClaves = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idUsuario")
-    private Set<RelUsuariosEmpresa> relUsuariosEmpresas = new LinkedHashSet<>();
+    private Set<RelUsuarioEmpresa> relUsuarioEmpresas = new LinkedHashSet<>();
 
     @ManyToMany(mappedBy = "usuarios")
     private Set<Role> roles = new LinkedHashSet<>();
@@ -90,6 +90,32 @@ public class Usuario {
             inverseJoinColumns = @JoinColumn(name = "id_talento")
     )
     private Set<Talento> talentos = new LinkedHashSet<>();
+
+    public Usuario(Integer id, Short tipoDocumentoUsuario, String documentoUsuario, String apellidosUsuario, String nombresUsuario, Short estadoUsuario, Acceso acceso, Set<Archivo> archivos, Set<Imagene> imagenes, Set<Interes> interes, Set<Mensaje> mensajes, Ubicacione idUbicacion, Set<Postulacione> postulaciones, Set<PalabraClave> palabraClaves, Set<RelUsuarioEmpresa> relUsuarioEmpresas, Set<Role> roles) {
+        this.id = id;
+        this.tipoDocumentoUsuario = tipoDocumentoUsuario;
+        this.documentoUsuario = documentoUsuario;
+        this.apellidosUsuario = apellidosUsuario;
+        this.nombresUsuario = nombresUsuario;
+        this.estadoUsuario = estadoUsuario;
+        this.acceso = acceso;
+        this.archivos = archivos;
+        this.imagenes = imagenes;
+        this.interes = interes;
+        this.mensajes = mensajes;
+        this.idUbicacion = idUbicacion;
+        this.postulaciones = postulaciones;
+        this.palabraClaves = palabraClaves;
+        this.relUsuarioEmpresas = relUsuarioEmpresas;
+        this.roles = roles;
+    }
+
+    public Usuario(Integer id, String s) {
+    }
+
+    public Usuario() {
+
+    }
 
     public Integer getId() {
         return id;
@@ -171,12 +197,12 @@ public class Usuario {
         this.imagenes = imagenes;
     }
 
-    public Set<Interese> getIntereses() {
-        return intereses;
+    public Set<Interes> getIntereses() {
+        return interes;
     }
 
-    public void setIntereses(Set<Interese> intereses) {
-        this.intereses = intereses;
+    public void setIntereses(Set<Interes> interes) {
+        this.interes = interes;
     }
 
     public Set<Mensaje> getMensajes() {
@@ -195,20 +221,20 @@ public class Usuario {
         this.postulaciones = postulaciones;
     }
 
-    public Set<PalabrasClave> getPalabrasClaves() {
-        return palabrasClaves;
+    public Set<PalabraClave> getPalabrasClaves() {
+        return palabraClaves;
     }
 
-    public void setPalabrasClaves(Set<PalabrasClave> palabrasClaves) {
-        this.palabrasClaves = palabrasClaves;
+    public void setPalabrasClaves(Set<PalabraClave> palabraClaves) {
+        this.palabraClaves = palabraClaves;
     }
 
-    public Set<RelUsuariosEmpresa> getRelUsuariosEmpresas() {
-        return relUsuariosEmpresas;
+    public Set<RelUsuarioEmpresa> getRelUsuarioEmpresas() {
+        return relUsuarioEmpresas;
     }
 
-    public void setRelUsuariosEmpresas(Set<RelUsuariosEmpresa> relUsuariosEmpresas) {
-        this.relUsuariosEmpresas = relUsuariosEmpresas;
+    public void setRelUsuarioEmpresas(Set<RelUsuarioEmpresa> relUsuarioEmpresas) {
+        this.relUsuarioEmpresas = relUsuarioEmpresas;
     }
 
     public Set<Role> getRoles() {

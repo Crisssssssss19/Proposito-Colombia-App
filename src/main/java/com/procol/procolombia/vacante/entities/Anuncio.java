@@ -9,14 +9,12 @@ import org.hibernate.annotations.OnDeleteAction;
 @Entity
 @Table(name = "anuncios")
 public class Anuncio {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id 
     @Column(name = "id_vacante", nullable = false)
     private Integer id;
 
-    @MapsId
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @MapsId
     @JoinColumn(name = "id_vacante", nullable = false)
     private Vacante idVacante;
 
@@ -88,4 +86,15 @@ public class Anuncio {
         this.tamanioAnuncio = tamanioAnuncio;
     }
 
+    public Anuncio() {
+    }
+
+    public Anuncio(Integer id, Vacante idVacante, String nombrePublicoAnuncio, String nombrePrivadoAnuncio, String tipoAnuncio, String tamanioAnuncio) {
+        this.id = id;
+        this.idVacante = idVacante;
+        this.nombrePublicoAnuncio = nombrePublicoAnuncio;
+        this.nombrePrivadoAnuncio = nombrePrivadoAnuncio;
+        this.tipoAnuncio = tipoAnuncio;
+        this.tamanioAnuncio = tamanioAnuncio;
+    }
 }
