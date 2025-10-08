@@ -1,5 +1,6 @@
 package com.procol.procolombia.auth.entities;
 
+import com.procol.procolombia.perfil.entities.Talento;
 import com.procol.procolombia.postulacion.entities.Archivo;
 import com.procol.procolombia.postulacion.entities.Mensaje;
 import com.procol.procolombia.postulacion.entities.Postulacione;
@@ -68,7 +69,12 @@ public class Usuario {
     @OneToMany(mappedBy = "idUsuario")
     private Set<Postulacione> postulaciones = new LinkedHashSet<>();
 
-    @ManyToMany(mappedBy = "usuarios")
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(
+            name = "rel_usuario_palabraclave",
+            joinColumns = @JoinColumn(name = "id_usuario"),
+            inverseJoinColumns = @JoinColumn(name = "id_palabra_clave")
+    )
     private Set<PalabrasClave> palabrasClaves = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idUsuario")
@@ -76,6 +82,14 @@ public class Usuario {
 
     @ManyToMany(mappedBy = "usuarios")
     private Set<Role> roles = new LinkedHashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "usuario_talentos",
+            joinColumns = @JoinColumn(name = "id_usuario"),
+            inverseJoinColumns = @JoinColumn(name = "id_talento")
+    )
+    private Set<Talento> talentos = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -205,4 +219,11 @@ public class Usuario {
         this.roles = roles;
     }
 
+    public Set<Talento> getTalentos() {
+        return talentos;
+    }
+
+    public void setTalentos(Set<Talento> talentos) {
+        this.talentos = talentos;
+    }
 }

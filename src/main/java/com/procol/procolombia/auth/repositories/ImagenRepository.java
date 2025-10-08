@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ImageneRepository extends JpaRepository<Imagene, Integer> {
+public interface ImagenRepository extends JpaRepository<Imagene, Integer> {
 
     List<Imagene> findByIdUsuario_Id(Integer idUsuario);
 
