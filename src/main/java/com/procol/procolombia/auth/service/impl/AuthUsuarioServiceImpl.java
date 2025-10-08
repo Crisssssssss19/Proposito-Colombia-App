@@ -5,7 +5,7 @@ import com.procol.procolombia.auth.dto.Response.ApiResponseDTO;
 import com.procol.procolombia.auth.dto.Response.UsuarioResponseDTO;
 import com.procol.procolombia.auth.entities.Usuario;
 import com.procol.procolombia.auth.exception.notfound.UsuarioNotFoundException;
-import com.procol.procolombia.auth.mappers.UsuarioMapper;
+import com.procol.procolombia.auth.mappers.AuthUsuarioMapper;
 import com.procol.procolombia.auth.repositories.UbicacioneRepository;
 import com.procol.procolombia.auth.repositories.UsuarioRepository;
 import com.procol.procolombia.auth.service.UsuarioService;
@@ -20,10 +20,10 @@ import java.util.List;
 public class UsuarioServiceImpl implements UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
-    private final UsuarioMapper usuarioMapper;
+    private final AuthUsuarioMapper usuarioMapper;
     private final EntityManager entityManager;
 
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, EntityManager entityManager, UbicacioneRepository ubicacioneRepository, UsuarioMapper usuarioMapper) {
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, EntityManager entityManager, UbicacioneRepository ubicacioneRepository, AuthUsuarioMapper usuarioMapper) {
         this.usuarioRepository = usuarioRepository;
         this.entityManager = entityManager;
         this.usuarioMapper = usuarioMapper;

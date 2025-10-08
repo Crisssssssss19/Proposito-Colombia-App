@@ -17,10 +17,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/usuario")
-public class UsuarioController {
-    private static final Logger log = LoggerFactory.getLogger(UsuarioController.class);
+public class AuthUsuarioController {
+    private static final Logger log = LoggerFactory.getLogger(AuthUsuarioController.class);
     private final UsuarioService usuarioService;
-    public UsuarioController(UsuarioService usuarioService) {
+    public AuthUsuarioController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
 

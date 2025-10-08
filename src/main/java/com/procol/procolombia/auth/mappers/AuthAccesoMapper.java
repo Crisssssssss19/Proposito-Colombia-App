@@ -10,7 +10,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
-public interface AccesoMapper {
+public interface AuthAccesoMapper {
 
     @Mapping(source = "usuario.id", target = "usuario")
     AccesoResponseDTO toDto(Acceso acceso);

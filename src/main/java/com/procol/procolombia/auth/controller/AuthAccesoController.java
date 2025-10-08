@@ -17,11 +17,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/acceso")
-public class AccesoController {
+public class AuthAccesoController {
 
     private final AccesoService accesoService;
 
-    public AccesoController(AccesoService accesoService) {
+    public AuthAccesoController(AccesoService accesoService) {
         this.accesoService = accesoService;
     }
 

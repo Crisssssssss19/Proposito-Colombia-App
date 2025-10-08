@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring", uses = {UbicacionMapper.class})
-public interface UsuarioMapper {
+public interface AuthUsuarioMapper {
 
     @Mapping(source = "id", target = "idUsuario")
     @Mapping(source = "idUbicacion", target = "ubicacionResponseDTO")

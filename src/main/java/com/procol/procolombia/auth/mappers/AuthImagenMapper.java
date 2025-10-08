@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public interface ImagenMapper {
+public interface AuthImagenMapper {
 
     @Mapping(source = "idUsuario.id", target = "idUsuario")
     ImagenResponseDTO toDto(Imagene imagene);

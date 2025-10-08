@@ -14,7 +14,7 @@ import com.procol.procolombia.auth.exception.alreadyexists.UsuarioAlreadyExistsE
 import com.procol.procolombia.auth.exception.notfound.AccesoNotFoundException;
 import com.procol.procolombia.auth.exception.notfound.RoleNotFoundException;
 import com.procol.procolombia.auth.exception.notfound.UbicacionNotFoundException;
-import com.procol.procolombia.auth.mappers.AccesoMapper;
+import com.procol.procolombia.auth.mappers.AuthAccesoMapper;
 import com.procol.procolombia.auth.repositories.*;
 import com.procol.procolombia.auth.security.jwt.JwtService;
 import com.procol.procolombia.auth.security.service.UserInfoDetail;
@@ -46,19 +46,19 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class AccesoServiceImpl implements AccesoService {
+public class AuthAccesoServiceImpl implements AccesoService {
 
     private final AccesoRepository accesoRepository;
-    private final AccesoMapper accesoMapper;
+    private final AuthAccesoMapper accesoMapper;
     private final RequisitoRepository requisitoRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final UserInfoService userInfoService;
-    private static final Logger logger = LoggerFactory.getLogger(AccesoServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(AuthAccesoServiceImpl.class);
     private final UsuarioRepository usuarioRepository;
     private final ImagenServiceImpl imagenServiceImpl;
-    private final ImageneRepository imageneRepository;
+    private final ImagenRepository imageneRepository;
     private final RoleRepository roleRepository;
     private final String sendGridApiKey;
     private final String sendGridFromEmail;
@@ -67,7 +67,7 @@ public class AccesoServiceImpl implements AccesoService {
     private final UsuariosRoleRepository usuariosRoleRepository;
     private final IngresoRepository ingresoRepository;
 
-    public AccesoServiceImpl(AccesoRepository accesoRepository, @Value("${sendgrid.api.key}") String sendGridApiKey, @Value("${sendgrid.from.email}") String sendGridFromEmail, RoleRepository roleRepository, JwtService jwtService, AccesoMapper accesoMapper, RequisitoRepository requisitoRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, UserInfoService userInfoService, UsuarioRepository usuarioRepository, ImagenServiceImpl imagenServiceImpl, ImageneRepository imageneRepository, ParameterNamesModule parameterNamesModule, UbicacioneRepository ubicacioneRepository, UsuariosRoleRepository usuariosRoleRepository, IngresoRepository ingresoRepository) {
+    public AuthAccesoServiceImpl(AccesoRepository accesoRepository, @Value("${sendgrid.api.key}") String sendGridApiKey, @Value("${sendgrid.from.email}") String sendGridFromEmail, RoleRepository roleRepository, JwtService jwtService, AuthAccesoMapper accesoMapper, RequisitoRepository requisitoRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, UserInfoService userInfoService, UsuarioRepository usuarioRepository, ImagenServiceImpl imagenServiceImpl, ImagenRepository imageneRepository, ParameterNamesModule parameterNamesModule, UbicacioneRepository ubicacioneRepository, UsuariosRoleRepository usuariosRoleRepository, IngresoRepository ingresoRepository) {
         this.accesoRepository = accesoRepository;
         this.ingresoRepository = ingresoRepository;
         this.sendGridApiKey = sendGridApiKey;

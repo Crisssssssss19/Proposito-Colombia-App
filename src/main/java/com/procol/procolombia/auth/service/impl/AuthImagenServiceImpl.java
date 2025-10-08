@@ -6,8 +6,8 @@ import com.procol.procolombia.auth.entities.Imagene;
 import com.procol.procolombia.auth.entities.Usuario;
 import com.procol.procolombia.auth.exception.notfound.ImagenNotFoundException;
 import com.procol.procolombia.auth.exception.notfound.UsuarioNotFoundException;
-import com.procol.procolombia.auth.mappers.ImagenMapper;
-import com.procol.procolombia.auth.repositories.ImageneRepository;
+import com.procol.procolombia.auth.mappers.AuthImagenMapper;
+import com.procol.procolombia.auth.repositories.ImagenRepository;
 import com.procol.procolombia.auth.repositories.UsuarioRepository;
 import com.procol.procolombia.auth.service.ImagenService;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,16 +26,16 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class ImagenServiceImpl implements ImagenService {
+public class AuthImagenServiceImpl implements ImagenService {
 
-    private final ImageneRepository imagenRepository;
-    private final ImagenMapper imagenMapper;
+    private final ImagenRepository imagenRepository;
+    private final AuthImagenMapper imagenMapper;
     private final UsuarioRepository usuarioRepository;
 
     @Value("${procol.ruta.imagenes}")
     private String rutaImagenes;
 
-    public ImagenServiceImpl(UsuarioRepository usuarioRepository, ImageneRepository imagenRepository, ImagenMapper imagenMapper) {
+    public AuthImagenServiceImpl(UsuarioRepository usuarioRepository, ImagenRepository imagenRepository, AuthImagenMapper imagenMapper) {
         this.imagenRepository = imagenRepository;
         this.imagenMapper = imagenMapper;
         this.usuarioRepository = usuarioRepository;
