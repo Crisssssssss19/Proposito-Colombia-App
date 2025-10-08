@@ -20,6 +20,9 @@ public class EstadosPostulacioneDto implements Serializable {
     private Short ordenEstadoPostulacion;
     private Set<Integer> historialEstadosPostulacioneIds;
 
+    public EstadosPostulacioneDto() {
+    }
+
     public EstadosPostulacioneDto(Integer id, String nombreEstadoPostulacion, Short ordenEstadoPostulacion, Set<Integer> historialEstadosPostulacioneIds) {
         this.id = id;
         this.nombreEstadoPostulacion = nombreEstadoPostulacion;

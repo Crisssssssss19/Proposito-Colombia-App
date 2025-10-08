@@ -7,6 +7,8 @@ import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "archivos")
 public class Archivo {
@@ -45,6 +47,15 @@ public class Archivo {
     @NotNull
     @Column(name = "grupo_archivo", nullable = false)
     private Short grupoArchivo;
+
+    @NotNull
+    @Column(name = "fecha_subida", nullable = false, updatable = false)
+    private LocalDateTime fechaSubida;
+
+    @PrePersist
+    public void prePersist() {
+        this.fechaSubida = LocalDateTime.now();
+    }
 
     public Integer getId() {
         return id;
@@ -102,4 +113,5 @@ public class Archivo {
         this.grupoArchivo = grupoArchivo;
     }
 
+    public LocalDateTime getFechaSubida() { return  fechaSubida; }
 }

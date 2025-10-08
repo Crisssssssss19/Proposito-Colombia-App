@@ -11,6 +11,9 @@ import java.util.List;
 @Repository
 public interface ArchivoRepository extends JpaRepository<Archivo, Integer> {
 
+  @Query("SELECT a FROM Archivo a LEFT JOIN FETCH a.idUsuario")
+  List<Archivo> findAllWithUsuario();
+
   List<Archivo> findByIdUsuario_Id(Integer idUsuario);
 
   List<Archivo> findByGrupoArchivo(Short grupoArchivo);

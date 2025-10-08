@@ -45,7 +45,6 @@ public interface PostulacioneRepository extends JpaRepository<Postulacione, Inte
     @Query("SELECT COUNT(p) FROM Postulacione p WHERE p.idUsuario.id = :usuarioId")
     long countByUsuario(@Param("usuarioId") Integer usuarioId);
 
-    @Query("SELECT p FROM Postulacione p JOIN p.idVacante v WHERE v.relUsuariosEmpresas.idEmpresa.id = :empresaId")
+    @Query("SELECT p FROM Postulacione p JOIN p.idVacante v WHERE v.relUsuarioEmpresas.idEmpresa.id = :empresaId")
     Page<Postulacione> findByEmpresa(@Param("empresaId") Integer empresaId, Pageable pageable);
-
 }

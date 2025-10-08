@@ -10,8 +10,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Table(name = "requisitos")
 public class Requisito {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "requisitos_id_gen")
-    @SequenceGenerator(name = "requisitos_id_gen", sequenceName = "requisitos_id_requisito_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_requisito", nullable = false)
     private Integer id;
 
@@ -74,4 +73,14 @@ public class Requisito {
         this.ordenRequisito = ordenRequisito;
     }
 
+    public Requisito() {
+    }
+
+    public Requisito(Integer id, Vacante idVacante, String tituloRequisito, String detalleRequisito, Short ordenRequisito) {
+        this.id = id;
+        this.idVacante = idVacante;
+        this.tituloRequisito = tituloRequisito;
+        this.detalleRequisito = detalleRequisito;
+        this.ordenRequisito = ordenRequisito;
+    }
 }
