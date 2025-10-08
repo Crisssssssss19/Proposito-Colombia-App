@@ -61,7 +61,7 @@ public class Usuario {
     private Set<Imagene> imagenes = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idUsuario")
-    private Set<Interese> intereses = new LinkedHashSet<>();
+    private Set<Interes> intereses = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idUsuarioResponde")
     private Set<Mensaje> mensajes = new LinkedHashSet<>();
@@ -75,7 +75,7 @@ public class Usuario {
             joinColumns = @JoinColumn(name = "id_usuario"),
             inverseJoinColumns = @JoinColumn(name = "id_palabra_clave")
     )
-    private Set<PalabrasClave> palabrasClaves = new LinkedHashSet<>();
+    private Set<PalabraClave> palabrasClaves = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idUsuario")
     private Set<RelUsuarioEmpresa> relUsuarioEmpresas = new LinkedHashSet<>();
@@ -101,11 +101,11 @@ public class Usuario {
         this.acceso = acceso;
         this.archivos = archivos;
         this.imagenes = imagenes;
-        this.interes = interes;
+        this.intereses = interes;
         this.mensajes = mensajes;
         this.idUbicacion = idUbicacion;
         this.postulaciones = postulaciones;
-        this.palabraClaves = palabraClaves;
+        this.palabrasClaves = palabraClaves;
         this.relUsuarioEmpresas = relUsuarioEmpresas;
         this.roles = roles;
     }
@@ -198,11 +198,11 @@ public class Usuario {
     }
 
     public Set<Interes> getIntereses() {
-        return interes;
+        return intereses;
     }
 
     public void setIntereses(Set<Interes> interes) {
-        this.interes = interes;
+        this.intereses = interes;
     }
 
     public Set<Mensaje> getMensajes() {
@@ -222,11 +222,11 @@ public class Usuario {
     }
 
     public Set<PalabraClave> getPalabrasClaves() {
-        return palabraClaves;
+        return palabrasClaves;
     }
 
     public void setPalabrasClaves(Set<PalabraClave> palabraClaves) {
-        this.palabraClaves = palabraClaves;
+        this.palabrasClaves = palabraClaves;
     }
 
     public Set<RelUsuarioEmpresa> getRelUsuarioEmpresas() {

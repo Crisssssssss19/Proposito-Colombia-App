@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/accesos")
-public class PAccesoController {
+public class AccesoController {
     private final AccesoService accesoService;
 
-    public PAccesoController(AccesoService accesoService) {
+    public AccesoController(AccesoService accesoService) {
         this.accesoService = accesoService;
     }
 

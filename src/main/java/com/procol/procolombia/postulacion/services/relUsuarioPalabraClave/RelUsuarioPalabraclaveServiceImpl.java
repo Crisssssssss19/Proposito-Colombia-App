@@ -8,8 +8,8 @@ import com.procol.procolombia.postulacion.mappers.RelUsuarioPalabraclaveMapper;
 import com.procol.procolombia.postulacion.repositories.RelUsuarioPalabraclaveRepository;
 import com.procol.procolombia.auth.entities.Usuario;
 import com.procol.procolombia.auth.repositories.UsuarioRepository;
-import com.procol.procolombia.vacante.entities.PalabrasClave;
-import com.procol.procolombia.vacante.repositories.PalabrasClaveRepository;
+import com.procol.procolombia.vacante.entities.PalabraClave;
+import com.procol.procolombia.vacante.repositories.PalabraClaveRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,11 +20,11 @@ import java.util.List;
 public class RelUsuarioPalabraclaveServiceImpl extends AbstractService<RelUsuarioPalabraclave,RelUsuarioPalabraclaveDto,RelUsuarioPalabraclaveId> implements RelUsuarioPalabraclaveService {
     private final RelUsuarioPalabraclaveRepository relUsuarioPalabraclaveRepository;
     private final UsuarioRepository usuarioRepository;
-    private final PalabrasClaveRepository palabrasClaveRepository;
+    private final PalabraClaveRepository palabrasClaveRepository;
 
     public RelUsuarioPalabraclaveServiceImpl(RelUsuarioPalabraclaveRepository relUsuarioPalabraclaveRepository,
                                              UsuarioRepository usuarioRepository,
-                                             PalabrasClaveRepository palabrasClaveRepository) {
+                                             PalabraClaveRepository palabrasClaveRepository) {
         this.relUsuarioPalabraclaveRepository = relUsuarioPalabraclaveRepository;
         this.usuarioRepository = usuarioRepository;
         this.palabrasClaveRepository = palabrasClaveRepository;
@@ -56,7 +56,7 @@ public class RelUsuarioPalabraclaveServiceImpl extends AbstractService<RelUsuari
         }
 
         if (dto.getIdPalabraClave() != null) {
-            PalabrasClave palabraClave = palabrasClaveRepository.findById(dto.getIdPalabraClave())
+            PalabraClave palabraClave = palabrasClaveRepository.findById(dto.getIdPalabraClave())
                     .orElseThrow(() -> new RuntimeException("Palabra clave no encontrada con id: " + dto.getIdPalabraClave()));
             relacion.setIdPalabraClave(palabraClave);
         }
@@ -79,7 +79,7 @@ public class RelUsuarioPalabraclaveServiceImpl extends AbstractService<RelUsuari
         }
 
         if (dto.getIdPalabraClave() != null) {
-            PalabrasClave palabraClave = palabrasClaveRepository.findById(dto.getIdPalabraClave())
+            PalabraClave palabraClave = palabrasClaveRepository.findById(dto.getIdPalabraClave())
                     .orElseThrow(() -> new RuntimeException("Palabra clave no encontrada con id: " + dto.getIdPalabraClave()));
             entity.setIdPalabraClave(palabraClave);
         }

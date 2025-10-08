@@ -2,22 +2,22 @@ package com.procol.procolombia.perfil.services.impl;
 
 import com.procol.procolombia.perfil.dtos.request.SavePalabraClave;
 import com.procol.procolombia.perfil.dtos.response.GetPalabraClave;
-import com.procol.procolombia.perfil.mappers.PalabraClaveMapper;
+import com.procol.procolombia.perfil.mappers.PerfilPalabraClaveMapper;
 import com.procol.procolombia.perfil.services.PalabraClaveService;
-import com.procol.procolombia.vacante.entities.PalabrasClave;
-import com.procol.procolombia.vacante.repositories.PalabrasClaveRepository;
+import com.procol.procolombia.vacante.entities.PalabraClave;
+import com.procol.procolombia.vacante.repositories.PalabraClaveRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
 
-@Service
+@Service("perfilPalabraClaveServiceImpl")
 public class PalabraClaveServiceImpl implements PalabraClaveService {
 
-    private PalabrasClaveRepository palabrasClaveRepository;
-    private PalabraClaveMapper palabraClaveMapper;
+    private PalabraClaveRepository palabrasClaveRepository;
+    private PerfilPalabraClaveMapper palabraClaveMapper;
 
-    public PalabraClaveServiceImpl(PalabrasClaveRepository palabrasClaveRepository, PalabraClaveMapper palabraClaveMapper) {
+    public PalabraClaveServiceImpl(PalabraClaveRepository palabrasClaveRepository, PerfilPalabraClaveMapper palabraClaveMapper) {
         this.palabrasClaveRepository = palabrasClaveRepository;
         this.palabraClaveMapper = palabraClaveMapper;
     }
@@ -28,21 +28,21 @@ public class PalabraClaveServiceImpl implements PalabraClaveService {
                 .ifPresent(palabrasClave -> {
                     throw new IllegalArgumentException("La palabra clave con texto " + savePalabraClave.textoPalabraClave() + " ya existe.");
                 });
-        PalabrasClave palabrasClave = palabraClaveMapper.SavePalabraClaveToPalabraClave(savePalabraClave);
+        PalabraClave palabrasClave = palabraClaveMapper.SavePalabraClaveToPalabraClave(savePalabraClave);
         palabrasClave = palabrasClaveRepository.save(palabrasClave);
         return palabraClaveMapper.PalabraClaveToGetPalabraClave(palabrasClave);
     }
 
     @Override
     public GetPalabraClave obtenerPalabraClavePorId(Integer id) {
-        PalabrasClave palabrasClave = palabrasClaveRepository.findById(id)
+        PalabraClave palabrasClave = palabrasClaveRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("La palabra clave con el id " + id + " no existe."));
         return palabraClaveMapper.PalabraClaveToGetPalabraClave(palabrasClave);
     }
 
     @Override
     public GetPalabraClave actualizarPalabraClave(Integer id, SavePalabraClave savePalabraClave) {
-        PalabrasClave palabrasClave = palabrasClaveRepository.findById(id)
+        PalabraClave palabrasClave = palabrasClaveRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("La palabra clave con el id " + id + " no existe."));
 
         palabrasClaveRepository.findByTextoPalabraClave(savePalabraClave.textoPalabraClave())
@@ -59,14 +59,14 @@ public class PalabraClaveServiceImpl implements PalabraClaveService {
 
     @Override
     public void eliminarPalabraClave(Integer id) {
-        PalabrasClave palabrasClave = palabrasClaveRepository.findById(id)
+        PalabraClave palabrasClave = palabrasClaveRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("La palabra clave con el id " + id + " no existe."));
         palabrasClaveRepository.delete(palabrasClave);
     }
 
     @Override
     public List<GetPalabraClave> listarPalabrasClave() {
-        List<PalabrasClave> palabrasClaves = palabrasClaveRepository.findAll();
+        List<PalabraClave> palabrasClaves = palabrasClaveRepository.findAll();
         if (!palabrasClaves.isEmpty()) {
             return palabraClaveMapper.ListPalabraClaveToListGetPalabraClave(palabrasClaves);
         }
@@ -74,7 +74,7 @@ public class PalabraClaveServiceImpl implements PalabraClaveService {
     }
 
     @Override
-    public List<PalabrasClave> asignarPalabras(List<String> palabrasClave) {
+    public List<PalabraClave> asignarPalabras(List<String> palabrasClave) {
         if (palabrasClave == null || palabrasClave.isEmpty()) {
             return Collections.emptyList();
         }
@@ -85,11 +85,11 @@ public class PalabraClaveServiceImpl implements PalabraClaveService {
                 .toList();
     }
 
-    private PalabrasClave obtenerOcrearPalabraClave(String texto) {
+    private PalabraClave obtenerOcrearPalabraClave(String texto) {
         String textoNormalizado = texto.trim().toLowerCase();
         return palabrasClaveRepository.findByTextoPalabraClave(textoNormalizado)
                 .orElseGet(() -> {
-                    PalabrasClave nuevaPalabraClave = new PalabrasClave();
+                    PalabraClave nuevaPalabraClave = new PalabraClave();
                     nuevaPalabraClave.setTextoPalabraClave(textoNormalizado);
                     return palabrasClaveRepository.save(nuevaPalabraClave);
                 });

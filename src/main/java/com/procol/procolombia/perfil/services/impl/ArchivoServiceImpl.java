@@ -24,7 +24,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.UUID;
 
-@Service
+@Service("perfilUsuarioService")
 public class ArchivoServiceImpl implements ArchivoService {
     private final ArchivoRepository archivoRepository;
     private final UsuarioRepository usuarioRepository;

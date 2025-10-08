@@ -17,13 +17,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class UsuarioServiceImpl implements UsuarioService {
+public class AuthUsuarioServiceImpl implements UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final AuthUsuarioMapper usuarioMapper;
     private final EntityManager entityManager;
 
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, EntityManager entityManager, UbicacioneRepository ubicacioneRepository, AuthUsuarioMapper usuarioMapper) {
+    public AuthUsuarioServiceImpl(UsuarioRepository usuarioRepository, EntityManager entityManager, UbicacioneRepository ubicacioneRepository, AuthUsuarioMapper usuarioMapper) {
         this.usuarioRepository = usuarioRepository;
         this.entityManager = entityManager;
         this.usuarioMapper = usuarioMapper;

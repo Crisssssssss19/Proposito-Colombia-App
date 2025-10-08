@@ -57,7 +57,7 @@ public class AuthAccesoServiceImpl implements AccesoService {
     private final UserInfoService userInfoService;
     private static final Logger logger = LoggerFactory.getLogger(AuthAccesoServiceImpl.class);
     private final UsuarioRepository usuarioRepository;
-    private final ImagenServiceImpl imagenServiceImpl;
+    private final AuthImagenServiceImpl imagenServiceImpl;
     private final ImagenRepository imageneRepository;
     private final RoleRepository roleRepository;
     private final String sendGridApiKey;
@@ -67,7 +67,7 @@ public class AuthAccesoServiceImpl implements AccesoService {
     private final UsuariosRoleRepository usuariosRoleRepository;
     private final IngresoRepository ingresoRepository;
 
-    public AuthAccesoServiceImpl(AccesoRepository accesoRepository, @Value("${sendgrid.api.key}") String sendGridApiKey, @Value("${sendgrid.from.email}") String sendGridFromEmail, RoleRepository roleRepository, JwtService jwtService, AuthAccesoMapper accesoMapper, RequisitoRepository requisitoRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, UserInfoService userInfoService, UsuarioRepository usuarioRepository, ImagenServiceImpl imagenServiceImpl, ImagenRepository imageneRepository, ParameterNamesModule parameterNamesModule, UbicacioneRepository ubicacioneRepository, UsuariosRoleRepository usuariosRoleRepository, IngresoRepository ingresoRepository) {
+    public AuthAccesoServiceImpl(AccesoRepository accesoRepository, @Value("${sendgrid.api.key}") String sendGridApiKey, @Value("${sendgrid.from.email}") String sendGridFromEmail, RoleRepository roleRepository, JwtService jwtService, AuthAccesoMapper accesoMapper, RequisitoRepository requisitoRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, UserInfoService userInfoService, UsuarioRepository usuarioRepository, AuthImagenServiceImpl imagenServiceImpl, ImagenRepository imageneRepository, ParameterNamesModule parameterNamesModule, UbicacioneRepository ubicacioneRepository, UsuariosRoleRepository usuariosRoleRepository, IngresoRepository ingresoRepository) {
         this.accesoRepository = accesoRepository;
         this.ingresoRepository = ingresoRepository;
         this.sendGridApiKey = sendGridApiKey;

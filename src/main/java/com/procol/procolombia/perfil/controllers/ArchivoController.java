@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@RestController
+@RestController("perfilArchivoController")
 @RequestMapping("/usuarios/{idUsuario}/archivos")
 public class ArchivoController {
 
