@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface UbicacioneRepository extends JpaRepository<Ubicacione, Integer> {
 
     Optional<Ubicacione> findByIdDaneUbicacion(String idDaneUbicacion);
+    Optional<Ubicacione> findById(Integer idUbicacion);
 
     List<Ubicacione> findByIdPadreUbicacion_Id(Integer idPadreUbicacion);
 
