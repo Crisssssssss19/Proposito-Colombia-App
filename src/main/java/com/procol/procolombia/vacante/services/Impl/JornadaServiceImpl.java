@@ -36,6 +36,11 @@ public class JornadaServiceImpl implements JornadaService {
     }
 
     @Override
+    public JornadaDto getJornadaById(int id) {
+        return jornadaMapper.toDto(jornadaRepository.getReferenceById(id));
+    }
+
+    @Override
     public void deleteJornada(Integer id){
         if (jornadaRepository.existsById(id)) {
             jornadaRepository.deleteById(id);

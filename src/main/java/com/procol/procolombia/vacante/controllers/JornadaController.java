@@ -52,4 +52,18 @@ public class JornadaController {
         );
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("obtener/{id}")
+    public ResponseEntity<ApiResponse<JornadaDto>> obtenerJornada(@PathVariable Integer id){
+        JornadaDto jornada = jornadaService.getJornadaById(id);
+        if(jornada!=null){
+            ApiResponse<JornadaDto> response = new ApiResponse<>(
+                    200,
+                    "Jorada encontrada por id",
+                    jornada
+            );
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.notFound().build();
+    }
 }

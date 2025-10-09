@@ -76,6 +76,11 @@ public class RelUsuarioEmpresaServiceImpl implements RelUsuarioEmpresaService {
     }
 
     @Override
+    public RelUsuarioEmpresaDto findUsuarioEmpresaByEmpresaIdAndUsuarioId(Integer empresaId, Integer usuarioId) {
+        return relUsuarioEmpresaMapper.toDto(relUsuarioEmpresaRepository.findByIdUsuarioAndIdEmpresa(usuarioId,empresaId).orElse(null));
+    }
+
+    @Override
     public void deleteUsuarioEmpresasByUsuarioId(Integer idUsuario, Integer idEmpresa) {
         RelUsuarioEmpresaId id = new RelUsuarioEmpresaId();
         id.setIdEmpresa(idEmpresa);

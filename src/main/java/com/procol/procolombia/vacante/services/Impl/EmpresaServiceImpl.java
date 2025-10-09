@@ -54,6 +54,11 @@ public class EmpresaServiceImpl implements EmpresaService {
     }
 
     @Override
+    public EmpresaDto getEmpresaById(Integer empresaId) {
+        return empresaMapper.toDto(empresaRepository.getReferenceById(empresaId));
+    }
+
+    @Override
     public void deleteEmpresa(EmpresaDto empresaDto) {
         if (empresaDto.id() == null) {
             throw new IllegalArgumentException("El ID de la empresa no puede ser nulo para eliminar");

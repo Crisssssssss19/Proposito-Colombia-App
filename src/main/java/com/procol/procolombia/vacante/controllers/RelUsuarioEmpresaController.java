@@ -80,5 +80,17 @@ public class RelUsuarioEmpresaController {
         return ResponseEntity.noContent().build();
     }
 
-
+    @GetMapping("obtener/{idUsuario}/{idEmpresa}")
+    public ResponseEntity<ApiResponse<RelUsuarioEmpresaDto>> getRelUsuarioEmpresaById(@PathVariable int idUsuario, @PathVariable int idEmpresa){
+        RelUsuarioEmpresaDto relUsuarioEmpresaDto = relUsuarioEmpresaService.findUsuarioEmpresaByEmpresaIdAndUsuarioId(idEmpresa,idUsuario);
+        if(relUsuarioEmpresaDto!=null){
+            ApiResponse<RelUsuarioEmpresaDto> response = new ApiResponse<>(
+                    200,
+                    "Relacion encontrada por id",
+                    relUsuarioEmpresaDto
+            );
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.notFound().build();
+    }
 }
