@@ -33,4 +33,11 @@ public class UbicacionController {
     public ResponseEntity<ApiResponseDTO<List<UbicacionResponseDTO>>> getAutocompletado(@RequestParam String nombre) {
         return ResponseEntity.ok(ubicacionService.autocompletarUbicaciones(nombre));
     }
+
+    @GetMapping("{id}")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'EMPRESA', 'ASPIRANTE')")
+    public ResponseEntity<ApiResponseDTO<UbicacionResponseDTO>> getUbicacionPorId(@RequestParam Integer id) {
+        ApiResponseDTO<UbicacionResponseDTO> ubicacion = ubicacionService.obtenerUbicacionPorId(id);
+        return ResponseEntity.status(ubicacion.codigoEstado()).body(ubicacion);
+    }
 }

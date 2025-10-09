@@ -2,6 +2,7 @@ package com.procol.procolombia.auth.service.impl;
 
 import com.procol.procolombia.auth.dto.Response.ApiResponseDTO;
 import com.procol.procolombia.auth.dto.Response.UbicacionResponseDTO;
+import com.procol.procolombia.auth.entities.Ubicacione;
 import com.procol.procolombia.auth.mappers.UbicacionMapper;
 import com.procol.procolombia.auth.repositories.UbicacioneRepository;
 import com.procol.procolombia.auth.service.UbicacionService;
@@ -40,5 +41,13 @@ public class UbicacionServiceImpl implements UbicacionService {
                 .toList();
 
         return new ApiResponseDTO<>(200, "Resultados de autocompletar: "+lista.size(), lista, LocalDateTime.now().toString());
+    }
+
+    @Override
+    public ApiResponseDTO<UbicacionResponseDTO> obtenerUbicacionPorId(Integer id) {
+        Ubicacione ubicacione = ubicacioneRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Ubicación no encontrada con ID: " + id));
+        UbicacionResponseDTO dto = ubicacionMapper.toDto(ubicacione);
+        return new ApiResponseDTO<>(200, "Ubicación encontrada", dto, LocalDateTime.now().toString());
     }
 }
