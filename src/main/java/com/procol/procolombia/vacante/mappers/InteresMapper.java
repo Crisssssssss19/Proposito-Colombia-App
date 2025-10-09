@@ -18,7 +18,11 @@ import java.util.Set;
 @Mapper(componentModel = "spring")
 public interface InteresMapper {
 
+    @Mapping(source = "idEmpresa", target = "idEmpresa")
+    @Mapping(source = "idUsuario", target = "idUsuario")
     InteresIdDto toDto(InteresId entity);
+    @Mapping(source = "idEmpresa", target = "idEmpresa")
+    @Mapping(source = "idUsuario", target = "idUsuario")
     InteresId toEntity(InteresIdDto dto);
 
     InteresDto toDto(Interes interes);
@@ -28,4 +32,25 @@ public interface InteresMapper {
     Set<Interes> toListEntity(Set<InteresDto> interesDtos);
     Set<InteresDto> toListDto(Set<Interes> interes);
 
+    default Empresa intToEmpresa(Integer id) {
+        if (id == null) return null;
+        Empresa empresa = new Empresa();
+        empresa.setId(id);
+        return empresa;
+    }
+
+    default Usuario intToUsuario(Integer id) {
+        if (id == null) return null;
+        Usuario usuario = new Usuario();
+        usuario.setId(id);
+        return usuario;
+    }
+
+    default Integer map(Empresa empresa) {
+        return (empresa != null) ? empresa.getId() : null;
+    }
+
+    default Integer map(Usuario usuario) {
+        return (usuario != null) ? usuario.getId() : null;
+    }
 }

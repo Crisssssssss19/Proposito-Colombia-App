@@ -7,11 +7,11 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = InteresMapper.class)
 public interface HistorialInteresMapper {
-    @Mapping(target = "interes.id", source = "idInteres")
+    @Mapping(source = "idInteres", target = "interes")
     HistorialInteres toHistorialInteres(HistorialInteresDto historialInteresDto);
-    @Mapping(target = "idInteres", source = "interes.id")
+    @Mapping(source = "interes", target = "idInteres")
     HistorialInteresDto toHistorialInteresDto(HistorialInteres historialInteres);
 
     List<HistorialInteresDto> toHistorialInteresDtos(List<HistorialInteres> historialInteres);

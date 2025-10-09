@@ -6,5 +6,5 @@ public record HistorialInteresDto(
         int idHistorialInteres,
         short tipoInteres,
         Instant fechaInteres,
-        int idInteres
+        InteresIdDto idInteres
 ){}

@@ -1,6 +1,5 @@
 package com.procol.procolombia.vacante.entities;
 
-import com.procol.procolombia.auth.entities.Usuario;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -19,7 +18,7 @@ public class HistorialInteres {
     private Short tipoInteres;
 
     @Column(name = "fecha_interes", nullable = false, updatable = false)
-    private Instant fechaInteres = Instant.now();
+    private Instant fechaInteres;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumns({
@@ -28,5 +27,46 @@ public class HistorialInteres {
     })
     private Interes interes;
 
+    public HistorialInteres(Integer idHistorialInteres, Short tipoInteres, Interes interes) {
+        this.idHistorialInteres = idHistorialInteres;
+        this.tipoInteres = tipoInteres;
+        this.fechaInteres = Instant.now();
+        this.interes = interes;
+    }
 
+    public HistorialInteres() {
+
+    }
+
+    public Integer getIdHistorialInteres() {
+        return idHistorialInteres;
+    }
+
+    public void setIdHistorialInteres(Integer idHistorialInteres) {
+        this.idHistorialInteres = idHistorialInteres;
+    }
+
+    public @NotNull Short getTipoInteres() {
+        return tipoInteres;
+    }
+
+    public void setTipoInteres(@NotNull Short tipoInteres) {
+        this.tipoInteres = tipoInteres;
+    }
+
+    public Instant getFechaInteres() {
+        return fechaInteres;
+    }
+
+    public void setFechaInteres(Instant fechaInteres) {
+        this.fechaInteres = fechaInteres;
+    }
+
+    public Interes getInteres() {
+        return interes;
+    }
+
+    public void setInteres(Interes interes) {
+        this.interes = interes;
+    }
 }
