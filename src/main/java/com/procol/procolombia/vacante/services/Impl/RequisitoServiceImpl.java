@@ -39,6 +39,11 @@ public class RequisitoServiceImpl implements RequisitoService {
     }
 
     @Override
+    public RequisitoDto getRequisitoById(Integer id) {
+        return requisitoMapper.toDto(requisitoRepository.getReferenceById(id));
+    }
+
+    @Override
     public void deleteRequisito(Integer id) {
         if (requisitoRepository.existsById(id)) {
             requisitoRepository.deleteById(id);
