@@ -3,12 +3,10 @@ package com.procol.procolombia.auth.controller;
 import com.procol.procolombia.auth.dto.Response.ApiResponseDTO;
 import com.procol.procolombia.auth.dto.Response.UbicacionResponseDTO;
 import com.procol.procolombia.auth.service.UbicacionService;
+import jakarta.websocket.server.PathParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,8 +33,8 @@ public class UbicacionController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'EMPRESA', 'ASPIRANTE')")
-    public ResponseEntity<ApiResponseDTO<UbicacionResponseDTO>> getUbicacionPorId(@RequestParam Integer id) {
+    @PreAuthorize("hasAnyAuthority('ADMINISTRADOR', 'EMPRESA', 'ASPIRANTE')")
+    public ResponseEntity<ApiResponseDTO<UbicacionResponseDTO>> getUbicacionPorId(@PathVariable Integer id) {
         ApiResponseDTO<UbicacionResponseDTO> ubicacion = ubicacionService.obtenerUbicacionPorId(id);
         return ResponseEntity.status(ubicacion.codigoEstado()).body(ubicacion);
     }
