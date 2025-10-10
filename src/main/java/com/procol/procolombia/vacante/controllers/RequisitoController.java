@@ -82,4 +82,17 @@ public class RequisitoController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/obtener/{id}")
+    public ResponseEntity<ApiResponse<RequisitoDto>> getRequisitoById(@PathVariable Integer id){
+        RequisitoDto requisito = requisitoService.getRequisitoById(id);
+        if(requisito != null){
+            ApiResponse<RequisitoDto> response = new ApiResponse<>(
+                    200,
+                    "Requisito encontrado por id",
+                    requisito
+            );
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.notFound().build();
+    }
 }

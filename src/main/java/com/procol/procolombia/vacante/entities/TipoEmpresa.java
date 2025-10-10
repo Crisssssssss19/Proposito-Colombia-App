@@ -9,7 +9,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "tipos_de_empresas")
+@Table(name = "tipo_empresas")
 public class TipoEmpresa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

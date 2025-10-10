@@ -106,4 +106,18 @@ public class EmpresaController {
         );
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/obtener/{id}")
+    public ResponseEntity<ApiResponse<EmpresaDto>> getEmpresaById(@PathVariable Integer id){
+        EmpresaDto empresa = empresaService.getEmpresaById(id);
+        if(empresa!=null){
+            ApiResponse<EmpresaDto> response = new ApiResponse<>(
+                    200,
+                    "Empresa encontrada por id",
+                    empresa
+            );
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -1,6 +1,7 @@
 package com.procol.procolombia.vacante.controllers;
 
 
+import com.procol.procolombia.vacante.dto.InteresIdDto;
 import com.procol.procolombia.vacante.response.ApiResponse;
 import com.procol.procolombia.vacante.services.InteresService;
 import com.procol.procolombia.vacante.dto.InteresDto;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/intereses")
@@ -28,6 +30,20 @@ public class InteresController {
                 created
         );
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/obtener/{idUsuario}/{idEmpresa}")
+    public ResponseEntity<ApiResponse<InteresDto>> getInteresById(@PathVariable int idUsuario, @PathVariable int idEmpresa) {
+        Optional<InteresDto> interes = interesService.getInteresById(idUsuario,idEmpresa);
+        if(interes.isPresent()) {
+            ApiResponse<InteresDto> response = new ApiResponse<>(
+                    200,
+                    "interes obtenido por id",
+                    interes.get()
+            );
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PutMapping
