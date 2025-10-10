@@ -53,7 +53,7 @@ public class JornadaController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("obtener/{id}")
+    @GetMapping("/obtener/{id}")
     public ResponseEntity<ApiResponse<JornadaDto>> obtenerJornada(@PathVariable Integer id){
         JornadaDto jornada = jornadaService.getJornadaById(id);
         if(jornada!=null){

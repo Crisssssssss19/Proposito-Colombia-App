@@ -49,4 +49,18 @@ public class EstadoVacanteController {
 
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/obtener/{id}")
+    public ResponseEntity<ApiResponse<EstadosVacanteDto>> getEstadoVacanteById(@PathVariable Integer id) {
+        EstadosVacanteDto estadoVacante = estadoVacanteService.findById(id);
+        if(estadoVacante!=null){
+            ApiResponse<EstadosVacanteDto> response = new ApiResponse<>(
+                    200,
+                    "estado vacante encontrado por id",
+                    estadoVacante
+            );
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.notFound().build();
+    }
 }

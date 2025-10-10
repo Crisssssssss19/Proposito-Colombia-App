@@ -82,7 +82,7 @@ public class RequisitoController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("obtener/{id}")
+    @GetMapping("/obtener/{id}")
     public ResponseEntity<ApiResponse<RequisitoDto>> getRequisitoById(@PathVariable Integer id){
         RequisitoDto requisito = requisitoService.getRequisitoById(id);
         if(requisito != null){
