@@ -4,10 +4,7 @@ import com.procol.procolombia.auth.dto.Response.ApiResponseDTO;
 import com.procol.procolombia.auth.entities.PreRegistro;
 import com.procol.procolombia.auth.exception.notfound.PreRegistroNotFountException;
 import com.procol.procolombia.auth.repositories.PreRegistroRepository;
-import com.procol.procolombia.auth.security.jwt.JwtFilter;
 import com.procol.procolombia.auth.service.PreRegistroService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.twilio.Twilio;
@@ -25,7 +22,6 @@ public class PreRegistroServiceImpl implements PreRegistroService {
     private final String accountSid;
     private final String authToken;
     private final String twilioPhoneNumber;
-    private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
 
     private final int tiempoExpiracionCodigo = 5; // minutos
 
@@ -41,8 +37,6 @@ public class PreRegistroServiceImpl implements PreRegistroService {
         PreRegistro pre = preRegistroRepository.findById(telefono).orElse(null);
         LocalDateTime ahora = LocalDateTime.now();
 
-        logger.debug("Iniciando proceso de envío de código para el teléfono: " + telefono);
-
         if (pre == null || pre.getIntentos()==0) {
             // Primer intento
             pre = new PreRegistro();
@@ -54,10 +48,7 @@ public class PreRegistroServiceImpl implements PreRegistroService {
             pre.setBloqueadoHasta(null);
 
             preRegistroRepository.save(pre);
-            logger.debug("PreRegistro creado para el teléfono: " + telefono + " con PIN: " + pre.getPinPreRegistro());
             enviarSms(telefono, pre.getPinPreRegistro());
-            logger.error("fallo al enviar sms");
-            logger.debug("PreRegistro enviado con exito");
             return new ApiResponseDTO<>(200, "Normal", "Código enviado", ahora.toString());
         }
 
