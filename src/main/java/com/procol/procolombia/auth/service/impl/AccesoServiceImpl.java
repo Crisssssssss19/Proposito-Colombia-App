@@ -118,18 +118,20 @@ public class AccesoServiceImpl implements AccesoService {
         if (!authentication.isAuthenticated()) {
             throw new UsernameNotFoundException("Credenciales inválidas");
         }
+        Acceso acceso = accesoRepository.findByCorreoAcceso(requestDTO.correoAcceso())
+                .orElseThrow(() -> new AccesoNotFoundException("Acceso no encontrado"));
+        Usuario usuario = acceso.getUsuario();
+
         // Obtener roles del usuario autenticado
         List<String> roles = userInfoService.getUserRoles(requestDTO.correoAcceso());
         logger.debug("Roles para {} => {}", requestDTO.correoAcceso(), roles);
 
         // Generar token JWT
-        String token = jwtService.generateToken(requestDTO.correoAcceso(), roles);
+        String token = jwtService.generateToken(requestDTO.correoAcceso(), roles, usuario.getId(), usuario.getNombresUsuario(), usuario.getApellidosUsuario(), acceso.getUuidAcceso());
         logger.debug("Token generado (masked) for {} => {}...", requestDTO.correoAcceso(), token != null ? token.substring(0, 8) : "null");
 
         // Obtener foto de perfil favorita (si existe)
-        Acceso acceso = accesoRepository.findByCorreoAcceso(requestDTO.correoAcceso())
-                .orElseThrow(() -> new AccesoNotFoundException("Acceso no encontrado"));
-        Usuario usuario = acceso.getUsuario();
+
         String fotoBase64 = imagenServiceImpl.obtenerFotoBase64(acceso.getUsuario().getId());
         if(fotoBase64 == null){
             fotoBase64 = "XXX_IMG"; // Indica que no hay imagen
