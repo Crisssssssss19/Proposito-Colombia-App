@@ -12,21 +12,5 @@ import com.procol.procolombia.vacante.entities.Anuncio;
 
 @Repository
 public interface AnuncioRepository extends JpaRepository<Anuncio, Integer> {
-
-  Optional<Anuncio> findByIdVacante_Id(Integer id);
-
-  List<Anuncio> findByTipoAnuncio(String tipoAnuncio);
-
-  List<Anuncio> findByTamanioAnuncio(String tamanioAnuncio);
-
-  List<Anuncio> findByNombrePublicoAnuncioContainingIgnoreCase(String nombre);
-
-  @Query("SELECT a FROM Anuncio a JOIN a.idVacante v WHERE v.estadoVacante = 1")
-  List<Anuncio> findAnunciosActivos();
-
-  @Query("SELECT COUNT(a) FROM Anuncio a WHERE a.tipoAnuncio = :tipo")
-  long countByTipo(@Param("tipo") String tipo);
-
-  boolean existsByIdVacante_Id(Integer id);
-
+  Optional<Anuncio> findByIdVacante_Id(Integer idVacante);
 }

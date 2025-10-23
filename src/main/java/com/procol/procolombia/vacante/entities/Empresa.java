@@ -13,8 +13,7 @@ import java.util.Set;
 @Table(name = "empresas")
 public class Empresa {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "empresas_id_gen")
-    @SequenceGenerator(name = "empresas_id_gen", sequenceName = "empresas_id_empresa_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_empresa", nullable = false)
     private Integer id;
 
@@ -40,10 +39,10 @@ public class Empresa {
     private String telefonoEmpresa;
 
     @OneToMany(mappedBy = "idEmpresa")
-    private Set<Interese> intereses = new LinkedHashSet<>();
+    private Set<Interes> interes = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idEmpresa")
-    private Set<RelUsuariosEmpresa> relUsuariosEmpresas = new LinkedHashSet<>();
+    private Set<RelUsuarioEmpresa> relUsuarioEmpresas = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -85,20 +84,38 @@ public class Empresa {
         this.telefonoEmpresa = telefonoEmpresa;
     }
 
-    public Set<Interese> getIntereses() {
-        return intereses;
+    public Set<Interes> getIntereses() {
+        return interes;
     }
 
-    public void setIntereses(Set<Interese> intereses) {
-        this.intereses = intereses;
+    public void setIntereses(Set<Interes> interes) {
+        this.interes = interes;
     }
 
-    public Set<RelUsuariosEmpresa> getRelUsuariosEmpresas() {
-        return relUsuariosEmpresas;
+    public Set<RelUsuarioEmpresa> getRelUsuarioEmpresas() {
+        return relUsuarioEmpresas;
     }
 
-    public void setRelUsuariosEmpresas(Set<RelUsuariosEmpresa> relUsuariosEmpresas) {
-        this.relUsuariosEmpresas = relUsuariosEmpresas;
+    public void setRelUsuarioEmpresas(Set<RelUsuarioEmpresa> relUsuarioEmpresas) {
+        this.relUsuarioEmpresas = relUsuarioEmpresas;
+    }
+    public Empresa() {
+    }
+
+    public Empresa(Integer id,
+                   TipoEmpresa idTipoEmpresa,
+                   String nombreEmpresa,
+                   String direccionEmpresa,
+                   String telefonoEmpresa,
+                   Set<Interes> interes,
+                   Set<RelUsuarioEmpresa> relUsuarioEmpresas) {
+        this.id = id;
+        this.idTipoEmpresa = idTipoEmpresa;
+        this.nombreEmpresa = nombreEmpresa;
+        this.direccionEmpresa = direccionEmpresa;
+        this.telefonoEmpresa = telefonoEmpresa;
+        this.interes = interes;
+        this.relUsuarioEmpresas = relUsuarioEmpresas;
     }
 
 }

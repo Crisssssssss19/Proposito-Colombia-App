@@ -21,6 +21,9 @@ public class MensajeDto implements Serializable {
     @NotNull
     private Short estadoMensaje;
 
+    public MensajeDto() {
+    }
+
     public MensajeDto(Integer id, Integer idPostulacionId, Integer idUsuarioRespondeId, String textoMensaje, Instant fechaMensaje, Short estadoMensaje) {
         this.id = id;
         this.idPostulacion = idPostulacionId;

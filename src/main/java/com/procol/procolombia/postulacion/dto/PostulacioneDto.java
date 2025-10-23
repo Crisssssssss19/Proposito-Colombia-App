@@ -25,6 +25,9 @@ public class PostulacioneDto implements Serializable {
     private Set<Integer> historialEstadosPostulacioneIds;
     private Set<Integer> mensajeIds;
 
+    public PostulacioneDto() {
+    }
+
     public PostulacioneDto(Integer id, Integer idVacanteId, Integer idUsuarioId, Short idUsuarioEstadoUsuario, Instant fechaPostulacion, Short correspondenciaPostulacion, Short estadoPostulacion, Set<Integer> historialEstadosPostulacioneIds, Set<Integer> mensajeIds) {
         this.id = id;
         this.idVacante = idVacanteId;

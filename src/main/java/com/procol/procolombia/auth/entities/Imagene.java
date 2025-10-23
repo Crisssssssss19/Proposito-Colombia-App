@@ -7,6 +7,8 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "imagenes")
 public class Imagene {
@@ -46,6 +48,15 @@ public class Imagene {
     @ColumnDefault("1")
     @Column(name = "favorita_imagen", nullable = false)
     private Short favoritaImagen;
+
+    @NotNull
+    @Column(name = "fecha_subida", nullable = false, updatable = false)
+    private LocalDateTime fechaSubida;
+
+    @PrePersist
+    public void prePersist() {
+        this.fechaSubida = LocalDateTime.now();
+    }
 
     public Integer getId() {
         return id;
@@ -103,4 +114,5 @@ public class Imagene {
         this.favoritaImagen = favoritaImagen;
     }
 
+    public LocalDateTime getFechaSubida() {return fechaSubida;}
 }

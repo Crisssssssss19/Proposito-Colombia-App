@@ -1,7 +1,7 @@
 package com.procol.procolombia.postulacion.entities;
 
 import com.procol.procolombia.auth.entities.Usuario;
-import com.procol.procolombia.vacante.entities.PalabrasClave;
+import com.procol.procolombia.vacante.entities.PalabraClave;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -23,7 +23,7 @@ public class RelUsuarioPalabraclave {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "id_palabra_clave", nullable = false)
-    private PalabrasClave idPalabraClave;
+    private PalabraClave idPalabraClave;
 
     public RelUsuarioPalabraclaveId getId() {
         return id;
@@ -41,11 +41,11 @@ public class RelUsuarioPalabraclave {
         this.idUsuario = idUsuario;
     }
 
-    public PalabrasClave getIdPalabraClave() {
+    public PalabraClave getIdPalabraClave() {
         return idPalabraClave;
     }
 
-    public void setIdPalabraClave(PalabrasClave idPalabraClave) {
+    public void setIdPalabraClave(PalabraClave idPalabraClave) {
         this.idPalabraClave = idPalabraClave;
     }
 

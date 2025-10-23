@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -60,4 +61,16 @@ public class EstadosPostulacione {
         this.historialEstadosPostulaciones = historialEstadosPostulaciones;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EstadosPostulacione that = (EstadosPostulacione) o;
+        return Objects.equals(id, that.id) && Objects.equals(nombreEstadoPostulacion, that.nombreEstadoPostulacion) && Objects.equals(ordenEstadoPostulacion, that.ordenEstadoPostulacion) && Objects.equals(historialEstadosPostulaciones, that.historialEstadosPostulaciones);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nombreEstadoPostulacion, ordenEstadoPostulacion, historialEstadosPostulaciones);
+    }
 }

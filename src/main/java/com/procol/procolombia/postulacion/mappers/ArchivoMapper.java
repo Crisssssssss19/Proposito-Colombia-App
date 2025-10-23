@@ -12,6 +12,7 @@ public class ArchivoMapper {
         if (archivo == null) return null;
         ArchivoDto archivoDto = new ArchivoDto();
         archivoDto.setId(archivo.getId());
+        archivoDto.setIdUsuario(archivo.getIdUsuario() != null ? archivo.getIdUsuario().getId() : null);
         archivoDto.setNombrePublicoArchivo(archivo.getNombrePublicoArchivo());
         archivoDto.setNombreArchivoArchivo(archivo.getNombreArchivoArchivo());
         archivoDto.setTipoArchivo(archivo.getTipoArchivo());
@@ -35,6 +36,7 @@ public class ArchivoMapper {
     public static List<ArchivoDto> toDtoList(List<Archivo> archivos) {
         return archivos == null ? null : archivos.stream().map(ArchivoMapper::toDto).collect(Collectors.toList());
     }
+
     public static List<Archivo> toEntityList(List<ArchivoDto> archivosDto) {
         return archivosDto == null ? null : archivosDto.stream().map(ArchivoMapper::toEntity).collect(Collectors.toList());
     }

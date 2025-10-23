@@ -14,6 +14,9 @@ public class RelUsuarioPalabraclaveDto implements Serializable {
     private Integer idUsuario;
     private Integer idPalabraClave;
 
+    public RelUsuarioPalabraclaveDto() {
+    }
+
     public RelUsuarioPalabraclaveDto(RelUsuarioPalabraclaveId id, Integer idUsuarioId, Integer idPalabraClaveId) {
         this.id = id;
         this.idUsuario = idUsuarioId;

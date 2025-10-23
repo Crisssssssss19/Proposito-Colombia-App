@@ -8,4 +8,5 @@ import java.util.List;
 public interface UbicacionService {
     ApiResponseDTO<List<UbicacionResponseDTO>> listarUbicaciones();
     ApiResponseDTO<List<UbicacionResponseDTO>> autocompletarUbicaciones(String texto);
+    ApiResponseDTO<UbicacionResponseDTO> obtenerUbicacionPorId(Integer id);
 }
