@@ -60,12 +60,26 @@ public class PerfilServiceImpl implements PerfilService {
                         arch.fechaSubida()
                 )).toList();
 
-        String ubicacionNombre = usuario.idUbicacion() != null
+        String ubicacionNombre = null;
+        String ubicacionPadreNombre = null;
+
+        if (usuario.idUbicacion() != null) {
+            Ubicacione ubicacion = ubicacioneRepository.findById(usuario.idUbicacion())
+                    .orElse(null);
+            if (ubicacion != null) {
+                ubicacionNombre = ubicacion.getNombreUbicacion();
+                if (ubicacion.getIdPadreUbicacion() != null) {
+                    ubicacionPadreNombre = ubicacion.getIdPadreUbicacion().getNombreUbicacion();
+                    ubicacionNombre = ubicacionNombre + ", " + ubicacionPadreNombre;
+                }
+            }
+        }
+        /*String ubicacionNombre = usuario.idUbicacion() != null
                 ? ubicacioneRepository.findById(usuario.idUbicacion())
                 .map(Ubicacione::getNombreUbicacion)
                 .orElse("Ubicación no disponible")
                 : null;
-
+        */
         Usuario usuarioEntity = usuarioRepository.findByIdWithDetalles(idUsuario)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
@@ -89,7 +103,7 @@ public class PerfilServiceImpl implements PerfilService {
                 usuario.apellidosUsuario(),
                 acceso.email(),
                 acceso.telefono(),
-                usuario.idUbicacion().toString(),
+                ubicacionNombre,
                 imagenes,
                 archivos,
                 habilidades,
