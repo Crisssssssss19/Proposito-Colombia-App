@@ -30,7 +30,7 @@ public class JwtService {
         this.rolService = rolService;
     }
 
-    public String generateToken(String email, List<String> roles) {
+    public String generateToken(String email, List<String> roles, Integer idUsuario, String nombresUsuario, String apellidosUsuario, String uuidAcceso) {
         logger.debug("Generating token for email={}, roles={}", email, roles);
         Date issueDate = new Date();
         Date expiresAt = new Date(System.currentTimeMillis() + expiration);
@@ -38,6 +38,10 @@ public class JwtService {
         String token = Jwts.builder()
                 .subject(email)
                 .claim("roles", roles)
+                .claim("idUsuario", idUsuario)
+                .claim("nombresUsuario", nombresUsuario)
+                .claim("apellidosUsuario", apellidosUsuario)
+                .claim("uuidAcceso", uuidAcceso)
                 .setIssuedAt(issueDate)
                 .expiration(expiresAt)
                 .signWith(key)
