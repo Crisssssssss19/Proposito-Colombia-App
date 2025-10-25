@@ -14,6 +14,7 @@ public record GetPerfil(
         List<GetArchivoConUrl> archivos,
         List<GetTalento> habilidades,
         List<GetTalento> competencias,
-        List<GetPalabraClave> palabrasClave
+        List<GetPalabraClave> palabrasClave,
+        String HabilidadPrincipal
 ) implements Serializable {
 }

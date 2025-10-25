@@ -74,23 +74,32 @@ public class PerfilServiceImpl implements PerfilService {
                 }
             }
         }
-        /*String ubicacionNombre = usuario.idUbicacion() != null
-                ? ubicacioneRepository.findById(usuario.idUbicacion())
-                .map(Ubicacione::getNombreUbicacion)
-                .orElse("Ubicación no disponible")
-                : null;
-        */
+
         Usuario usuarioEntity = usuarioRepository.findByIdWithDetalles(idUsuario)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        List<GetTalento> habilidades = usuarioEntity.getTalentos().stream()
-                .filter(t -> t.getTipo() == 1)
-                .map(talentoMapper::TalentoToGetTalento)
+        List<GetTalento> habilidades = usuarioEntity.getUsuarioTalentos().stream()
+                .filter(ut -> ut.getTalento().getTipo() == 1)
+                .map(ut -> {
+                    GetTalento talentoDto = talentoMapper.TalentoToGetTalento(ut.getTalento());
+                    return new GetTalento(
+                            talentoDto.id(),
+                            talentoDto.nombre(),
+                            talentoDto.tipo()
+                    );
+                })
                 .toList();
 
-        List<GetTalento> competencias = usuarioEntity.getTalentos().stream()
-                .filter(t -> t.getTipo() == 2)
-                .map(talentoMapper::TalentoToGetTalento)
+        List<GetTalento> competencias = usuarioEntity.getUsuarioTalentos().stream()
+                .filter(ut -> ut.getTalento().getTipo() == 2)
+                .map(ut -> {
+                    GetTalento talentoDto = talentoMapper.TalentoToGetTalento(ut.getTalento());
+                    return new GetTalento(
+                            talentoDto.id(),
+                            talentoDto.nombre(),
+                            talentoDto.tipo()
+                    );
+                })
                 .toList();
 
         List<GetPalabraClave> palabrasClave = usuarioEntity.getPalabrasClaves().stream()
@@ -108,7 +117,21 @@ public class PerfilServiceImpl implements PerfilService {
                 archivos,
                 habilidades,
                 competencias,
-                palabrasClave
+                palabrasClave,
+                obtenerHabilidadPrincipal(usuarioEntity)
         );
+    }
+
+    private String obtenerHabilidadPrincipal(Usuario usuario) {
+        if (usuario == null || usuario.getUsuarioTalentos() == null) {
+            return null;
+        }
+
+        return usuario.getUsuarioTalentos().stream()
+                .filter(ut -> ut != null && ut.getTalento() != null && ut.getTalento().getTipo() == 1)
+                .filter(ut -> ut.getNivelDominio() != null)
+                .max((ut1, ut2) -> ut1.getNivelDominio().compareTo(ut2.getNivelDominio()))
+                .map(ut -> ut.getTalento().getNombre())
+                .orElse(null);
     }
 }

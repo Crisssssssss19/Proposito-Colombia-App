@@ -11,7 +11,7 @@ import java.util.List;
 public interface UsuarioMapper {
     // SaveUsuario -> Usuario
     @Mapping(source = "idUbicacion", target = "idUbicacion.id")
-    @Mapping(target = "talentos", ignore = true) // Ignorar el mapeo de talentos
+    @Mapping(target = "usuarioTalentos", ignore = true) // Ignorar el mapeo de usuarioTalentos
     Usuario saveUsuarioToUsuario(SaveUsuario saveUsuario);
 
     // Usuario -> GetUsuario

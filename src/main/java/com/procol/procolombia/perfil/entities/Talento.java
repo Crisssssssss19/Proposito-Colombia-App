@@ -1,11 +1,10 @@
 package com.procol.procolombia.perfil.entities;
 
-import com.procol.procolombia.auth.entities.Usuario;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "talentos")
@@ -25,9 +24,8 @@ public class Talento {
     @Column(name = "tipo", nullable = false)
     private Short tipo; // habilidad = 1, competencia = 2
 
-    @ManyToMany(mappedBy = "talentos", fetch = FetchType.LAZY)
-    private List<Usuario> usuarios = new ArrayList<>();
-
+    @OneToMany(mappedBy = "talento", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UsuarioTalento> usuarioTalentos = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;

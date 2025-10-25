@@ -53,10 +53,6 @@ public class UsuarioServiceImpl implements UsuarioService {
             usuario.setIdUbicacion(obtenerUbicacionPorId(saveUsuario.idUbicacion()));
         }
 
-        usuario.getTalentos().addAll(
-                talentoService.asignarTalentos(saveUsuario.habilidades(), saveUsuario.competencias())
-        );
-
         usuario.getPalabrasClaves().addAll(
                 palabraClaveService.asignarPalabras(saveUsuario.palabrasClave())
         );

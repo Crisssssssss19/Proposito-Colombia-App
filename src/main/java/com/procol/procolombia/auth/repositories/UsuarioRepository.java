@@ -46,6 +46,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
   @Query("SELECT u FROM Usuario u JOIN u.palabrasClaves p WHERE p.textoPalabraClave IN :palabras")
   List<Usuario> findByPalabrasClave(@Param("palabras") List<String> palabras);
 
-    @Query("SELECT u FROM Usuario u LEFT JOIN FETCH u.talentos LEFT JOIN FETCH u.palabrasClaves WHERE u.id = :id")
+    @Query("SELECT u FROM Usuario u " +
+            "LEFT JOIN FETCH u.usuarioTalentos ut " +
+            "LEFT JOIN FETCH ut.talento " +
+            "LEFT JOIN FETCH u.palabrasClaves " +
+            "WHERE u.id = :id")
     Optional<Usuario> findByIdWithDetalles(@Param("id") Integer id);
 }
