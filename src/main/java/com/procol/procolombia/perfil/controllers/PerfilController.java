@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/perfil")
 public class PerfilController {
@@ -22,5 +24,15 @@ public class PerfilController {
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'ASPIRANTE', 'EMPRESA')")
     public ResponseEntity<ApiResponse<GetPerfil>> obtnenerPerfilCompleto(@PathVariable Integer id) {
         return ResponseEntity.ok(ApiResponse.success("Perfil obtenido correctamente", perfilService.obtenerPerfilCompleto(id), HttpStatus.OK));
+    }
+
+    @PutMapping("/{id}/palabras-clave")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'ASPIRANTE', 'EMPRESA')")
+    public ResponseEntity<ApiResponse<Void>> actualizarPalabrasClave(
+            @PathVariable Integer id,
+            @RequestBody List<String> palabrasClave
+    ) {
+        perfilService.actualizarPalabrasClave(id, palabrasClave);
+        return ResponseEntity.ok(ApiResponse.success("Palabras clave actualizadas correctamente", null, HttpStatus.OK));
     }
 }
