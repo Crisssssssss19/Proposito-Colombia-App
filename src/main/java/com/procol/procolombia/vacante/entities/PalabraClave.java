@@ -21,10 +21,7 @@ public class PalabraClave {
     @Column(name = "texto_palabra_clave", nullable = false, length = 150)
     private String textoPalabraClave;
 
-    @ManyToMany
-    @JoinTable(name = "rel_usuario_palabra_clave",
-            joinColumns = @JoinColumn(name = "id_palabra_Clave"),
-            inverseJoinColumns = @JoinColumn(name = "id_usuario"))
+    @ManyToMany(mappedBy = "palabrasClaves")
     private Set<Usuario> usuarios = new LinkedHashSet<>();
 
     @ManyToMany(mappedBy = "palabrasClaves")
