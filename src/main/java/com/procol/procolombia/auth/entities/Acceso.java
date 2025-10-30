@@ -33,10 +33,6 @@ public class Acceso {
     @Column(name = "correo_acceso", nullable = false, length = 150)
     private String correoAcceso;
 
-    @NotNull
-    @Column(name = "correo_verificado", nullable = false)
-    private Short correoVerificado = 2; // 1=verificado, 2=no verificado
-
     @Size(max = 150)
     @NotNull
     @Column(name = "clave_acceso", nullable = false, length = 150)
@@ -68,12 +64,6 @@ public class Acceso {
         this.usuario = usuarios;
     }
 
-    public Short getCorreoVerificado() {
-        return correoVerificado;
-    }
-    public void setCorreoVerificado(Short correoVerificado) {
-        this.correoVerificado = correoVerificado;
-    }
     public String getTelefonoAcceso() {
         return telefonoAcceso;
     }

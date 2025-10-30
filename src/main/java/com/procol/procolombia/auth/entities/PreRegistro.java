@@ -18,7 +18,7 @@ public class PreRegistro {
     private LocalDateTime fechaPreRegistro;
 
     @Column(name = "estado_pre_registro", nullable = false)
-    private Short estadoPreRegistro; // 1=normal, 2=reintento, 3=bloqueado
+    private Short estadoPreRegistro; // 1=normal, 2=reintento, 3=bloqueado 4=verificado
 
     @Column(name = "bloqueado_hasta", nullable = true)
     private LocalDateTime bloqueadoHasta;

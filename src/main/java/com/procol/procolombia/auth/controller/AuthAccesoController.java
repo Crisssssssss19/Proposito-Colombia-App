@@ -71,6 +71,13 @@ public class AuthAccesoController {
         return ResponseEntity.status(response.codigoEstado()).body(response);
     }
 
+    @GetMapping("/correo/{correo}")
+    @PreAuthorize("hasAnyAuthority('ADMINISTRADOR', 'ASPIRANTE', 'EMPRESA')")
+    public ResponseEntity<ApiResponseDTO<AccesoResponseDTO>> obtenerAccesoPorCorreo(@PathVariable String correo) {
+        ApiResponseDTO<AccesoResponseDTO> response = accesoService.obtenerAccesoPorCorreo(correo);
+        return ResponseEntity.status(response.codigoEstado()).body(response);
+    }
+
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMINISTRADOR')")
     public ResponseEntity<ApiResponseDTO<List<AccesoResponseDTO>>> listarAccesos() {
@@ -80,25 +87,8 @@ public class AuthAccesoController {
 
     @PutMapping("/{idUsuario}/clave")
     @PermitAll
-    public ResponseEntity<ApiResponseDTO<String>> cambiarClave(
-            @PathVariable Integer idUsuario,
-            @RequestParam String nuevaClave
-    ) {
+    public ResponseEntity<ApiResponseDTO<String>> cambiarClave(@PathVariable Integer idUsuario, @RequestParam String nuevaClave) {
         ApiResponseDTO<String> response = accesoService.cambiarClave(idUsuario, nuevaClave);
-        return ResponseEntity.status(response.codigoEstado()).body(response);
-    }
-
-    @GetMapping("/enviar-verificacion" )
-    @PreAuthorize("hasAuthority('ASPIRANTE')")
-    public ResponseEntity<ApiResponseDTO<String>> enviarVerificarCorreo(@RequestParam String correo) {
-        ApiResponseDTO<String> response = accesoService.enviarVerificarCorreo(correo);
-        return ResponseEntity.status(response.codigoEstado()).body(response);
-    }
-
-    @GetMapping("/verificar-correo" )
-    @PreAuthorize("hasAuthority('ASPIRANTE')")
-    public ResponseEntity<ApiResponseDTO<String>> verificarCorreo(@RequestParam Integer idUsuario, @RequestParam String uuid) {
-        ApiResponseDTO<String> response = accesoService.verificarCorreo(idUsuario, uuid);
         return ResponseEntity.status(response.codigoEstado()).body(response);
     }
 }

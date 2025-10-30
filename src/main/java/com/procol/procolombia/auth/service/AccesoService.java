@@ -17,6 +17,5 @@ public interface AccesoService {
     ApiResponseDTO<List<AccesoResponseDTO>> ListarAcceso();
     ApiResponseDTO<AccesoResponseDTO> crearAcceso(AccesoRequestDTO requestDTO);
     ApiResponseDTO<AccesoResponseDTO> obtenerAccesoPorId(Integer idAcceso);
-    ApiResponseDTO<String> enviarVerificarCorreo(String correo);
-    ApiResponseDTO<String> verificarCorreo(Integer idUsuario, String UUID);
+    ApiResponseDTO<AccesoResponseDTO> obtenerAccesoPorCorreo(String correoAcceso);
 }

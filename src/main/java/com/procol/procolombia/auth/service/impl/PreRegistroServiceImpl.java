@@ -37,6 +37,10 @@ public class PreRegistroServiceImpl implements PreRegistroService {
         PreRegistro pre = preRegistroRepository.findById(telefono).orElse(null);
         LocalDateTime ahora = LocalDateTime.now();
 
+        if(pre.getEstadoPreRegistro()==4){
+            return new ApiResponseDTO<>(400, "Ya verificado", "El número ya ha sido verificado", ahora.toString());
+        }
+
         if (pre == null || pre.getIntentos()==0) {
             // Primer intento
             pre = new PreRegistro();
@@ -61,7 +65,7 @@ public class PreRegistroServiceImpl implements PreRegistroService {
                 pre.setBloqueadoHasta(null);
                 preRegistroRepository.save(pre);
             } else {
-                return new ApiResponseDTO<>(403, "Bloqueado", "Número bloqueado hasta "+pre.getBloqueadoHasta(), ahora.toString());
+                return new ApiResponseDTO<>(403, "Bloqueado", "Número bloqueado hasta "+pre.getBloqueadoHasta().toString(), ahora.toString());
             }
         }
 
@@ -116,20 +120,24 @@ public class PreRegistroServiceImpl implements PreRegistroService {
                 .orElseThrow(() -> new PreRegistroNotFountException("No se encontró un pre-registro para el número de teléfono proporcionado"));
         LocalDateTime ahora = LocalDateTime.now();
 
+        if(pre == null){
+            return new ApiResponseDTO<>(404, "No encontrado", "No existe pre-registro para el número proporcionado", ahora.toString());
+        }
+
         if(pre.getEstadoPreRegistro() == 3
             && pre.getBloqueadoHasta() != null
             && pre.getBloqueadoHasta().isAfter(ahora)) {
             return new ApiResponseDTO<>(403, "Número bloqueado hasta " + pre.getBloqueadoHasta(), null, ahora.toString());
         }
         if (pre.getPinPreRegistro().equals(codigo)) {
-            pre.setEstadoPreRegistro((short) 1);
+            pre.setEstadoPreRegistro((short) 4); // Verificado
             preRegistroRepository.save(pre);
             return new ApiResponseDTO<>(200, "Verificación exitosa", "Número verificado", ahora.toString());
         } else {
             if(pre.getEstadoPreRegistro() == 1){
                 pre.setEstadoPreRegistro((short)2);
                 preRegistroRepository.save(pre);
-                return new ApiResponseDTO<>(401, "Código incorrecto. Último intento antes de bloqueo.", null, ahora.toString());
+                return new ApiResponseDTO<>(400, "Código incorrecto. Último intento antes de bloqueo.", null, ahora.toString());
             } else if (pre.getEstadoPreRegistro() == 2) {
                 pre.setEstadoPreRegistro((short)3);
                 pre.setBloqueadoHasta(ahora.plusMinutes(tiempoExpiracionCodigo));

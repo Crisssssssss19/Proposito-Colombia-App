@@ -66,9 +66,11 @@ public class AuthAccesoServiceImpl implements AccesoService {
     private final UbicacioneRepository ubicacioneRepository;
     private final UsuariosRoleRepository usuariosRoleRepository;
     private final IngresoRepository ingresoRepository;
+    private final CorreoVerificacionRepository verificacionRepository;
 
-    public AuthAccesoServiceImpl(AccesoRepository accesoRepository, @Value("${sendgrid.api.key}") String sendGridApiKey, @Value("${sendgrid.from.email}") String sendGridFromEmail, RoleRepository roleRepository, JwtService jwtService, AuthAccesoMapper accesoMapper, RequisitoRepository requisitoRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, UserInfoService userInfoService, UsuarioRepository usuarioRepository, AuthImagenServiceImpl imagenServiceImpl, ImagenRepository imageneRepository, ParameterNamesModule parameterNamesModule, UbicacioneRepository ubicacioneRepository, UsuariosRoleRepository usuariosRoleRepository, IngresoRepository ingresoRepository) {
+    public AuthAccesoServiceImpl(AccesoRepository accesoRepository, CorreoVerificacionRepository verificacionRepository, @Value("${sendgrid.api.key}") String sendGridApiKey, @Value("${sendgrid.from.email}") String sendGridFromEmail, RoleRepository roleRepository, JwtService jwtService, AuthAccesoMapper accesoMapper, RequisitoRepository requisitoRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, UserInfoService userInfoService, UsuarioRepository usuarioRepository, AuthImagenServiceImpl imagenServiceImpl, ImagenRepository imageneRepository, ParameterNamesModule parameterNamesModule, UbicacioneRepository ubicacioneRepository, UsuariosRoleRepository usuariosRoleRepository, IngresoRepository ingresoRepository) {
         this.accesoRepository = accesoRepository;
+        this.verificacionRepository = verificacionRepository;
         this.ingresoRepository = ingresoRepository;
         this.sendGridApiKey = sendGridApiKey;
         this.sendGridFromEmail = sendGridFromEmail;
@@ -204,6 +206,14 @@ public class AuthAccesoServiceImpl implements AccesoService {
 
             usuariosRoleRepository.save(usuariosRole);
         }
+
+        // Crear CorreoVerificacion asociado al correoAcceso
+        CorreoVerificacion correoVerificacion = new CorreoVerificacion();
+        correoVerificacion.setIdCorreo(userRegisterRequestDTO.correoAcceso());
+        correoVerificacion.setPinCorreo(null); // aún no generado
+        correoVerificacion.setEstadoCorreoVerificado((short) 1); // sin verificar
+        verificacionRepository.save(correoVerificacion);
+
         return new ApiResponseDTO<>(201, "Usuario registrado exitosamente", null, LocalDateTime.now().toString());
     }
 
@@ -256,55 +266,9 @@ public class AuthAccesoServiceImpl implements AccesoService {
     }
 
     @Override
-    public ApiResponseDTO<String> enviarVerificarCorreo(String correo) {
-        Acceso acceso = accesoRepository.findByCorreoAcceso(correo)
-                .orElseThrow(() -> new AccesoNotFoundException("Acceso no encontrado con correo: " + correo));
-
-        if(acceso.getCorreoVerificado()==1){
-            return new ApiResponseDTO<>(200, "Correo ya verificado", null, LocalDateTime.now().toString());
-        }
-
-        try{
-            Email from = new Email(sendGridFromEmail);
-            String subject = "verifica tu correo electrónico";
-            Email to = new Email(acceso.getCorreoAcceso());
-
-            String link = "http://localhost:3210/api/accesos/verificar-correo?idUsuario=" + acceso.getUsuario().getId() + "&uuid=" + acceso.getId();
-            Content content = new Content("text/html",
-                    "<h3>Verifica tu correo</h3>" +
-                    "<p>Haz clic en el siguiente enlace para verificar tu correo electrónico:</p>" +
-                    "<a href=\"" + link + "\">Verificar Correo</a>");
-
-            Mail mail = new Mail(from, subject, to, content);
-            SendGrid sg = new SendGrid(sendGridApiKey);
-            Request request = new Request();
-            request.setMethod(Method.POST);
-            request.setEndpoint("mail/send");
-            request.setBody(mail.build());
-            Response response = sg.api(request);
-
-            if(response.getStatusCode() >= 200 && response.getStatusCode() < 300){
-                return new ApiResponseDTO<>(200, "Correo enviado", "Revisa tu bandeja de entrada", LocalDateTime.now().toString());
-            } else {
-                return new ApiResponseDTO<>(500, "Error al enviar correo", "Código de estado: " + response.getStatusCode(), LocalDateTime.now().toString());
-            }
-        } catch (IOException ex) {
-            return new ApiResponseDTO<>(500, "Excepcion", ex.getMessage(), LocalDateTime.now().toString());
-        }
+    public ApiResponseDTO<AccesoResponseDTO> obtenerAccesoPorCorreo(String correoAcceso) {
+        Acceso acceso = accesoRepository.findByCorreoAcceso(correoAcceso)
+                .orElseThrow(() -> new AccesoNotFoundException("Acceso no encontrado con correo: " + correoAcceso));
+        return new ApiResponseDTO<>(200, "Acceso encontrado", accesoMapper.toDto(acceso), LocalDateTime.now().toString());
     }
-
-    @Override
-    public ApiResponseDTO<String> verificarCorreo(Integer idUsuario, String UUID) {
-        Acceso acceso = accesoRepository.findById(idUsuario)
-                .orElseThrow(() -> new AccesoNotFoundException("Acceso no encontrado con id: " + idUsuario));
-
-        if(!acceso.getUuidAcceso().equals(UUID) || acceso.getUuidAcceso()==null){
-            return new ApiResponseDTO<>(400, "UUID inválido", null, LocalDateTime.now().toString());
-        }
-        acceso.setCorreoVerificado((short) 1);
-        accesoRepository.save(acceso);
-        return new ApiResponseDTO<>(200, "Correo verificado", null, LocalDateTime.now().toString());
-    }
-
-
 }

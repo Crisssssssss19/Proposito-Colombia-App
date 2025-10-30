@@ -15,5 +15,4 @@ public record GetPerfil(
         List<GetTalento> habilidades,
         List<GetTalento> competencias,
         List<GetPalabraClave> palabrasClave
-) implements Serializable {
-}
+) implements Serializable {}
