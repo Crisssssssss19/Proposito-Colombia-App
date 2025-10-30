@@ -17,9 +17,10 @@ import com.procol.procolombia.auth.exception.notfound.UbicacionNotFoundException
 import com.procol.procolombia.auth.mappers.AuthAccesoMapper;
 import com.procol.procolombia.auth.repositories.*;
 import com.procol.procolombia.auth.security.jwt.JwtService;
-import com.procol.procolombia.auth.security.service.UserInfoDetail;
 import com.procol.procolombia.auth.security.service.UserInfoService;
 import com.procol.procolombia.auth.service.AccesoService;
+import com.procol.procolombia.perfil.services.ImagenService;
+import com.procol.procolombia.perfil.dtos.response.GetImagenConUrl;
 import com.procol.procolombia.vacante.repositories.RequisitoRepository;
 import com.sendgrid.Method;
 import com.sendgrid.SendGrid;
@@ -31,7 +32,6 @@ import com.sendgrid.helpers.mail.objects.Email;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -43,7 +43,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class AuthAccesoServiceImpl implements AccesoService {
@@ -57,7 +56,6 @@ public class AuthAccesoServiceImpl implements AccesoService {
     private final UserInfoService userInfoService;
     private static final Logger logger = LoggerFactory.getLogger(AuthAccesoServiceImpl.class);
     private final UsuarioRepository usuarioRepository;
-    private final AuthImagenServiceImpl imagenServiceImpl;
     private final ImagenRepository imageneRepository;
     private final RoleRepository roleRepository;
     private final String sendGridApiKey;
@@ -66,8 +64,9 @@ public class AuthAccesoServiceImpl implements AccesoService {
     private final UbicacioneRepository ubicacioneRepository;
     private final UsuariosRoleRepository usuariosRoleRepository;
     private final IngresoRepository ingresoRepository;
+    private final ImagenService imagenService;
 
-    public AuthAccesoServiceImpl(AccesoRepository accesoRepository, @Value("${sendgrid.api.key}") String sendGridApiKey, @Value("${sendgrid.from.email}") String sendGridFromEmail, RoleRepository roleRepository, JwtService jwtService, AuthAccesoMapper accesoMapper, RequisitoRepository requisitoRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, UserInfoService userInfoService, UsuarioRepository usuarioRepository, AuthImagenServiceImpl imagenServiceImpl, ImagenRepository imageneRepository, ParameterNamesModule parameterNamesModule, UbicacioneRepository ubicacioneRepository, UsuariosRoleRepository usuariosRoleRepository, IngresoRepository ingresoRepository) {
+    public AuthAccesoServiceImpl(AccesoRepository accesoRepository, @Value("${sendgrid.api.key}") String sendGridApiKey, @Value("${sendgrid.from.email}") String sendGridFromEmail, RoleRepository roleRepository, JwtService jwtService, AuthAccesoMapper accesoMapper, RequisitoRepository requisitoRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, UserInfoService userInfoService, UsuarioRepository usuarioRepository, ImagenRepository imageneRepository, ParameterNamesModule parameterNamesModule, UbicacioneRepository ubicacioneRepository, UsuariosRoleRepository usuariosRoleRepository, IngresoRepository ingresoRepository, ImagenService imagenService) {
         this.accesoRepository = accesoRepository;
         this.ingresoRepository = ingresoRepository;
         this.sendGridApiKey = sendGridApiKey;
@@ -80,11 +79,11 @@ public class AuthAccesoServiceImpl implements AccesoService {
         this.authenticationManager = authenticationManager;
         this.userInfoService = userInfoService;
         this.usuarioRepository = usuarioRepository;
-        this.imagenServiceImpl = imagenServiceImpl;
         this.imageneRepository = imageneRepository;
         this.parameterNamesModule = parameterNamesModule;
         this.ubicacioneRepository = ubicacioneRepository;
         this.usuariosRoleRepository = usuariosRoleRepository;
+        this.imagenService = imagenService;
     }
 
 
@@ -131,7 +130,13 @@ public class AuthAccesoServiceImpl implements AccesoService {
 
         // Obtener foto de perfil favorita (si existe)
 
-        String fotoBase64 = imagenServiceImpl.obtenerFotoBase64(acceso.getUsuario().getId());
+        List<GetImagenConUrl> imagenes = imagenService.listarImagenesPorUsuario(usuario.getId());
+        String fotoBase64 = imagenes.stream()
+                .filter(img -> img.favorita() == true)
+                .map(GetImagenConUrl::url)
+                .findFirst()
+                .orElse("XXX_IMG");
+
         if(fotoBase64 == null){
             fotoBase64 = "XXX_IMG"; // Indica que no hay imagen
         }

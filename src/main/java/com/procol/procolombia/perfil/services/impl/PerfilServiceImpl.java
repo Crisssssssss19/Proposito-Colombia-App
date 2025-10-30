@@ -46,13 +46,13 @@ public class PerfilServiceImpl implements PerfilService {
         GetAcceso acceso = accesoService.obtenerAccesoPorUsuarioId(idUsuario);
 
         List<GetImagenConUrl> imagenes = imagenService.listarImagenesPorUsuario(idUsuario)
-                .stream().map(img -> new GetImagenConUrl(
-                        img.id(),
-                        img.nombrePublico(),
-                        "http://localhost:3210/uploads/imagenes/" + img.nombrePrivado(),
-                        img.favorita() == 1,
-                        img.fechaSubida()
-                )).toList();
+                .stream().toList();
+
+        String urlFotoPerfil = imagenes.stream()
+                .filter(GetImagenConUrl::favorita)
+                .findFirst()
+                .map(img -> img.url())
+                .orElse(null);
 
         List<GetArchivoConUrl> archivos = archivoService.listarArchivosPorUsuario(idUsuario)
                 .stream().map(arch -> new GetArchivoConUrl(
@@ -122,7 +122,9 @@ public class PerfilServiceImpl implements PerfilService {
                 habilidades,
                 competencias,
                 palabrasClave,
-                obtenerHabilidadPrincipal(usuarioEntity)
+                obtenerHabilidadPrincipal(usuarioEntity),
+                usuario.documentoUsuario(),
+                urlFotoPerfil
         );
     }
 

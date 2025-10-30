@@ -15,6 +15,8 @@ public record GetPerfil(
         List<GetTalento> habilidades,
         List<GetTalento> competencias,
         List<GetPalabraClave> palabrasClave,
-        String HabilidadPrincipal
+        String HabilidadPrincipal,
+        String documento,
+        String fotoPerfil
 ) implements Serializable {
 }

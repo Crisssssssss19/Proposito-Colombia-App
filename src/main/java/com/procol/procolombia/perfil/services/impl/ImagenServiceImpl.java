@@ -6,6 +6,7 @@ import com.procol.procolombia.auth.repositories.ImagenRepository;
 import com.procol.procolombia.auth.repositories.UsuarioRepository;
 import com.procol.procolombia.perfil.dtos.request.SaveImagenFile;
 import com.procol.procolombia.perfil.dtos.response.GetImagen;
+import com.procol.procolombia.perfil.dtos.response.GetImagenConUrl;
 import com.procol.procolombia.perfil.mappers.ImagenMapper;
 import com.procol.procolombia.perfil.services.ImagenService;
 import jakarta.persistence.EntityNotFoundException;
@@ -39,7 +40,7 @@ public class ImagenServiceImpl implements ImagenService {
     }
 
     @Override
-    public GetImagen SubirImagen(Integer idUsuario, SaveImagenFile saveImagen) {
+    public GetImagenConUrl SubirImagen(Integer idUsuario, SaveImagenFile saveImagen) {
         Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
@@ -79,13 +80,12 @@ public class ImagenServiceImpl implements ImagenService {
         imagene.setTamanioImagen(file.getSize() / 1024 + " KB");
         imagene.setFavoritaImagen((short) (Boolean.TRUE.equals(saveImagen.favorita()) ? 1 : 2));
         Imagene imageneGuardada = imagenRepository.save(imagene);
-        String url = "http://localhost:3210/uploads/imagenes/" + imageneGuardada.getNombrePrivadoImagen();
-        return imagenMapper.imagenToGetImagen(imageneGuardada);
+        return imagenMapper.imagenToGetImagenConUrl(imageneGuardada);
     }
 
     @Override
-    public List<GetImagen> listarImagenesPorUsuario(Integer idUsuario){
-        return imagenMapper.imagenListToGetImagenList(imagenRepository.findByIdUsuario_Id(idUsuario));
+    public List<GetImagenConUrl> listarImagenesPorUsuario(Integer idUsuario){
+        return imagenMapper.imagenListToGetImagenConUrlList(imagenRepository.findByIdUsuario_Id(idUsuario));
     }
 
     @Override
@@ -97,7 +97,7 @@ public class ImagenServiceImpl implements ImagenService {
     }
 
     @Override
-    public GetImagen marcarComoFavorita(Integer idImagen) {
+    public GetImagenConUrl marcarComoFavorita(Integer idImagen) {
         Imagene imagene = imagenRepository.findById(idImagen)
                 .orElseThrow(() -> new EntityNotFoundException("Imagene no encontrada"));
 
@@ -112,6 +112,11 @@ public class ImagenServiceImpl implements ImagenService {
         imagene.setFavoritaImagen((short)1);
         Imagene imageneActualizada = imagenRepository.save(imagene);
 
-        return imagenMapper.imagenToGetImagen(imageneActualizada);
+        return imagenMapper.imagenToGetImagenConUrl(imageneActualizada);
+    }
+
+    @Override
+    public Path obtenerRutaImagen(String nombreArchivo) {
+        return Paths.get(uploadDir).resolve(nombreArchivo).normalize();
     }
 }
