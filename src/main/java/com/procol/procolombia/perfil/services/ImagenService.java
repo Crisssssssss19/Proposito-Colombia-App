@@ -13,4 +13,5 @@ public interface ImagenService {
     void eliminarImagen(Integer idImagen);
     GetImagenConUrl marcarComoFavorita(Integer idImagen);
     Path obtenerRutaImagen(String nombreArchivo);
+    List<GetImagenConUrl> listarImagenesPorCategoria(Integer idUsuario, short categoria);
 }

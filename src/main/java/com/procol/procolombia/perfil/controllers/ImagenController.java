@@ -2,7 +2,6 @@ package com.procol.procolombia.perfil.controllers;
 
 import com.procol.procolombia.perfil.dtos.request.SaveImagenFile;
 import com.procol.procolombia.perfil.dtos.response.ApiResponse;
-import com.procol.procolombia.perfil.dtos.response.GetImagen;
 import com.procol.procolombia.perfil.dtos.response.GetImagenConUrl;
 import com.procol.procolombia.perfil.services.ImagenService;
 import org.springframework.core.io.Resource;
@@ -28,14 +27,14 @@ public class ImagenController {
     }
 
     @PostMapping("/subir")
-    public ResponseEntity<ApiResponse<GetImagenConUrl>> subirImagen(@PathVariable Integer idUsuario, @RequestParam("File") MultipartFile file, @RequestParam(value = "favorita", defaultValue = "false") boolean favorita) {
-        SaveImagenFile saveImagen = new SaveImagenFile(file, favorita);
+    public ResponseEntity<ApiResponse<GetImagenConUrl>> subirImagen(
+            @PathVariable Integer idUsuario,
+            @RequestParam("File") MultipartFile file,
+            @RequestParam(value = "favorita", defaultValue = "false") boolean favorita,
+            @RequestParam(value = "categoria", defaultValue = "2") Short categoria
+    ) {
+        SaveImagenFile saveImagen = new SaveImagenFile(file, favorita,  categoria);
         return ResponseEntity.ok(ApiResponse.success("Imagene subida", imagenService.SubirImagen(idUsuario, saveImagen), HttpStatus.CREATED));
-    }
-
-    @GetMapping("verImagenes")
-    public ResponseEntity<ApiResponse<List<GetImagenConUrl>>> obtenerImagen(@PathVariable Integer idUsuario) {
-        return ResponseEntity.ok(ApiResponse.success("Lista de imagenes obtenida correctamente", imagenService.listarImagenesPorUsuario(idUsuario), HttpStatus.OK));
     }
 
     @DeleteMapping("/{idImagen}")
@@ -74,4 +73,25 @@ public class ImagenController {
         }
     }
 
+    @GetMapping("/verPortafolio")
+    public ResponseEntity<ApiResponse<List<GetImagenConUrl>>> obtenerImagenesPortafolio(
+            @PathVariable Integer idUsuario
+    ) {
+        return ResponseEntity.ok(ApiResponse.success(
+                "Lista de imágenes del portafolio",
+                imagenService.listarImagenesPorCategoria(idUsuario, (short) 2), // Solo portafolio
+                HttpStatus.OK
+        ));
+    }
+
+    @GetMapping("/perfil")
+    public ResponseEntity<ApiResponse<List<GetImagenConUrl>>> obtenerImagenesPerfil(
+            @PathVariable Integer idUsuario
+    ) {
+        return ResponseEntity.ok(ApiResponse.success(
+                "Imágenes de perfil",
+                imagenService.listarImagenesPorCategoria(idUsuario, (short) 1),
+                HttpStatus.OK
+        ));
+    }
 }

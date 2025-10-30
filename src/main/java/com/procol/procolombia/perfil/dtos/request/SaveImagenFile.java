@@ -11,7 +11,9 @@ public record SaveImagenFile(
         MultipartFile file,
 
         @NotNull(message = "El campo favorita no puede ser nulo")
-        boolean favorita
+        boolean favorita,
 
+        @NotNull(message = "Categoria no puede ser nulo")
+        Short categoria
 ) implements Serializable {
 }

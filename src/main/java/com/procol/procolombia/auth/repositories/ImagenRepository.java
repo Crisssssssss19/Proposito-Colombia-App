@@ -28,4 +28,7 @@ public interface ImagenRepository extends JpaRepository<Imagene, Integer> {
 
     List<Imagene> findByTipoImagen(String tipoImagen);
 
+    long countByIdUsuario_IdAndCategoria(Integer idUsuario, Short categoria);
+
+    List<Imagene> findByIdUsuario_IdAndCategoria(Integer idUsuario, Short categoria);
 }

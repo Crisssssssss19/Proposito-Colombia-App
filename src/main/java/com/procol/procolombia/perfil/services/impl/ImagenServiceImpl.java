@@ -5,7 +5,6 @@ import com.procol.procolombia.auth.entities.Usuario;
 import com.procol.procolombia.auth.repositories.ImagenRepository;
 import com.procol.procolombia.auth.repositories.UsuarioRepository;
 import com.procol.procolombia.perfil.dtos.request.SaveImagenFile;
-import com.procol.procolombia.perfil.dtos.response.GetImagen;
 import com.procol.procolombia.perfil.dtos.response.GetImagenConUrl;
 import com.procol.procolombia.perfil.mappers.ImagenMapper;
 import com.procol.procolombia.perfil.services.ImagenService;
@@ -49,6 +48,23 @@ public class ImagenServiceImpl implements ImagenService {
             throw new RuntimeException("El archivo está vacio");
         }
 
+        Short categoria = saveImagen.categoria(); // 1 = perfil, 2 = portafolio
+
+        if (categoria == 2) {
+            long cantidadPortafolio = imagenRepository.countByIdUsuario_IdAndCategoria(idUsuario, (short) 2);
+            if (cantidadPortafolio >= 5) {
+                throw  new RuntimeException("Ya has alcanzado el limite de 5 imágenes");
+            }
+        }
+
+        if (categoria == 1 && Boolean.TRUE.equals(saveImagen.favorita())) {
+            imagenRepository.findByIdUsuario_IdAndCategoria(idUsuario, (short) 1)
+                    .forEach(imagen -> {
+                        imagen.setFavoritaImagen((short) 2);
+                        imagenRepository.save(imagen);
+                    });
+        }
+
         // Generar el nombre privado con UUID + extension
         String extension = "";
         String originalFilename = file.getOriginalFilename();
@@ -79,6 +95,8 @@ public class ImagenServiceImpl implements ImagenService {
         imagene.setTipoImagen(file.getContentType());
         imagene.setTamanioImagen(file.getSize() / 1024 + " KB");
         imagene.setFavoritaImagen((short) (Boolean.TRUE.equals(saveImagen.favorita()) ? 1 : 2));
+        imagene.setCategoria(categoria);
+
         Imagene imageneGuardada = imagenRepository.save(imagene);
         return imagenMapper.imagenToGetImagenConUrl(imageneGuardada);
     }
@@ -118,5 +136,12 @@ public class ImagenServiceImpl implements ImagenService {
     @Override
     public Path obtenerRutaImagen(String nombreArchivo) {
         return Paths.get(uploadDir).resolve(nombreArchivo).normalize();
+    }
+
+    @Override
+    public List<GetImagenConUrl> listarImagenesPorCategoria(Integer idUsuario, short categoria) {
+        return imagenMapper.imagenListToGetImagenConUrlList(
+                imagenRepository.findByIdUsuario_IdAndCategoria(idUsuario, categoria)
+        );
     }
 }

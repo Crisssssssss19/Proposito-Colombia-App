@@ -1,6 +1,8 @@
 package com.procol.procolombia.auth.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.ColumnDefault;
@@ -52,6 +54,12 @@ public class Imagene {
     @NotNull
     @Column(name = "fecha_subida", nullable = false, updatable = false)
     private LocalDateTime fechaSubida;
+
+    @NotNull
+    @Min(1)
+    @Max(2)
+    @Column(name = "categoria", nullable = false)
+    private Short categoria; // perfil = 1, portafolio = 2
 
     @PrePersist
     public void prePersist() {
@@ -115,4 +123,8 @@ public class Imagene {
     }
 
     public LocalDateTime getFechaSubida() {return fechaSubida;}
+
+    public Short getCategoria() {return categoria;}
+
+    public void setCategoria(Short categoria) {this.categoria = categoria;}
 }
