@@ -4,7 +4,10 @@ import com.procol.procolombia.perfil.dtos.request.SaveArchivoFile;
 import com.procol.procolombia.perfil.dtos.response.ApiResponse;
 import com.procol.procolombia.perfil.dtos.response.GetArchivo;
 import com.procol.procolombia.perfil.services.ArchivoService;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,6 +39,33 @@ public class ArchivoController {
     public ResponseEntity<ApiResponse<Void>> eliminarArchivo(@PathVariable Integer idArchivo) {
         archivoService.eliminarArchivo(idArchivo);
         return ResponseEntity.ok(ApiResponse.success("Archivo eliminado correctamente", null, HttpStatus.OK));
+    }
+
+    @GetMapping("/{idArchivo}")
+    public ResponseEntity<ApiResponse<GetArchivo>> obtenerArchivo(@PathVariable Integer idUsuario, @PathVariable Integer idArchivo) {
+        GetArchivo archivo = archivoService.obtenerArchivoPorId(idArchivo);
+        return ResponseEntity.ok(ApiResponse.success("Archivo obtenido correctamente", archivo, HttpStatus.OK));
+    }
+
+    @GetMapping("/{idArchivo}/descargar")
+    public ResponseEntity<Resource> descargarArchivo(@PathVariable Integer idUsuario, @PathVariable Integer idArchivo) {
+        GetArchivo archivo = archivoService.obtenerArchivoPorId(idArchivo);
+        Resource recurso = archivoService.descargarArchivo(idArchivo, false);
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(archivo.tipo()))
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"" + archivo.nombrePublico() + "\"")
+                .body(recurso);
+    }
+
+    @GetMapping("/{idArchivo}/ver")
+    public ResponseEntity<Resource> verArchivo(@PathVariable Integer idUsuario, @PathVariable Integer idArchivo) {
+        GetArchivo archivo = archivoService.obtenerArchivoPorId(idArchivo);
+        Resource recurso = archivoService.descargarArchivo(idArchivo, false);
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(archivo.tipo()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + archivo.nombrePublico() + "\"")
+                .body(recurso);
     }
 
 }

@@ -9,14 +9,19 @@ import com.procol.procolombia.perfil.services.ArchivoService;
 import com.procol.procolombia.postulacion.entities.Archivo;
 import com.procol.procolombia.postulacion.repositories.ArchivoRepository;
 import java.io.IOException;
+
+
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -97,5 +102,29 @@ public class ArchivoServiceImpl implements ArchivoService {
             throw new EntityNotFoundException("Archivo no encontrado");
         }
         archivoRepository.deleteById(idArchivo);
+    }
+
+    @Override
+    public GetArchivo obtenerArchivoPorId(Integer idArchivo) {
+        Archivo archivo = archivoRepository.findById(idArchivo)
+                .orElseThrow(() -> new EntityNotFoundException("Archivo no encontrado"));
+        return archivoMapper.archivoToGetArchivo(archivo);
+    }
+
+    @Override
+    public Resource descargarArchivo(Integer idArchivo, boolean inline) {
+        Archivo archivo = archivoRepository.findById(idArchivo)
+                .orElseThrow(() -> new EntityNotFoundException("Archivo no encontrado"));
+
+        Path rutaArchivo = Paths.get(uploadDir).resolve(archivo.getNombreArchivoArchivo());
+        try {
+            Resource resource = new UrlResource(rutaArchivo.toUri());
+            if (!resource.exists() || !resource.isReadable()) {
+                throw new RuntimeException("No se puede leer el archivo");
+            }
+            return resource;
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Error al cargar el archivo", e);
+        }
     }
 }
