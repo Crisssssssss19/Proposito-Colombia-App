@@ -1,6 +1,7 @@
 package com.procol.procolombia.perfil.controllers;
 
 import com.procol.procolombia.perfil.dtos.request.SaveUsuario;
+import com.procol.procolombia.perfil.dtos.request.UpdateUsuario;
 import com.procol.procolombia.perfil.dtos.response.ApiResponse;
 import com.procol.procolombia.perfil.dtos.response.GetUsuario;
 import com.procol.procolombia.perfil.services.UsuarioService;
@@ -26,8 +27,8 @@ public class UsuarioController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ApiResponse<GetUsuario>> actualizarUsuario(@PathVariable Integer id, @RequestBody SaveUsuario saveUsuario) {
-        return ResponseEntity.ok(ApiResponse.success("Usuario actualizado correctamente", usuarioService.actualizarUsuario(id, saveUsuario), HttpStatus.OK));
+    public ResponseEntity<ApiResponse<GetUsuario>> actualizarUsuario(@PathVariable Integer id, @RequestBody UpdateUsuario updateUsuario) {
+        return ResponseEntity.ok(ApiResponse.success("Usuario actualizado correctamente", usuarioService.actualizarUsuario(id, updateUsuario), HttpStatus.OK));
     }
 
     @GetMapping("/{id}")

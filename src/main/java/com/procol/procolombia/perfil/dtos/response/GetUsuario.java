@@ -7,6 +7,7 @@ public record GetUsuario(
         String nombresUsuario,
         String apellidosUsuario,
         Short estado,
-        Integer idUbicacion
+        Integer idUbicacion,
+        String documentoUsuario
 ) implements Serializable {
 }

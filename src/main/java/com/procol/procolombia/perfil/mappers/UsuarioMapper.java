@@ -19,6 +19,7 @@ public interface UsuarioMapper {
     @Mapping(source = "apellidosUsuario", target = "apellidosUsuario")
     @Mapping(source = "estadoUsuario", target = "estado")
     @Mapping(source = "idUbicacion.id", target = "idUbicacion")
+    @Mapping(source = "documentoUsuario", target = "documentoUsuario")
     GetUsuario usuarioToGetUsuario(Usuario usuario);
 
     List<GetUsuario> usuarioListToGetUsuarioList(List<Usuario> usuarioList);

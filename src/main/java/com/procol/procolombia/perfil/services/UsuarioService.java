@@ -1,6 +1,7 @@
 package com.procol.procolombia.perfil.services;
 
 import com.procol.procolombia.perfil.dtos.request.SaveUsuario;
+import com.procol.procolombia.perfil.dtos.request.UpdateUsuario;
 import com.procol.procolombia.perfil.dtos.response.GetUsuario;
 
 import java.util.List;
@@ -9,7 +10,7 @@ public interface UsuarioService {
 
     GetUsuario crearUsuario(SaveUsuario saveUsuario);
 
-    GetUsuario actualizarUsuario(Integer id, SaveUsuario saveUsuario);
+    GetUsuario actualizarUsuario(Integer id, UpdateUsuario updateUsuario);
 
     GetUsuario obtenerUsuarioPorId(Integer id);
 

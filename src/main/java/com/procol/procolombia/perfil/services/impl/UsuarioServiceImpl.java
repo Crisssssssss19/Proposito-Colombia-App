@@ -5,6 +5,7 @@ import com.procol.procolombia.auth.entities.Usuario;
 import com.procol.procolombia.auth.repositories.UbicacioneRepository;
 import com.procol.procolombia.auth.repositories.UsuarioRepository;
 import com.procol.procolombia.perfil.dtos.request.SaveUsuario;
+import com.procol.procolombia.perfil.dtos.request.UpdateUsuario;
 import com.procol.procolombia.perfil.dtos.response.GetUsuario;
 import com.procol.procolombia.perfil.mappers.UsuarioMapper;
 import com.procol.procolombia.perfil.services.PalabraClaveService;
@@ -45,36 +46,36 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public GetUsuario actualizarUsuario(Integer id, SaveUsuario saveUsuario) {
+    public GetUsuario actualizarUsuario(Integer id, UpdateUsuario updateUsuario) {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
 
-        if (saveUsuario.idUbicacion() != null) {
-            usuario.setIdUbicacion(obtenerUbicacionPorId(saveUsuario.idUbicacion()));
+        if (updateUsuario.idUbicacion() != null) {
+            usuario.setIdUbicacion(obtenerUbicacionPorId(updateUsuario.idUbicacion()));
         }
 
         usuario.getPalabrasClaves().addAll(
-                palabraClaveService.asignarPalabras(saveUsuario.palabrasClave())
+                palabraClaveService.asignarPalabras(updateUsuario.palabrasClave())
         );
 
-        if (saveUsuario.nombres() != null) {
-            usuario.setNombresUsuario(saveUsuario.nombres());
+        if (updateUsuario.nombres() != null) {
+            usuario.setNombresUsuario(updateUsuario.nombres());
         }
 
-        if (saveUsuario.apellidos() != null) {
-            usuario.setApellidosUsuario(saveUsuario.apellidos());
+        if (updateUsuario.apellidos() != null) {
+            usuario.setApellidosUsuario(updateUsuario.apellidos());
         }
 
-        if (saveUsuario.tipoDocumento() != null) {
-            usuario.setTipoDocumentoUsuario(saveUsuario.tipoDocumento());
+        if (updateUsuario.tipoDocumento() != null) {
+            usuario.setTipoDocumentoUsuario(updateUsuario.tipoDocumento());
         }
 
-        if (saveUsuario.estado() != null) {
-            usuario.setEstadoUsuario(saveUsuario.estado());
+        if (updateUsuario.estado() != null) {
+            usuario.setEstadoUsuario(updateUsuario.estado());
         }
 
-        if (saveUsuario.documento() != null) {
-            usuario.setDocumentoUsuario(saveUsuario.documento());
+        if (updateUsuario.documento() != null) {
+            usuario.setDocumentoUsuario(updateUsuario.documento());
         }
         return usuarioMapper.usuarioToGetUsuario(usuarioRepository.save(usuario));
     }
