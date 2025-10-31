@@ -67,9 +67,11 @@ public class AuthAccesoServiceImpl implements AccesoService {
     private final UsuariosRoleRepository usuariosRoleRepository;
     private final IngresoRepository ingresoRepository;
     private final CorreoVerificacionRepository verificacionRepository;
+    private final PreRegistroRepository preRegistroRepository;
 
-    public AuthAccesoServiceImpl(AccesoRepository accesoRepository, CorreoVerificacionRepository verificacionRepository, @Value("${sendgrid.api.key}") String sendGridApiKey, @Value("${sendgrid.from.email}") String sendGridFromEmail, RoleRepository roleRepository, JwtService jwtService, AuthAccesoMapper accesoMapper, RequisitoRepository requisitoRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, UserInfoService userInfoService, UsuarioRepository usuarioRepository, AuthImagenServiceImpl imagenServiceImpl, ImagenRepository imageneRepository, ParameterNamesModule parameterNamesModule, UbicacioneRepository ubicacioneRepository, UsuariosRoleRepository usuariosRoleRepository, IngresoRepository ingresoRepository) {
+    public AuthAccesoServiceImpl(AccesoRepository accesoRepository, PreRegistroRepository preRegistroRepository, CorreoVerificacionRepository verificacionRepository, @Value("${sendgrid.api.key}") String sendGridApiKey, @Value("${sendgrid.from.email}") String sendGridFromEmail, RoleRepository roleRepository, JwtService jwtService, AuthAccesoMapper accesoMapper, RequisitoRepository requisitoRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, UserInfoService userInfoService, UsuarioRepository usuarioRepository, AuthImagenServiceImpl imagenServiceImpl, ImagenRepository imageneRepository, ParameterNamesModule parameterNamesModule, UbicacioneRepository ubicacioneRepository, UsuariosRoleRepository usuariosRoleRepository, IngresoRepository ingresoRepository) {
         this.accesoRepository = accesoRepository;
+        this.preRegistroRepository = preRegistroRepository;
         this.verificacionRepository = verificacionRepository;
         this.ingresoRepository = ingresoRepository;
         this.sendGridApiKey = sendGridApiKey;
@@ -270,5 +272,51 @@ public class AuthAccesoServiceImpl implements AccesoService {
         Acceso acceso = accesoRepository.findByCorreoAcceso(correoAcceso)
                 .orElseThrow(() -> new AccesoNotFoundException("Acceso no encontrado con correo: " + correoAcceso));
         return new ApiResponseDTO<>(200, "Acceso encontrado", accesoMapper.toDto(acceso), LocalDateTime.now().toString());
+    }
+
+    @Override
+    public ApiResponseDTO<String> obtenerTelefonoAcceso(Integer idUsuario) {
+        Acceso acceso = accesoRepository.findById(idUsuario)
+                .orElseThrow(() -> new AccesoNotFoundException("Acceso no encontrado"));
+        return new ApiResponseDTO<>(200, "Telefono encontrado", acceso.getTelefonoAcceso(), LocalDateTime.now().toString());
+    }
+
+    @Override
+    @Transactional
+    public ApiResponseDTO<String> actualizarTelefonoAcceso(Integer idUsuario, String nuevoTelefono) {
+        LocalDateTime ahora = LocalDateTime.now();
+
+        // 1️⃣ Buscar el acceso por el usuario
+        Acceso acceso = accesoRepository.findById(idUsuario)
+                .orElseThrow(() -> new AccesoNotFoundException("Acceso no encontrado para usuario ID: " + idUsuario));
+
+        String telefonoAnterior = acceso.getTelefonoAcceso();
+
+        // 2️⃣ Actualizar el teléfono en Acceso
+        acceso.setTelefonoAcceso(nuevoTelefono);
+        accesoRepository.save(acceso);
+
+        // 3️⃣ Buscar también en PreRegistro por el teléfono anterior
+        Optional<PreRegistro> preExistente = preRegistroRepository.findById(telefonoAnterior);
+
+        if (preExistente.isPresent()) {
+            PreRegistro pre = preExistente.get();
+
+            // Si el usuario tenía un registro previo con el teléfono antiguo, lo actualizamos
+            preRegistroRepository.delete(pre); // Eliminamos el antiguo
+
+            // Creamos uno nuevo con el nuevo número (manteniendo estado si estaba verificado)
+            PreRegistro nuevo = new PreRegistro();
+            nuevo.setIdPreRegistro(nuevoTelefono);
+            nuevo.setPinPreRegistro(pre.getPinPreRegistro());
+            nuevo.setFechaPreRegistro(ahora);
+            nuevo.setEstadoPreRegistro(pre.getEstadoPreRegistro());
+            nuevo.setIntentos(pre.getIntentos());
+            nuevo.setBloqueadoHasta(pre.getBloqueadoHasta());
+
+            preRegistroRepository.save(nuevo);
+        }
+
+        return new ApiResponseDTO<>(200, "Teléfono actualizado correctamente", "El número fue cambiado en Acceso y PreRegistro", ahora.toString());
     }
 }

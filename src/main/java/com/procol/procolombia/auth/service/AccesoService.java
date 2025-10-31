@@ -18,4 +18,6 @@ public interface AccesoService {
     ApiResponseDTO<AccesoResponseDTO> crearAcceso(AccesoRequestDTO requestDTO);
     ApiResponseDTO<AccesoResponseDTO> obtenerAccesoPorId(Integer idAcceso);
     ApiResponseDTO<AccesoResponseDTO> obtenerAccesoPorCorreo(String correoAcceso);
+    ApiResponseDTO<String> obtenerTelefonoAcceso(Integer idUsuario);
+    ApiResponseDTO<String> actualizarTelefonoAcceso(Integer idUsuario, String nuevoTelefono);
 }

@@ -147,4 +147,33 @@ public class PreRegistroServiceImpl implements PreRegistroService {
             return new ApiResponseDTO<>(401, "Código incorrecto.", null, ahora.toString());
         }
     }
+
+    @Override
+    public ApiResponseDTO<String> enviarCodigoCambio(String telefono) {
+        LocalDateTime ahora = LocalDateTime.now();
+        PreRegistro pre = preRegistroRepository.findById(telefono).orElse(null);
+
+        // Si no existe, lo creamos
+        if (pre == null) {
+            pre = new PreRegistro();
+            pre.setIdPreRegistro(telefono);
+        }
+
+        // Generamos nuevo código sin importar el estado actual
+        pre.setPinPreRegistro(generarPin());
+        pre.setFechaPreRegistro(ahora);
+        pre.setEstadoPreRegistro((short) 4); // Verificado
+        pre.setIntentos(0);
+        pre.setBloqueadoHasta(null);
+
+        preRegistroRepository.save(pre);
+        enviarSms(telefono, pre.getPinPreRegistro());
+
+        return new ApiResponseDTO<>(
+                200,
+                "Código enviado",
+                "Se ha enviado un código de confirmación para validar el cambio de número.",
+                ahora.toString()
+        );
+    }
 }

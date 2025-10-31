@@ -65,7 +65,7 @@ public class AuthAccesoController {
     }
 
     @GetMapping("/{idAcceso}")
-    @PreAuthorize("hasAnyAuthority('ADMINISTRADOR', 'TECNOLOGIA')")
+    @PreAuthorize("hasAnyAuthority('ADMINISTRADOR', 'TECNOLOGIA', 'ASPIRANTE')")
     public ResponseEntity<ApiResponseDTO<AccesoResponseDTO>> obtenerAccesoPorId(@PathVariable Integer idAcceso) {
         ApiResponseDTO<AccesoResponseDTO> response = accesoService.obtenerAccesoPorId(idAcceso);
         return ResponseEntity.status(response.codigoEstado()).body(response);

@@ -25,6 +25,4 @@ public interface AccesoRepository extends JpaRepository<Acceso, Integer> {
             "LEFT JOIN FETCH u.roles " +
             "WHERE a.correoAcceso = :correo")
     Optional<Acceso> findByCorreoAccesoWithRoles(@Param("correo") String correo);
-
-    Integer id(Integer id);
 }
