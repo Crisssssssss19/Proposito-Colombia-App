@@ -1,8 +1,6 @@
 package com.procol.procolombia.auth.controller;
 
-import com.procol.procolombia.auth.dto.Request.AccesoRequestDTO;
-import com.procol.procolombia.auth.dto.Request.LoginRequestDTO;
-import com.procol.procolombia.auth.dto.Request.UserRegisterRequestDTO;
+import com.procol.procolombia.auth.dto.Request.*;
 import com.procol.procolombia.auth.dto.Response.AccesoResponseDTO;
 import com.procol.procolombia.auth.dto.Response.ApiResponseDTO;
 import com.procol.procolombia.auth.dto.Response.LoginResponseDTO;
@@ -82,9 +80,9 @@ public class AuthAccesoController {
     @PermitAll
     public ResponseEntity<ApiResponseDTO<String>> cambiarClave(
             @PathVariable Integer idUsuario,
-            @RequestParam String nuevaClave
-    ) {
-        ApiResponseDTO<String> response = accesoService.cambiarClave(idUsuario, nuevaClave);
+            @RequestBody CambiarClaveRequestDTO requestDTO
+            ) {
+        ApiResponseDTO<String> response = accesoService.cambiarClave(idUsuario, requestDTO);
         return ResponseEntity.status(response.codigoEstado()).body(response);
     }
 

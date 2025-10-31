@@ -1,9 +1,7 @@
 package com.procol.procolombia.auth.service.impl;
 
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
-import com.procol.procolombia.auth.dto.Request.AccesoRequestDTO;
-import com.procol.procolombia.auth.dto.Request.LoginRequestDTO;
-import com.procol.procolombia.auth.dto.Request.UserRegisterRequestDTO;
+import com.procol.procolombia.auth.dto.Request.*;
 import com.procol.procolombia.auth.dto.Response.AccesoResponseDTO;
 import com.procol.procolombia.auth.dto.Response.ApiResponseDTO;
 import com.procol.procolombia.auth.dto.Response.LoginResponseDTO;
@@ -97,8 +95,48 @@ public class AuthAccesoServiceImpl implements AccesoService {
     }
 
     @Override
-    public ApiResponseDTO<String> cambiarClave(Integer idUsuario, String clave) {
-        return null;
+    @Transactional
+    public ApiResponseDTO<String> cambiarClave(Integer idUsuario, CambiarClaveRequestDTO requestDTO) {
+        // Buscar el acceso por ID de usuario
+        Acceso acceso = accesoRepository.findById(idUsuario)
+                .orElseThrow(() -> new AccesoNotFoundException("Acceso no encontrado para usuario con id: " + idUsuario));
+
+        // Validar que todos los campos estén presentes
+        if (requestDTO.claveActual() == null || requestDTO.claveActual().trim().isEmpty()) {
+            throw new IllegalArgumentException("Debe ingresar su contraseña actual");
+        }
+
+        if (requestDTO.nuevaClave() == null || requestDTO.nuevaClave().trim().isEmpty()) {
+            throw new IllegalArgumentException("La nueva contraseña no puede estar vacía");
+        }
+
+        // Validar contraseña actual
+        if (!passwordEncoder.matches(requestDTO.claveActual(), acceso.getClaveAcceso())) {
+            throw new IllegalArgumentException("La contraseña actual es incorrecta");
+        }
+
+        // Validar que la nueva contraseña sea diferente
+        if (passwordEncoder.matches(requestDTO.nuevaClave(), acceso.getClaveAcceso())) {
+            throw new IllegalArgumentException("La nueva contraseña debe ser diferente a la actual");
+        }
+
+        // Validar longitud mínima de contraseña
+        if (requestDTO.nuevaClave().length() < 8) {
+            throw new IllegalArgumentException("La contraseña debe tener al menos 8 caracteres");
+        }
+
+        // Validar que las contraseñas coincidan
+        if (!requestDTO.nuevaClave().equals(requestDTO.confirmarClave())) {
+            throw new IllegalArgumentException("Las contraseñas no coinciden");
+        }
+
+        // Encriptar y guardar la nueva contraseña
+        acceso.setClaveAcceso(passwordEncoder.encode(requestDTO.nuevaClave()));
+        accesoRepository.save(acceso);
+
+        logger.debug("Contraseña actualizada para usuario id={}", idUsuario);
+
+        return new ApiResponseDTO<>(200, "Contraseña actualizada correctamente", null, LocalDateTime.now().toString());
     }
 
     @Override
