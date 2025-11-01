@@ -1,8 +1,5 @@
 package com.procol.procolombia.vacante.controllers;
 
-
-import com.procol.procolombia.vacante.entities.Anuncio;
-import com.procol.procolombia.vacante.mappers.AnuncioMapper;
 import com.procol.procolombia.vacante.repositories.AnuncioRepository;
 import com.procol.procolombia.vacante.services.AnuncioService;
 import com.procol.procolombia.vacante.dto.AnuncioDto;
@@ -13,21 +10,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.core.io.Resource;
-import jakarta.persistence.EntityNotFoundException;
 
 
 @RestController
 @RequestMapping("/anuncios")
 public class AnuncioController {
     private final AnuncioService anuncioService;
-    private final AnuncioRepository anuncioRepository;
 
-    public AnuncioController(AnuncioService anuncioService, AnuncioRepository anuncioRepository) {
+    public AnuncioController(AnuncioService anuncioService) {
         this.anuncioService = anuncioService;
-        this.anuncioRepository = anuncioRepository;
     }
 
     @PostMapping
@@ -103,13 +95,11 @@ public class AnuncioController {
 
     @GetMapping("/{id}/imagen")
     public ResponseEntity<Resource> verImagen(@PathVariable Integer id) {
-        Anuncio anuncio = anuncioRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Anuncio con id " + id + " no existe"));
-
+        AnuncioDto anuncio = anuncioService.findByVacanteId(id);
         Resource recurso = anuncioService.verImagen(id);
 
         return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(anuncio.getTipoAnuncio()))
+                .contentType(MediaType.parseMediaType(anuncio.tipoAnuncio()))
                 .body(recurso);
     }
 }
