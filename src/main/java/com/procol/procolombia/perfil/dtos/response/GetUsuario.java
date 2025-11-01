@@ -8,6 +8,7 @@ public record GetUsuario(
         String apellidosUsuario,
         Short estado,
         Integer idUbicacion,
-        String documentoUsuario
+        String documentoUsuario,
+        String profesion
 ) implements Serializable {
 }

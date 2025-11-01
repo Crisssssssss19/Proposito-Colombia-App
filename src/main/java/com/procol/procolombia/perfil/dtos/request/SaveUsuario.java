@@ -38,6 +38,10 @@ public record SaveUsuario(
         String competencias,
 
         @Size(min = 4, max = 100, message = "Tus palabras clave no pueden exceder los 100 caracteres")
-        List<String> palabrasClave
+        List<String> palabrasClave,
+
+        @NotBlank(message = "La profesion es obligatoria")
+        @Size(min = 4, max = 50, message = "Tu profesion no puede exceder los 50 caracteres")
+        String profesion
 
 ) implements Serializable {}

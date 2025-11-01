@@ -86,6 +86,9 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UsuarioTalento> usuarioTalentos = new LinkedHashSet<>();
 
+    @Column(name = "profesion", length = 50)
+    private String profesion;
+
     public Usuario(Integer id, Short tipoDocumentoUsuario, String documentoUsuario, String apellidosUsuario, String nombresUsuario, Short estadoUsuario, Acceso acceso, Set<Archivo> archivos, Set<Imagene> imagenes, Set<Interes> interes, Set<Mensaje> mensajes, Ubicacione idUbicacion, Set<Postulacione> postulaciones, Set<PalabraClave> palabraClaves, Set<RelUsuarioEmpresa> relUsuarioEmpresas, Set<Role> roles) {
         this.id = id;
         this.tipoDocumentoUsuario = tipoDocumentoUsuario;
@@ -246,5 +249,13 @@ public class Usuario {
 
     public void setUsuarioTalentos(Set<UsuarioTalento> usuarioTalentos) {
         this.usuarioTalentos = usuarioTalentos;
+    }
+
+    public void setProfesion(String profesion) {
+        this.profesion = profesion;
+    }
+
+    public String getProfesion() {
+        return profesion;
     }
 }

@@ -12,6 +12,7 @@ public record UpdateUsuario(
         Integer idUbicacion,
         String habilidades,
         String competencias,
-        List<String> palabrasClave
+        List<String> palabrasClave,
+        String profesion
 ) implements Serializable {
 }

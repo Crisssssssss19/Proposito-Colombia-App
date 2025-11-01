@@ -17,6 +17,7 @@ public record GetPerfil(
         List<GetPalabraClave> palabrasClave,
         String HabilidadPrincipal,
         String documento,
-        String fotoPerfil
+        String fotoPerfil,
+        String profesion
 ) implements Serializable {
 }

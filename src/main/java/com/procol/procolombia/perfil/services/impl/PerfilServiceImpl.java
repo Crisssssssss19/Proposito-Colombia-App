@@ -124,7 +124,8 @@ public class PerfilServiceImpl implements PerfilService {
                 palabrasClave,
                 obtenerHabilidadPrincipal(usuarioEntity),
                 usuario.documentoUsuario(),
-                urlFotoPerfil
+                urlFotoPerfil,
+                usuario.profesion()
         );
     }
 

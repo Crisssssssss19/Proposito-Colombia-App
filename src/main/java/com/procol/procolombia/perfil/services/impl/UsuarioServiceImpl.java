@@ -77,6 +77,10 @@ public class UsuarioServiceImpl implements UsuarioService {
         if (updateUsuario.documento() != null) {
             usuario.setDocumentoUsuario(updateUsuario.documento());
         }
+
+        if (updateUsuario.profesion() != null) {
+            usuario.setProfesion(updateUsuario.profesion());
+        }
         return usuarioMapper.usuarioToGetUsuario(usuarioRepository.save(usuario));
     }
 
