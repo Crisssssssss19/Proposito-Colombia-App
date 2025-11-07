@@ -15,6 +15,7 @@ import com.procol.procolombia.auth.exception.notfound.UbicacionNotFoundException
 import com.procol.procolombia.auth.mappers.AuthAccesoMapper;
 import com.procol.procolombia.auth.repositories.*;
 import com.procol.procolombia.auth.security.jwt.JwtService;
+import com.procol.procolombia.auth.security.service.UserInfoDetail;
 import com.procol.procolombia.auth.security.service.UserInfoService;
 import com.procol.procolombia.auth.service.AccesoService;
 import com.procol.procolombia.perfil.services.ImagenService;
@@ -30,6 +31,7 @@ import com.sendgrid.helpers.mail.objects.Email;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -41,6 +43,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class AuthAccesoServiceImpl implements AccesoService {
@@ -63,9 +66,14 @@ public class AuthAccesoServiceImpl implements AccesoService {
     private final UsuariosRoleRepository usuariosRoleRepository;
     private final IngresoRepository ingresoRepository;
     private final ImagenService imagenService;
+    private final CorreoVerificacionRepository verificacionRepository;
+    private final PreRegistroRepository preRegistroRepository;
 
     public AuthAccesoServiceImpl(AccesoRepository accesoRepository, @Value("${sendgrid.api.key}") String sendGridApiKey, @Value("${sendgrid.from.email}") String sendGridFromEmail, RoleRepository roleRepository, JwtService jwtService, AuthAccesoMapper accesoMapper, RequisitoRepository requisitoRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, UserInfoService userInfoService, UsuarioRepository usuarioRepository, ImagenRepository imageneRepository, ParameterNamesModule parameterNamesModule, UbicacioneRepository ubicacioneRepository, UsuariosRoleRepository usuariosRoleRepository, IngresoRepository ingresoRepository, ImagenService imagenService) {
+    public AuthAccesoServiceImpl(AccesoRepository accesoRepository, PreRegistroRepository preRegistroRepository, CorreoVerificacionRepository verificacionRepository, @Value("${sendgrid.api.key}") String sendGridApiKey, @Value("${sendgrid.from.email}") String sendGridFromEmail, RoleRepository roleRepository, JwtService jwtService, AuthAccesoMapper accesoMapper, RequisitoRepository requisitoRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, UserInfoService userInfoService, UsuarioRepository usuarioRepository, AuthImagenServiceImpl imagenServiceImpl, ImagenRepository imageneRepository, ParameterNamesModule parameterNamesModule, UbicacioneRepository ubicacioneRepository, UsuariosRoleRepository usuariosRoleRepository, IngresoRepository ingresoRepository) {
         this.accesoRepository = accesoRepository;
+        this.preRegistroRepository = preRegistroRepository;
+        this.verificacionRepository = verificacionRepository;
         this.ingresoRepository = ingresoRepository;
         this.sendGridApiKey = sendGridApiKey;
         this.sendGridFromEmail = sendGridFromEmail;
@@ -247,6 +255,14 @@ public class AuthAccesoServiceImpl implements AccesoService {
 
             usuariosRoleRepository.save(usuariosRole);
         }
+
+        // Crear CorreoVerificacion asociado al correoAcceso
+        CorreoVerificacion correoVerificacion = new CorreoVerificacion();
+        correoVerificacion.setIdCorreo(userRegisterRequestDTO.correoAcceso());
+        correoVerificacion.setPinCorreo(null); // aún no generado
+        correoVerificacion.setEstadoCorreoVerificado((short) 1); // sin verificar
+        verificacionRepository.save(correoVerificacion);
+
         return new ApiResponseDTO<>(201, "Usuario registrado exitosamente", null, LocalDateTime.now().toString());
     }
 
@@ -299,55 +315,55 @@ public class AuthAccesoServiceImpl implements AccesoService {
     }
 
     @Override
-    public ApiResponseDTO<String> enviarVerificarCorreo(String correo) {
-        Acceso acceso = accesoRepository.findByCorreoAcceso(correo)
-                .orElseThrow(() -> new AccesoNotFoundException("Acceso no encontrado con correo: " + correo));
-
-        if(acceso.getCorreoVerificado()==1){
-            return new ApiResponseDTO<>(200, "Correo ya verificado", null, LocalDateTime.now().toString());
-        }
-
-        try{
-            Email from = new Email(sendGridFromEmail);
-            String subject = "verifica tu correo electrónico";
-            Email to = new Email(acceso.getCorreoAcceso());
-
-            String link = "http://localhost:3210/api/accesos/verificar-correo?idUsuario=" + acceso.getUsuario().getId() + "&uuid=" + acceso.getId();
-            Content content = new Content("text/html",
-                    "<h3>Verifica tu correo</h3>" +
-                    "<p>Haz clic en el siguiente enlace para verificar tu correo electrónico:</p>" +
-                    "<a href=\"" + link + "\">Verificar Correo</a>");
-
-            Mail mail = new Mail(from, subject, to, content);
-            SendGrid sg = new SendGrid(sendGridApiKey);
-            Request request = new Request();
-            request.setMethod(Method.POST);
-            request.setEndpoint("mail/send");
-            request.setBody(mail.build());
-            Response response = sg.api(request);
-
-            if(response.getStatusCode() >= 200 && response.getStatusCode() < 300){
-                return new ApiResponseDTO<>(200, "Correo enviado", "Revisa tu bandeja de entrada", LocalDateTime.now().toString());
-            } else {
-                return new ApiResponseDTO<>(500, "Error al enviar correo", "Código de estado: " + response.getStatusCode(), LocalDateTime.now().toString());
-            }
-        } catch (IOException ex) {
-            return new ApiResponseDTO<>(500, "Excepcion", ex.getMessage(), LocalDateTime.now().toString());
-        }
+    public ApiResponseDTO<AccesoResponseDTO> obtenerAccesoPorCorreo(String correoAcceso) {
+        Acceso acceso = accesoRepository.findByCorreoAcceso(correoAcceso)
+                .orElseThrow(() -> new AccesoNotFoundException("Acceso no encontrado con correo: " + correoAcceso));
+        return new ApiResponseDTO<>(200, "Acceso encontrado", accesoMapper.toDto(acceso), LocalDateTime.now().toString());
     }
 
     @Override
-    public ApiResponseDTO<String> verificarCorreo(Integer idUsuario, String UUID) {
+    public ApiResponseDTO<String> obtenerTelefonoAcceso(Integer idUsuario) {
         Acceso acceso = accesoRepository.findById(idUsuario)
-                .orElseThrow(() -> new AccesoNotFoundException("Acceso no encontrado con id: " + idUsuario));
-
-        if(!acceso.getUuidAcceso().equals(UUID) || acceso.getUuidAcceso()==null){
-            return new ApiResponseDTO<>(400, "UUID inválido", null, LocalDateTime.now().toString());
-        }
-        acceso.setCorreoVerificado((short) 1);
-        accesoRepository.save(acceso);
-        return new ApiResponseDTO<>(200, "Correo verificado", null, LocalDateTime.now().toString());
+                .orElseThrow(() -> new AccesoNotFoundException("Acceso no encontrado"));
+        return new ApiResponseDTO<>(200, "Telefono encontrado", acceso.getTelefonoAcceso(), LocalDateTime.now().toString());
     }
 
+    @Override
+    @Transactional
+    public ApiResponseDTO<String> actualizarTelefonoAcceso(Integer idUsuario, String nuevoTelefono) {
+        LocalDateTime ahora = LocalDateTime.now();
 
+        // 1️⃣ Buscar el acceso por el usuario
+        Acceso acceso = accesoRepository.findById(idUsuario)
+                .orElseThrow(() -> new AccesoNotFoundException("Acceso no encontrado para usuario ID: " + idUsuario));
+
+        String telefonoAnterior = acceso.getTelefonoAcceso();
+
+        // 2️⃣ Actualizar el teléfono en Acceso
+        acceso.setTelefonoAcceso(nuevoTelefono);
+        accesoRepository.save(acceso);
+
+        // 3️⃣ Buscar también en PreRegistro por el teléfono anterior
+        Optional<PreRegistro> preExistente = preRegistroRepository.findById(telefonoAnterior);
+
+        if (preExistente.isPresent()) {
+            PreRegistro pre = preExistente.get();
+
+            // Si el usuario tenía un registro previo con el teléfono antiguo, lo actualizamos
+            preRegistroRepository.delete(pre); // Eliminamos el antiguo
+
+            // Creamos uno nuevo con el nuevo número (manteniendo estado si estaba verificado)
+            PreRegistro nuevo = new PreRegistro();
+            nuevo.setIdPreRegistro(nuevoTelefono);
+            nuevo.setPinPreRegistro(pre.getPinPreRegistro());
+            nuevo.setFechaPreRegistro(ahora);
+            nuevo.setEstadoPreRegistro(pre.getEstadoPreRegistro());
+            nuevo.setIntentos(pre.getIntentos());
+            nuevo.setBloqueadoHasta(pre.getBloqueadoHasta());
+
+            preRegistroRepository.save(nuevo);
+        }
+
+        return new ApiResponseDTO<>(200, "Teléfono actualizado correctamente", "El número fue cambiado en Acceso y PreRegistro", ahora.toString());
+    }
 }

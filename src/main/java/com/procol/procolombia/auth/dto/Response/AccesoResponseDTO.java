@@ -4,5 +4,5 @@ public record AccesoResponseDTO(
         Integer usuario,
         String correoAcceso,
         String telefonoAcceso,
-        String uuidAcceso
-) {}
+        String uuidAcceso,
+        Short correoVerificado) {}

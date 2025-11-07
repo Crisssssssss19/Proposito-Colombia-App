@@ -63,9 +63,16 @@ public class AuthAccesoController {
     }
 
     @GetMapping("/{idAcceso}")
-    @PreAuthorize("hasAnyAuthority('ADMINISTRADOR', 'TECNOLOGIA')")
+    @PreAuthorize("hasAnyAuthority('ADMINISTRADOR', 'TECNOLOGIA', 'ASPIRANTE')")
     public ResponseEntity<ApiResponseDTO<AccesoResponseDTO>> obtenerAccesoPorId(@PathVariable Integer idAcceso) {
         ApiResponseDTO<AccesoResponseDTO> response = accesoService.obtenerAccesoPorId(idAcceso);
+        return ResponseEntity.status(response.codigoEstado()).body(response);
+    }
+
+    @GetMapping("/correo/{correo}")
+    @PreAuthorize("hasAnyAuthority('ADMINISTRADOR', 'ASPIRANTE', 'EMPRESA')")
+    public ResponseEntity<ApiResponseDTO<AccesoResponseDTO>> obtenerAccesoPorCorreo(@PathVariable String correo) {
+        ApiResponseDTO<AccesoResponseDTO> response = accesoService.obtenerAccesoPorCorreo(correo);
         return ResponseEntity.status(response.codigoEstado()).body(response);
     }
 
@@ -83,20 +90,6 @@ public class AuthAccesoController {
             @RequestBody CambiarClaveRequestDTO requestDTO
             ) {
         ApiResponseDTO<String> response = accesoService.cambiarClave(idUsuario, requestDTO);
-        return ResponseEntity.status(response.codigoEstado()).body(response);
-    }
-
-    @GetMapping("/enviar-verificacion" )
-    @PreAuthorize("hasAuthority('ASPIRANTE')")
-    public ResponseEntity<ApiResponseDTO<String>> enviarVerificarCorreo(@RequestParam String correo) {
-        ApiResponseDTO<String> response = accesoService.enviarVerificarCorreo(correo);
-        return ResponseEntity.status(response.codigoEstado()).body(response);
-    }
-
-    @GetMapping("/verificar-correo" )
-    @PreAuthorize("hasAuthority('ASPIRANTE')")
-    public ResponseEntity<ApiResponseDTO<String>> verificarCorreo(@RequestParam Integer idUsuario, @RequestParam String uuid) {
-        ApiResponseDTO<String> response = accesoService.verificarCorreo(idUsuario, uuid);
         return ResponseEntity.status(response.codigoEstado()).body(response);
     }
 }
